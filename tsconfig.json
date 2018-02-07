@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "outDir": "build",
+    "module": "esnext",
+    "target": "es5",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true
+  },
+  "types": [
+    "typePatches"
+  ]
+}
