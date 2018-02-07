@@ -10,6 +10,8 @@
 **/_local_data
 *.local.json
 
+.idea
+
 # misc
 coverage.lcov
 npm-debug.log
