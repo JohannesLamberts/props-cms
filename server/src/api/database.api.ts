@@ -51,4 +51,11 @@ DefinitionsApi
                      .then(() => {
                          res.sendStatus(EHttpState.eOk);
                      });
+    })
+    .delete((req, res, { params }) => {
+        DefinitionsDb.collection(params.collection)
+                     .deleteOne({ _id: new MongoID(params.id) })
+                     .then(() => {
+                         res.sendStatus(EHttpState.eOk);
+                     });
     });
