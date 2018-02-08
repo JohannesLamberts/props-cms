@@ -73,6 +73,7 @@ export interface CollDefinitionModelField<TKey extends CollDefinitionFieldTypeId
 
 export interface CollDefinitionModel extends DatabaseModel {
     ident: string;
+    root: boolean;
     label: string;
     icon: string;
     color: string;

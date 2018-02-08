@@ -1,8 +1,10 @@
 import * as Immutable                 from 'immutable';
 import {
     Button,
+    FormControlLabel,
     Icon,
-    Paper
+    Paper,
+    Switch
 }                                     from 'material-ui';
 import { InputAdornment }             from 'material-ui/Input';
 import * as React                     from 'react';
@@ -23,7 +25,7 @@ const collectionKey = 'coll_definition';
 type DefinitionProps<TData = any> = {
     onMount: () => void;
     onDataChange: (data: Partial<CollDefinitionModel>) => void;
-    data: CollDefinitionModel;
+    collDefinition: CollDefinitionModel;
 };
 
 class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
@@ -38,7 +40,7 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
     }
 
     render() {
-        const { data, onDataChange } = this.props;
+        const { collDefinition, onDataChange } = this.props;
         return (
             <div
                 style={{
@@ -56,44 +58,55 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
                 >
                     <SimpleTextField
                         label={'Ident'}
-                        value={data.ident}
+                        value={collDefinition.ident}
                         onBlur={ident => onDataChange({ ident })}
                     />
                     <SimpleTextField
                         label={'Label'}
-                        value={data.label}
+                        value={collDefinition.label}
                         onBlur={label => onDataChange({ label })}
                     />
                     <SimpleTextField
                         multiline={true}
                         label={'Beschreibung'}
-                        value={data.description}
+                        value={collDefinition.description}
                         onBlur={description => onDataChange({ description })}
                     />
                     <SimpleTextField
                         label={'Icon'}
-                        value={data.icon}
+                        value={collDefinition.icon}
                         onBlur={icon => onDataChange({ icon })}
                         TextFieldProps={{
                             InputProps: {
                                 endAdornment: (
                                     <InputAdornment position="end">
-                                        <Icon>{data.icon}</Icon>
+                                        <Icon>{collDefinition.icon}</Icon>
                                     </InputAdornment>
                                 )
                             }
                         }}
                     />
-                    <Link to={`/collection/${data._id}/elements`}>
-                        <Button>
-                            <Icon>launch</Icon>
-                            Einträge
-                        </Button>
-                    </Link>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={collDefinition.root}
+                                onChange={(event, root) => onDataChange({ root })}
+                            />
+                        }
+                        label={'Main'}
+                    />
+                    {collDefinition.root && (
+                        <Link to={`/collection/${collDefinition._id}/elements`}>
+                            <Button>
+                                <Icon>launch</Icon>
+                                Einträge
+                            </Button>
+                        </Link>
+                    )}
                 </Paper>
                 <div style={{ flexGrow: 1 }}>
                     <CollDefinitionFieldsEditor
-                        fields={data.fields || []}
+                        fields={collDefinition.fields || []}
                         onDataChange={(newFields) => onDataChange({ fields: newFields })}
                     />
                 </div>
@@ -109,9 +122,10 @@ export default withRouter((props: RouteComponentProps<{ collectionId: string }>)
     const Component = connect(
         (store: StoreState) => {
             return {
-                data: store.database.get('models')
-                           .get(collectionKey, Immutable.Map())
-                           .get(collectionId, {})
+                collDefinition:
+                    store.database.get('models')
+                         .get(collectionKey, Immutable.Map())
+                         .get(collectionId, {})
             };
         },
         (dispatch) => ({
