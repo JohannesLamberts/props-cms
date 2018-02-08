@@ -25,7 +25,7 @@ const links = {
 const rootPages = {
     '/': () => 'HELLO THERE',
     '/collection': LibComponentImport(
-        () => import('./views/collection/list')),
+        () => import('./views/collection/collection_grid')),
     '/collection/:collectionId/elements': LibComponentImport(
         () => import('./views/collection/element/list')),
     '/collection/:collectionId/elements/:elementId': LibComponentImport(

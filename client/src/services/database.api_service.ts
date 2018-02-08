@@ -27,4 +27,8 @@ export const DbApiService = new class extends AbstractApiService {
     public patch<TData>(collection: string, id: string, patchData: TData): Promise<void> {
         return this._patch(`/${collection}/${id}`, { data: patchData });
     }
+
+    public delete(collection: string, id: string): Promise<void> {
+        return this._delete(`/${collection}/${id}`);
+    }
 }();

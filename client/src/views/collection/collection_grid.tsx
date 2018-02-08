@@ -12,10 +12,7 @@ import { Link }                 from 'react-router-dom';
 import { Collections }          from '../../models/_collections';
 import { CollDefinitionModel }  from '../../models/collectionDefinition.model';
 import { DatabaseActions }      from '../../redux/database.reducer';
-import {
-    StoreDispatchProp,
-    StoreState
-}                               from '../../redux/store';
+import { StoreState }           from '../../redux/store';
 import { DbApiService }         from '../../services/database.api_service';
 import { FloatingActionButton } from '../../util/index';
 
@@ -23,17 +20,20 @@ const collectionKey = 'coll_definition';
 
 interface DefinitionProps {
     collDefinitions: Collections[typeof collectionKey][];
+    onMount: () => void;
+    onPush: () => void;
+    onCollDelete: (ident: string) => void;
 }
 
-class Definition extends React.PureComponent<DefinitionProps & StoreDispatchProp, {}> {
+class Definition extends React.PureComponent<DefinitionProps, {}> {
 
-    constructor(props: DefinitionProps & StoreDispatchProp) {
+    constructor(props: DefinitionProps) {
         super(props);
         this.state = {};
     }
 
     componentWillMount() {
-        this.props.dispatch(DatabaseActions.require(collectionKey));
+        this.props.onMount();
     }
 
     render() {
@@ -46,18 +46,7 @@ class Definition extends React.PureComponent<DefinitionProps & StoreDispatchProp
                 }}
             >
                 <FloatingActionButton
-                    onClick={() => DbApiService
-                        .push(collectionKey, {
-                            ident: '',
-                            label: '',
-                            icon: '',
-                            color: '',
-                            description: '',
-                            fields: []
-                        } as CollDefinitionModel)
-                        .then(() => this.props
-                                        .dispatch(DatabaseActions
-                                                      .require(collectionKey)))}
+                    onClick={this.props.onPush}
                 >
                     <Icon>add</Icon>
                 </FloatingActionButton>
@@ -101,11 +90,13 @@ class Definition extends React.PureComponent<DefinitionProps & StoreDispatchProp
                                     {def.label}
                                 </Typography>
                             </Link>
-                            <Link to={`/collection/${def._id}/elements`}>
-                                <IconButton>
-                                    <Icon>view_list</Icon>
-                                </IconButton>
-                            </Link>
+                            <IconButton
+                                onClick={() => {
+                                    this.props.onCollDelete(def._id);
+                                }}
+                            >
+                                <Icon>delete</Icon>
+                            </IconButton>
                         </div>
                     </Paper>
                 ))}
@@ -122,4 +113,29 @@ export default connect(
                                   .get(collectionKey, Immutable.Map())
                                   .toArray()
         };
-    })(Definition);
+    },
+    dispatch => ({
+        onCollDelete: (collIdent: string) => {
+            DbApiService.delete('coll_definition', collIdent)
+                        .then(() => {
+                            dispatch(DatabaseActions.require('coll_definition'));
+                        });
+        },
+        onMount: () => {
+            dispatch(DatabaseActions.require(collectionKey));
+        },
+        onPush: () => {
+            DbApiService
+                .push(collectionKey, {
+                    ident: '',
+                    label: '',
+                    icon: '',
+                    color: '',
+                    description: '',
+                    fields: []
+                } as CollDefinitionModel)
+                .then(() => {
+                    dispatch(DatabaseActions.require(collectionKey));
+                });
+        }
+    }))(Definition);
