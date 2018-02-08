@@ -1,5 +1,6 @@
 import * as Immutable                 from 'immutable';
 import {
+    Button,
     Icon,
     Paper
 }                                     from 'material-ui';
@@ -10,6 +11,7 @@ import {
     RouteComponentProps,
     withRouter
 }                                     from 'react-router';
+import { Link }                       from 'react-router-dom';
 import { CollDefinitionModel }        from '../../../models/collectionDefinition.model';
 import { DatabaseActions }            from '../../../redux/database.reducer';
 import { StoreState }                 from '../../../redux/store';
@@ -82,6 +84,12 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
                             }
                         }}
                     />
+                    <Link to={`/collection/${data._id}/elements`}>
+                        <Button>
+                            <Icon>launch</Icon>
+                            Einträge
+                        </Button>
+                    </Link>
                 </Paper>
                 <div style={{ flexGrow: 1 }}>
                     <CollDefinitionFieldsEditor

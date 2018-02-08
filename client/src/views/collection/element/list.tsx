@@ -53,6 +53,8 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
             );
         }
 
+        const { collDefinition, collElements } = this.props;
+
         return (
             <Paper style={{ width: '100%' }}>
                 <FloatingActionButton
@@ -63,15 +65,22 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
                 <div
                     style={{
                         backgroundColor: 'rgba(0,0,0,0.07)',
-                        padding: '1rem'
+                        padding: '1rem',
+                        display: 'flex',
+                        justifyContent: 'space-between'
                     }}
                 >
                     <Typography variant={'headline'}>
-                        {this.props.collDefinition.label}
+                        {collDefinition.label}
                     </Typography>
+                    <Link to={`/collection/${collDefinition._id}`}>
+                        <Icon>
+                            settings
+                        </Icon>
+                    </Link>
                 </div>
                 <SimpleTable
-                    data={this.props.collElements}
+                    data={collElements}
                 >
                     {[
                         {
@@ -79,12 +88,12 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
                             content: (el) => (
                                 <Link to={`elements/${el._id}`}>
                                     <IconButton>
-                                        <Icon>settings</Icon>
+                                        <Icon>edit</Icon>
                                     </IconButton>
                                 </Link>
                             )
                         },
-                        ...this.props.collDefinition.fields.map(field => ({
+                        ...collDefinition.fields.map(field => ({
                             head: field.label,
                             content: (collElement) => JSON.stringify(collElement.data[field.key])
                         }))

@@ -41,7 +41,7 @@ export class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitio
                         onClose={() => this.setState({ editorOpen: false })}
                     >
                         <DialogTitle>
-                            {field.key}
+                            {field.label}
                         </DialogTitle>
                         <DialogContent>
                             <CollDefinitionFieldSettings
@@ -89,7 +89,7 @@ export class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitio
                     />
                     <div style={{ flexShrink: 0 }}>
                         <IconButton onClick={() => this.setState({ editorOpen: true })}>
-                            <Icon>settings</Icon>
+                            <Icon>edit</Icon>
                         </IconButton>
                         <IconButton onClick={onDelete}>
                             <Icon>delete</Icon>

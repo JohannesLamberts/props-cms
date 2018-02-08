@@ -1,6 +1,7 @@
 import * as Immutable             from 'immutable';
 import {
     CircularProgress,
+    Icon,
     Paper,
     Typography
 }                                 from 'material-ui';
@@ -10,6 +11,7 @@ import {
     RouteComponentProps,
     withRouter
 }                                 from 'react-router';
+import { Link }                   from 'react-router-dom';
 import { CollDefinitionModel }    from '../../../../models/collectionDefinition.model';
 import { CollElementModel }       from '../../../../models/collectionElement.model';
 import { DatabaseActions }        from '../../../../redux/database.reducer';
@@ -50,12 +52,19 @@ class CollElementEditor extends React.PureComponent<DefinitionProps, {}> {
                 <div
                     style={{
                         backgroundColor: 'rgba(0,0,0,0.07)',
-                        padding: '1rem'
+                        padding: '1rem',
+                        display: 'flex',
+                        justifyContent: 'space-between'
                     }}
                 >
                     <Typography variant={'headline'}>
                         {collDefinition.label}
                     </Typography>
+                    <Link to={`/collection/${collDefinition._id}`}>
+                        <Icon>
+                            settings
+                        </Icon>
+                    </Link>
                 </div>
                 <CollElementModelEditor
                     collDefinition={collDefinition}
