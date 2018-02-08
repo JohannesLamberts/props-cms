@@ -10,10 +10,10 @@ import {
     RouteComponentProps,
     withRouter
 }                                     from 'react-router';
-import { CollDefinitionModel }        from '../../../../models/collectionDefinition.model';
-import { DatabaseActions }            from '../../../../redux/database.reducer';
-import { StoreState }                 from '../../../../redux/store';
-import { SimpleTextField }            from '../../../../util';
+import { CollDefinitionModel }        from '../../../models/collectionDefinition.model';
+import { DatabaseActions }            from '../../../redux/database.reducer';
+import { StoreState }                 from '../../../redux/store';
+import { SimpleTextField }            from '../../../util/index';
 import { CollDefinitionFieldsEditor } from './editorFields';
 
 const collectionKey = 'coll_definition';
@@ -94,30 +94,27 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
     }
 }
 
-class RouteWrapped extends React.PureComponent<RouteComponentProps<{ modelId: string }>> {
+export default withRouter((props: RouteComponentProps<{ collectionId: string }>) => {
 
-    render() {
-        const modelId = this.props.match.params.modelId;
+    const collectionId = props.match.params.collectionId;
 
-        const Component = connect(
-            (store: StoreState) => {
-                return {
-                    data: store.database.get('models')
-                               .get(collectionKey, Immutable.Map())
-                               .get(modelId, {})
-                };
+    const Component = connect(
+        (store: StoreState) => {
+            return {
+                data: store.database.get('models')
+                           .get(collectionKey, Immutable.Map())
+                           .get(collectionId, {})
+            };
+        },
+        (dispatch) => ({
+            onMount: () => {
+                dispatch(DatabaseActions.requireId(collectionKey, collectionId));
             },
-            (dispatch) => ({
-                onMount: () => {
-                    dispatch(DatabaseActions.requireId(collectionKey, modelId));
-                },
-                onDataChange: data => {
-                    dispatch(DatabaseActions.patch(collectionKey, modelId, data));
-                }
-            }))(CollDefinitionEditor);
+            onDataChange: data => {
+                dispatch(DatabaseActions.patch(collectionKey, collectionId, data));
+            }
+        }))(CollDefinitionEditor);
 
-        return <Component/>;
-    }
-}
+    return <Component/>;
 
-export default withRouter(RouteWrapped);
+});

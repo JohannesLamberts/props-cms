@@ -9,8 +9,8 @@ import {
     Paper
 }                                      from 'material-ui';
 import * as React                      from 'react';
-import { CollDefinitionModelField }    from '../../../../models/collectionDefinition.model';
-import { SimpleTextField }             from '../../../../util';
+import { CollDefinitionModelField }    from '../../../models/collectionDefinition.model';
+import { SimpleTextField }             from '../../../util/index';
 import { CollDefinitionFieldSettings } from './editorFieldSettings';
 
 interface CollDefinitionFieldEditorProps {

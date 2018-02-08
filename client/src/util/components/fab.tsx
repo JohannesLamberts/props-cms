@@ -8,8 +8,8 @@ import * as React from 'react';
 const styles = {
     root: {
         position: 'absolute',
-        bottom: '1rem',
-        right: '1rem'
+        bottom: '2rem',
+        right: '2rem'
     } as React.CSSProperties
 };
 

@@ -7,11 +7,12 @@ export interface CollElementModelData {
     boolean: boolean;
     number: number;
     color: string;
-    time: Date;
-    date: Date;
+    time: Date | undefined;
+    date: Date | undefined;
     file: string; // update
     image: string; // update
-    select: any | any[];
+    select: string;
+    selectMultiple: string[];
     tags: string[];
     import: {
         collection: string;
@@ -20,19 +21,39 @@ export interface CollElementModelData {
             val: string;
         }[];
     };
-    subContent: {
-        type: string;
-        data: Record<string, CollElementModelData>;
-    };
+    subContent: CollElementModel;
 }
 
-type CollElementDataEntry<T extends CollDefinitionFieldTypeIdent> = CollElementModelData[T];
+export const CollElementModelDataInitials: CollElementModelData = {
+    text: '',
+    textArea: '',
+    boolean: false,
+    number: 0,
+    color: '',
+    time: undefined,
+    date: undefined,
+    file: '', // update
+    image: '', // update
+    select: '',
+    selectMultiple: [],
+    tags: [],
+    import: {
+        collection: ''
+    },
+    subContent: {
+        collection: '',
+        data: {},
+        dataOverwrites: []
+    }
+};
+
+export type CollElementDataEntry<T extends CollDefinitionFieldTypeIdent = any> = CollElementModelData[T];
 
 export interface CollElementModel extends DatabaseModel {
     collection: string;
-    data: Record<string, CollElementDataEntry<any>>;
+    data: Record<string, CollElementDataEntry>;
     dataOverwrites: {
         query: Record<string, any>
-        overwrites: Record<string, CollElementDataEntry<any>>
+        overwrites: Record<string, CollElementDataEntry>
     }[];
 }

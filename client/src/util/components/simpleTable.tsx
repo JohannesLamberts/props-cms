@@ -8,9 +8,7 @@ import {
 import * as React from 'react';
 
 interface SimpleTableProps<T = any> {
-    data: {
-        map: (element: T) => any;
-    };
+    data: T[];
     children: {
         head: React.ReactNode;
         content: (data: T) => React.ReactNode;

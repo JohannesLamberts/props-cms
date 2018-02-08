@@ -1,14 +1,10 @@
-import {
-    FormControlLabel,
-    Switch,
-    Typography
-}                   from 'material-ui';
-import * as React   from 'react';
+import { Typography } from 'material-ui';
+import * as React     from 'react';
 import {
     CollDefinitionFieldOptions,
     CollDefinitionFieldTypeIdent
-}                   from '../../../../models/collectionDefinition.model';
-import { TagInput } from '../../../../util';
+}                     from '../../../models/collectionDefinition.model';
+import { TagInput }   from '../../../util/index';
 
 export const CollDefinitionFieldTypeSettings = <TKey extends CollDefinitionFieldTypeIdent>(props: {
     typeIdent: TKey;
@@ -25,21 +21,23 @@ export const CollDefinitionFieldTypeSettings = <TKey extends CollDefinitionField
             onTypeDataChange(Object.assign({}, selectData, partial));
         };
         form = (
-            <div>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={selectData.multiple}
-                            onChange={(event, multiple) => update({ multiple })}
-                        />
-                    }
-                    label={'Mehrfach'}
-                />
-                <TagInput
-                    values={selectData.values}
-                    onChange={values => update({ values })}
-                />
-            </div>
+            <TagInput
+                values={selectData.values}
+                onChange={values => update({ values })}
+            />
+        );
+
+    } else if (typeIdent === 'selectMultiple') {
+
+        const selectData = typeOptions as CollDefinitionFieldOptions['selectMultiple'];
+        const update = (partial: Partial<CollDefinitionFieldOptions['selectMultiple']>) => {
+            onTypeDataChange(Object.assign({}, selectData, partial));
+        };
+        form = (
+            <TagInput
+                values={selectData.values}
+                onChange={values => update({ values })}
+            />
         );
     }
 
@@ -50,7 +48,7 @@ export const CollDefinitionFieldTypeSettings = <TKey extends CollDefinitionField
     return (
         <div
             style={{
-                backgroundColor: '#eeeeee',
+                backgroundColor: 'rgba(0,0,0,0.07)',
                 padding: '12px'
             }}
         >

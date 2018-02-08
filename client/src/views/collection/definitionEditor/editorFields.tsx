@@ -6,7 +6,7 @@ import * as React                    from 'react';
 import {
     CollDefinitionFieldOptionsInitials,
     CollDefinitionModelField
-}                                    from '../../../../models/collectionDefinition.model';
+}                                    from '../../../models/collectionDefinition.model';
 import { CollDefinitionFieldEditor } from './editorField';
 
 const randomId = (length: number = 16): string => {

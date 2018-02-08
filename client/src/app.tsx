@@ -26,9 +26,12 @@ const rootPages = {
     '/': () => 'HELLO THERE',
     '/collection': LibComponentImport(
         () => import('./views/collection/list')),
-    // '/collection/element/:modelId': LibComponentImport(() => import('./views/content/editor')),
-    '/collection/definition/:modelId': LibComponentImport(
-        () => import('./views/collection/definition/editor/editor'))
+    '/collection/:collectionId/elements': LibComponentImport(
+        () => import('./views/collection/element/list')),
+    '/collection/:collectionId/elements/:elementId': LibComponentImport(
+        () => import('./views/collection/element/editor/editor')),
+    '/collection/:collectionId': LibComponentImport(
+        () => import('./views/collection/definitionEditor/editor'))
 };
 
 const styles = (theme: Theme) => ({
@@ -37,8 +40,7 @@ const styles = (theme: Theme) => ({
         flexFlow: 'column nowrap',
         height: '100vh',
         '& > *:last-child': {
-            flexGrow: 1,
-            display: 'flex'
+            flexGrow: 1
         }
     },
     toolbar: {

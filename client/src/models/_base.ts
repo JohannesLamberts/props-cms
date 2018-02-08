@@ -1,3 +1,3 @@
 export interface DatabaseModel {
-    _id: any;
+    _id?: any;
 }

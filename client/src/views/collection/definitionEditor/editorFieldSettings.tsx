@@ -10,8 +10,8 @@ import {
     CollDefinitionFieldTypeIdent,
     CollDefinitionFieldTypes,
     CollDefinitionModelField
-}                                          from '../../../../models/collectionDefinition.model';
-import { SimpleTextField }                 from '../../../../util';
+}                                          from '../../../models/collectionDefinition.model';
+import { SimpleTextField }                 from '../../../util/index';
 import { CollDefinitionFieldTypeSettings } from './editorFieldTypeSettings';
 
 export const CollDefinitionFieldSettings = (props: {

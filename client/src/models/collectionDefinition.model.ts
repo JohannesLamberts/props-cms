@@ -29,12 +29,14 @@ export interface CollDefinitionFieldOptions {
     file: undefined;
     image: undefined;
     select: {
-        multiple: boolean;
-        values: any[];
+        values: string[];
+    };
+    selectMultiple: {
+        values: string[];
     };
     tags: undefined;
     import: undefined;
-    subContent: {};
+    subContent: undefined;
 }
 
 export const CollDefinitionFieldOptionsInitials: CollDefinitionFieldOptions = {
@@ -48,12 +50,14 @@ export const CollDefinitionFieldOptionsInitials: CollDefinitionFieldOptions = {
     file: undefined,
     image: undefined,
     select: {
-        multiple: false,
+        values: []
+    },
+    selectMultiple: {
         values: []
     },
     tags: undefined,
     import: undefined,
-    subContent: {}
+    subContent: undefined
 };
 
 export interface CollDefinitionModelField<TKey extends CollDefinitionFieldTypeIdent = any> {
@@ -73,5 +77,5 @@ export interface CollDefinitionModel extends DatabaseModel {
     icon: string;
     color: string;
     description: string;
-    fields: CollDefinitionModelField<any>[];
+    fields: CollDefinitionModelField[];
 }
