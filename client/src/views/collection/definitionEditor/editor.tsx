@@ -6,7 +6,6 @@ import {
     Paper,
     Switch
 }                                     from 'material-ui';
-import { InputAdornment }             from 'material-ui/Input';
 import * as React                     from 'react';
 import { connect }                    from 'react-redux';
 import {
@@ -17,6 +16,8 @@ import { Link }                       from 'react-router-dom';
 import { CollDefinitionModel }        from '../../../models/collectionDefinition.model';
 import { DatabaseActions }            from '../../../redux/database.reducer';
 import { StoreState }                 from '../../../redux/store';
+import { DbApiService }               from '../../../services/database.api_service';
+import { IconSelect }                 from '../../../util/components/iconSelect';
 import { SimpleTextField }            from '../../../util/index';
 import { CollDefinitionFieldsEditor } from './editorFields';
 
@@ -24,6 +25,7 @@ const collectionKey = 'coll_definition';
 
 type DefinitionProps<TData = any> = {
     onMount: () => void;
+    onDelete: () => void;
     onDataChange: (data: Partial<CollDefinitionModel>) => void;
     collDefinition: CollDefinitionModel;
 };
@@ -40,7 +42,7 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
     }
 
     render() {
-        const { collDefinition, onDataChange } = this.props;
+        const { collDefinition, onDataChange, onDelete } = this.props;
         return (
             <div
                 style={{
@@ -72,19 +74,9 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
                         value={collDefinition.description}
                         onBlur={description => onDataChange({ description })}
                     />
-                    <SimpleTextField
-                        label={'Icon'}
-                        value={collDefinition.icon}
-                        onBlur={icon => onDataChange({ icon })}
-                        TextFieldProps={{
-                            InputProps: {
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <Icon>{collDefinition.icon}</Icon>
-                                    </InputAdornment>
-                                )
-                            }
-                        }}
+                    <IconSelect
+                        icon={collDefinition.icon}
+                        onIconChange={icon => onDataChange({ icon })}
                     />
                     <FormControlLabel
                         control={
@@ -103,6 +95,10 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
                             </Button>
                         </Link>
                     )}
+                    <Button onClick={onDelete}>
+                        <Icon>delete</Icon>
+                        Löschen
+                    </Button>
                 </Paper>
                 <div style={{ flexGrow: 1 }}>
                     <CollDefinitionFieldsEditor
@@ -134,6 +130,9 @@ export default withRouter((props: RouteComponentProps<{ collectionId: string }>)
             },
             onDataChange: data => {
                 dispatch(DatabaseActions.patch(collectionKey, collectionId, data));
+            },
+            onDelete: () => {
+                DbApiService.delete('coll_definition', collectionId);
             }
         }))(CollDefinitionEditor);
 
