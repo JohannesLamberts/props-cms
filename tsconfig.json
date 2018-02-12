@@ -8,8 +8,6 @@
       "dom"
     ],
     "sourceMap": true,
-    "allowJs": true,
-    "jsx": "react",
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noImplicitThis": true,

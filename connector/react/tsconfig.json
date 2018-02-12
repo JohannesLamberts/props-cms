@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./build",
+    "baseUrl": "./src",
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": false,
+    "declaration": true,
+    "jsx": "react"
+  },
+  "include": [
+    "./src/index.ts"
+  ]
+}
