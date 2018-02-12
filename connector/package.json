@@ -1,0 +1,27 @@
+{
+  "name": "deep-cms.connector",
+  "version": "0.1.1",
+  "description": "Common model data and framework-specific connectors.",
+  "repository": "https://github.com/JohannesLamberts/react-cms/tree/master/connector",
+  "keywords": [
+    "cms",
+    "react",
+    "jam",
+    "node"
+  ],
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "author": "Johannes Lamberts <info@j-lamberts.de> (http://j-lamberts.de)",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf build && tsc -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0"
+  },
+  "devDependencies": {
+    "@types/prop-types": "^15.5.2",
+    "@types/react": "^16.0.36"
+  }
+}

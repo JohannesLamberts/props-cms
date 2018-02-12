@@ -1,7 +1,7 @@
 import { DatabaseModel }                from './_base';
-import { CollDefinitionFieldTypeIdent } from './collectionDefinition.model';
+import { CollDefinitionFieldTypeIdent } from './fieldTypes';
 
-export interface CollElementModelData {
+export interface CollElementModelDataRecord {
     text: string;
     textArea: string;
     boolean: boolean;
@@ -24,30 +24,7 @@ export interface CollElementModelData {
     subContent: CollElementModel;
 }
 
-export const CollElementModelDataInitials: CollElementModelData = {
-    text: '',
-    textArea: '',
-    boolean: false,
-    number: 0,
-    color: '',
-    time: undefined,
-    date: undefined,
-    file: '', // update
-    image: '', // update
-    select: '',
-    selectMultiple: [],
-    tags: [],
-    import: {
-        collection: ''
-    },
-    subContent: {
-        collection: '',
-        data: {},
-        dataOverwrites: []
-    }
-};
-
-export type CollElementDataEntry<T extends CollDefinitionFieldTypeIdent = any> = CollElementModelData[T];
+export type CollElementDataEntry<T extends CollDefinitionFieldTypeIdent = any> = CollElementModelDataRecord[T];
 
 export interface CollElementModel extends DatabaseModel {
     collection: string;

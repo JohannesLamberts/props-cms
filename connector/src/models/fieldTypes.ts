@@ -1,0 +1,15 @@
+export type CollDefinitionFieldTypeIdent =
+    'text'
+    | 'textArea'
+    | 'boolean'
+    | 'number'
+    | 'color'
+    | 'time'
+    | 'date'
+    | 'file'
+    | 'image'
+    | 'select'
+    | 'selectMultiple'
+    | 'tags'
+    | 'import'
+    | 'subContent';
