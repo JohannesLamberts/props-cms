@@ -13,7 +13,7 @@ export class DatabaseConnection<TCollections> {
                 private _auth?: { user: string; pw: string; },
                 private _port: string   = '27017',
                 private _authDb: string = 'admin') {
-        this._logger = LoggerModule.spawn(`DB-${this._dbName}`);
+        this._logger = LoggerModule.spawn(`DB (${this._dbName})`);
     }
 
     public connect(): Promise<void> {
@@ -34,7 +34,7 @@ export class DatabaseConnection<TCollections> {
 }
 
 export class DatabaseModule {
-    public static connect<TCollections = {}>(dbName: string, auth: { user: string; pw: string; }) {
+    public static connect<TCollections = {}>(dbName: string, auth?: { user: string; pw: string; }) {
         const db = new DatabaseConnection<TCollections>(dbName, auth);
         db.connect();
         return db;

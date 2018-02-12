@@ -1,35 +1,36 @@
-import * as Immutable          from 'immutable';
+import * as Immutable         from 'immutable';
 import {
     CircularProgress,
     Icon,
     IconButton,
     Paper,
     Typography
-}                              from 'material-ui';
-import * as React              from 'react';
-import { connect }             from 'react-redux';
+}                             from 'material-ui';
+import {
+    CollDefinitionModel,
+    CollElementModel
+}                             from 'props-cms.connector-common';
+import * as React             from 'react';
+import { connect }            from 'react-redux';
 import {
     RouteComponentProps,
     withRouter
-}                              from 'react-router';
-import { Link }                from 'react-router-dom';
-import { CollDefinitionModel } from '../../../models/collectionDefinition.model';
-import { CollElementModel }    from '../../../models/collectionElement.model';
-import { DatabaseActions }     from '../../../redux/database.reducer';
-import { StoreState }          from '../../../redux/store';
-import { DbApiService }        from '../../../services/database.api_service';
+}                             from 'react-router';
+import { Link }               from 'react-router-dom';
+import { InitialElementData } from '../../../initializers/collectionElementDataRecordInitial';
+import { DatabaseActions }    from '../../../redux/database.reducer';
+import { StoreState }         from '../../../redux/store';
+import { DatabaseApiService } from '../../../services/database.api_service';
 import {
     FloatingActionButton,
     SimpleTable
-}                              from '../../../util/index';
-
-const collectionKey = 'coll_element';
+}                             from '../../../util/index';
 
 interface DefinitionProps {
     collDefinition: CollDefinitionModel;
     collElements: CollElementModel[];
     onMount: () => void;
-    onPush: () => void;
+    onPush: (model: CollElementModel) => void;
 }
 
 class CollElementList extends React.PureComponent<DefinitionProps, {}> {
@@ -58,7 +59,12 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
         return (
             <Paper style={{ width: '100%' }}>
                 <FloatingActionButton
-                    onClick={this.props.onPush}
+                    onClick={() => this.props.onPush(
+                        {
+                            collection: collDefinition._id!,
+                            data: InitialElementData(collDefinition),
+                            dataOverwrites: []
+                        })}
                 >
                     <Icon>add</Icon>
                 </FloatingActionButton>
@@ -104,40 +110,36 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
     }
 }
 
-export default withRouter((props: RouteComponentProps<{ collectionId: string }>) => {
+export const CollectionElementList = withRouter((props: RouteComponentProps<{ collIdent: string }>) => {
 
-    const collectionId = props.match.params.collectionId;
+    const { collIdent } = props.match.params;
 
     const Component = connect(
         (store: StoreState) => {
             return {
                 collElements: store.database
                                    .get('models')
-                                   .get(collectionKey, Immutable.Map())
+                                   .get('coll_element', Immutable.Map())
                                    .toArray()
                                    .filter((el: CollElementModel) => {
-                                       return el.collection === collectionId;
+                                       return el.collection === collIdent;
                                    }),
                 collDefinition: store.database
                                      .get('models')
                                      .get('coll_definition', Immutable.Map())
-                                     .get(collectionId)
+                                     .get(collIdent)
             };
         },
         (dispatch) => ({
             onMount: () => {
-                dispatch(DatabaseActions.require(collectionKey));
-                dispatch(DatabaseActions.requireId('coll_definition', collectionId));
+                dispatch(DatabaseActions.require('coll_element'));
+                dispatch(DatabaseActions.requireId('coll_definition', collIdent));
             },
-            onPush: () => {
-                DbApiService
-                    .push(collectionKey, {
-                        collection: collectionId,
-                        data: {},
-                        dataOverwrites: []
-                    } as CollElementModel)
+            onPush: (model: CollElementModel) => {
+                DatabaseApiService
+                    .push('coll_element', model)
                     .then(() => dispatch(DatabaseActions
-                                             .require(collectionKey)));
+                                             .require('coll_element')));
             }
         }))(CollElementList);
 

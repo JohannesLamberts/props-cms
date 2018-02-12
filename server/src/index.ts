@@ -1,13 +1,13 @@
-import { ENV } from './env';
+import { ENV }          from './env';
+import HttpServerApi    from './httpServers/api';
+import HttpServerEditor from './httpServers/editor';
 
-const { webserver } = ENV;
+const { api, editor } = ENV.webserver;
 
-if (webserver.editorAPI) {
-    import('./httpServers/expressEditorAPI');
+if (api) {
+    HttpServerApi(api);
 }
-if (webserver.editorStatic) {
-    import('./httpServers/expressEditorStatic');
-}
-if (webserver.servingAPI) {
-    import('./httpServers/expressServingAPI');
+
+if (editor) {
+    HttpServerEditor(editor);
 }

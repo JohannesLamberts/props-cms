@@ -4,11 +4,6 @@ export class Logger<TMeta = any> {
 
     static readonly kLogLevels = ['off', 'silly', 'debug', 'verbose', 'info', 'warn', 'error'];
 
-    public static shouldLog(threshold: LogLevel, level: LogLevel) {
-        return Logger.kLogLevels.indexOf(threshold)
-            <= Logger.kLogLevels.indexOf(level);
-    }
-
     public static isValidLevel(level: LogLevel) {
         return Logger.kLogLevels.some(thisLevel => thisLevel === level);
     }

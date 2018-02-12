@@ -1,12 +1,18 @@
 {
-  "name": "cms-client",
+  "name": "props-cms.client",
   "version": "0.1.0",
-  "proxy": {
-    "/api": {
-      "target": "http://localhost:4000",
-      "secure": false
-    }
-  },
+  "description": "Administrative UI for props-cms",
+  "repository": "https://github.com/JohannesLamberts/react-cms/tree/master/client",
+  "keywords": [
+    "cms",
+    "react",
+    "jam",
+    "node"
+  ],
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "author": "Johannes Lamberts <info@j-lamberts.de> (http://j-lamberts.de)",
+  "license": "MIT",
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
@@ -14,8 +20,9 @@
   },
   "dependencies": {
     "immutable": "^3.8.2",
-    "material-ui": "^1.0.0-beta.30",
+    "material-ui": "^1.0.0-beta.33",
     "moment": "^2.19.3",
+    "props-cms.connector-common": "^0.1.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",

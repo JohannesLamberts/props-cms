@@ -1,30 +1,28 @@
 import {
     FormControlLabel,
+    MenuItem,
     Switch,
-    TextField,
-    MenuItem
+    TextField
 }                                           from 'material-ui';
-import * as React                           from 'react';
 import {
     CollDefinitionFieldOptions,
-    CollDefinitionModelField
-}                                           from '../../../../models/collectionDefinition.model';
-import {
+    CollDefinitionModelField,
     CollElementDataEntry,
-    CollElementModelData
-}                                           from '../../../../models/collectionElement.model';
+    CollElementModelDataRecord
+}                                           from 'props-cms.connector-common';
+import * as React                           from 'react';
 import { SimpleTextField }                  from '../../../../util/index';
 import { CollElementEditorFieldSubContent } from './editorFieldSubContent';
 
 interface CollElementEditorFieldProps {
     field: CollDefinitionModelField;
-    data: CollElementDataEntry;
+    record?: CollElementDataEntry;
     onDataChange: (newData: CollElementDataEntry) => void;
 }
 
 export const CollElementEditorField = (props: CollElementEditorFieldProps) => {
 
-    const { field, data, onDataChange } = props;
+    const { field, record, onDataChange } = props;
 
     switch (field.type) {
         case 'text':
@@ -34,7 +32,7 @@ export const CollElementEditorField = (props: CollElementEditorFieldProps) => {
                         fullWidth: true
                     }}
                     label={field.label}
-                    value={data as string}
+                    value={record as string}
                     onBlur={onDataChange}
                 />
             );
@@ -46,7 +44,7 @@ export const CollElementEditorField = (props: CollElementEditorFieldProps) => {
                     }}
                     multiline={true}
                     label={field.label}
-                    value={data as string}
+                    value={record as string}
                     onBlur={onDataChange}
                 />
             );
@@ -56,7 +54,7 @@ export const CollElementEditorField = (props: CollElementEditorFieldProps) => {
                     fullWidth={true}
                     select={true}
                     label={field.label}
-                    value={data || '%NONE%'}
+                    value={record || '%NONE%'}
                     onChange={event => {
                         onDataChange(event.target.value);
                     }}
@@ -78,7 +76,7 @@ export const CollElementEditorField = (props: CollElementEditorFieldProps) => {
                 <FormControlLabel
                     control={
                         <Switch
-                            checked={data}
+                            checked={record}
                             onChange={(event, checked) => onDataChange(checked)}
                         />
                     }
@@ -88,7 +86,8 @@ export const CollElementEditorField = (props: CollElementEditorFieldProps) => {
         case 'subContent':
             return (
                 <CollElementEditorFieldSubContent
-                    data={data as CollElementModelData['subContent']}
+                    typeOptions={field.typeOptions}
+                    record={record as CollElementModelDataRecord['subContent']}
                     onDataChange={onDataChange}
                 />
             );

@@ -1,6 +1,6 @@
-import * as Immutable    from 'immutable';
-import { DbApiService }  from '../services/database.api_service';
-import { StoreDispatch } from './store';
+import * as Immutable         from 'immutable';
+import { DatabaseApiService } from '../services/database.api_service';
+import { StoreDispatch }      from './store';
 
 export interface DatabaseModelRecieve {
     type: string;
@@ -28,7 +28,7 @@ export class DatabaseActions {
 
     static require(collection: string): ((dispatch: StoreDispatch) => void) {
         return (dispatch: StoreDispatch) => {
-            DbApiService
+            DatabaseApiService
                 .get(collection)
                 .then(data =>
                           dispatch(DatabaseActions
@@ -42,7 +42,7 @@ export class DatabaseActions {
 
     static requireId(collection: string, id: string): ((dispatch: StoreDispatch) => void) {
         return (dispatch: StoreDispatch) => {
-            DbApiService
+            DatabaseApiService
                 .getId(collection, id)
                 .then(data =>
                           dispatch(DatabaseActions
@@ -59,7 +59,7 @@ export class DatabaseActions {
                               data: Partial<TData>): ((dispatch: StoreDispatch) => void) {
 
         return (dispatch: StoreDispatch) => {
-            DbApiService
+            DatabaseApiService
                 .patch(collection, id, data)
                 .then(() =>
                           dispatch(DatabaseActions.requireId(collection, id))

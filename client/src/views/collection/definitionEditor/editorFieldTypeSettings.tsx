@@ -1,9 +1,9 @@
 import { Typography } from 'material-ui';
-import * as React     from 'react';
 import {
     CollDefinitionFieldOptions,
     CollDefinitionFieldTypeIdent
-}                     from '../../../models/collectionDefinition.model';
+}                     from 'props-cms.connector-common';
+import * as React     from 'react';
 import { TagInput }   from '../../../util/index';
 
 export const CollDefinitionFieldTypeSettings = <TKey extends CollDefinitionFieldTypeIdent>(props: {
@@ -37,6 +37,18 @@ export const CollDefinitionFieldTypeSettings = <TKey extends CollDefinitionField
             <TagInput
                 values={selectData.values}
                 onChange={values => update({ values })}
+            />
+        );
+    } else if (typeIdent === 'subContent') {
+
+        const selectData = typeOptions as CollDefinitionFieldOptions['subContent'];
+        const update = (partial: Partial<CollDefinitionFieldOptions['subContent']>) => {
+            onTypeDataChange(Object.assign({}, selectData, partial));
+        };
+        form = (
+            <TagInput
+                values={selectData.options}
+                onChange={options => update({ options })}
             />
         );
     }

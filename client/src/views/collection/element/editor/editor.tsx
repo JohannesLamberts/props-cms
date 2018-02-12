@@ -5,6 +5,10 @@ import {
     Paper,
     Typography
 }                                 from 'material-ui';
+import {
+    CollDefinitionModel,
+    CollElementModel
+}                                 from 'props-cms.connector-common';
 import * as React                 from 'react';
 import { connect }                from 'react-redux';
 import {
@@ -12,8 +16,6 @@ import {
     withRouter
 }                                 from 'react-router';
 import { Link }                   from 'react-router-dom';
-import { CollDefinitionModel }    from '../../../../models/collectionDefinition.model';
-import { CollElementModel }       from '../../../../models/collectionElement.model';
 import { DatabaseActions }        from '../../../../redux/database.reducer';
 import { StoreState }             from '../../../../redux/store';
 import { CollElementModelEditor } from './editorElement';
@@ -76,12 +78,12 @@ class CollElementEditor extends React.PureComponent<DefinitionProps, {}> {
     }
 }
 
-export default withRouter((props: RouteComponentProps<{
-    collectionId: string;
+export const CollectionElementEditor = withRouter((props: RouteComponentProps<{
+    collIdent: string;
     elementId: string;
 }>) => {
 
-    const { collectionId, elementId } = props.match.params;
+    const { collIdent, elementId } = props.match.params;
 
     const Component = connect(
         (store: StoreState) => {
@@ -89,7 +91,7 @@ export default withRouter((props: RouteComponentProps<{
                 collDefinition:
                     store.database.get('models')
                          .get('coll_definition', Immutable.Map())
-                         .get(collectionId),
+                         .get(collIdent),
                 collElement:
                     store.database.get('models')
                          .get('coll_element', Immutable.Map())
@@ -98,7 +100,7 @@ export default withRouter((props: RouteComponentProps<{
         },
         (dispatch) => ({
             onMount: () => {
-                dispatch(DatabaseActions.requireId('coll_definition', collectionId));
+                dispatch(DatabaseActions.requireId('coll_definition', collIdent));
                 dispatch(DatabaseActions.requireId('coll_element', elementId));
             },
             onDataChange: data => {

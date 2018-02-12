@@ -2,12 +2,12 @@ import {
     Icon,
     IconButton
 }                                 from 'material-ui';
-import * as React                 from 'react';
-import { CollDefinitionModel }    from '../../../../models/collectionDefinition.model';
 import {
-    CollElementModel,
-    CollElementModelDataInitials
-}                                 from '../../../../models/collectionElement.model';
+    CollDefinitionModel,
+    CollElementModel
+}                                 from 'props-cms.connector-common';
+import * as React                 from 'react';
+import { InitialFieldTypeData }   from '../../../../initializers/collectionElementDataRecordInitial';
 import { CollElementEditorField } from './editorField';
 
 type CollElementModelEditorProps = {
@@ -33,9 +33,10 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                         });
                 };
 
-                const fieldData = collElement.data[field.key];
+                let fieldData: any | undefined = collElement.data[field.key];
 
                 if (field.isArray) {
+                    fieldData = fieldData || [];
                     const InsertButton = (insertButtonProps: { insertIndex: number }) => (
                         <div
                             style={{
@@ -48,10 +49,10 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                                 cursor: 'pointer'
                             }}
                             onClick={() => {
-                                const shallow = (fieldData || []).slice();
+                                const shallow = fieldData.slice();
                                 shallow.splice(insertButtonProps.insertIndex,
                                                0,
-                                               CollElementModelDataInitials[field.type]);
+                                               InitialFieldTypeData(field));
                                 update(shallow);
                             }}
                         >
@@ -60,7 +61,7 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                     );
                     return (
                         <div key={index}>
-                            {(fieldData || []).map((fieldDataEl, fieldIndex) => (
+                            {fieldData.map((fieldDataEl, fieldIndex) => (
                                 <div key={fieldIndex}>
                                     <InsertButton
                                         insertIndex={fieldIndex}
@@ -73,7 +74,7 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                                     >
                                         <CollElementEditorField
                                             field={field}
-                                            data={fieldDataEl}
+                                            record={fieldDataEl}
                                             onDataChange={(newFieldData) => {
                                                 const shallow = fieldData.slice();
                                                 shallow[fieldIndex] = newFieldData;
@@ -93,7 +94,7 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                                 </div>
                             ))}
                             <InsertButton
-                                insertIndex={(fieldData || []).length}
+                                insertIndex={fieldData.length}
                             />
                         </div>
                     );
@@ -103,7 +104,7 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                     <div key={index}>
                         <CollElementEditorField
                             field={field}
-                            data={fieldData}
+                            record={fieldData}
                             onDataChange={(newFieldData) => {
                                 update(newFieldData);
                             }}

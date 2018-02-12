@@ -1,34 +1,32 @@
-import { AbstractApiService } from './api';
+import { HttpApi } from './api';
 
-export const DbApiService = new class extends AbstractApiService {
+const DatabaseApiConnector = new HttpApi(`http://${window.location.hostname}:4001/db`);
 
-    constructor() {
-        super('/db', 4001);
-    }
+export class DatabaseApiService {
 
-    public get(collection: string): Promise<{
+    public static get(collection: string): Promise<{
         _id: string;
     }[]> {
-        return this._get(`/${collection}`);
+        return DatabaseApiConnector.get(`/${collection}`);
     }
 
-    public getId(collection: string, id: string): Promise<{
+    public static getId(collection: string, id: string): Promise<{
         _id: string;
     }> {
-        return this._get(`/${collection}/${id}`);
+        return DatabaseApiConnector.get(`/${collection}/${id}`);
     }
 
-    public push(collection: string, insertData: any = {}): Promise<{
+    public static push(collection: string, insertData: any = {}): Promise<{
         insertedId: string;
     }[]> {
-        return this._post(`/${collection}`, { data: insertData });
+        return DatabaseApiConnector.post(`/${collection}`, { data: insertData });
     }
 
-    public patch<TData>(collection: string, id: string, patchData: TData): Promise<void> {
-        return this._patch(`/${collection}/${id}`, { data: patchData });
+    public static patch<TData>(collection: string, id: string, patchData: TData): Promise<void> {
+        return DatabaseApiConnector.patch(`/${collection}/${id}`, { data: patchData });
     }
 
-    public delete(collection: string, id: string): Promise<void> {
-        return this._delete(`/${collection}/${id}`);
+    public static delete(collection: string, id: string): Promise<void> {
+        return DatabaseApiConnector.delete(`/${collection}/${id}`);
     }
-}();
+}

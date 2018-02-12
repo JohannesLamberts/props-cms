@@ -2,11 +2,11 @@ import {
     Icon,
     Paper,
     Typography
-}                 from 'material-ui';
-import * as React from 'react';
+}                              from 'material-ui';
+import { CollDefinitionModel } from 'props-cms.connector-common';
+import * as React              from 'react';
 
-import { Link }                from 'react-router-dom';
-import { CollDefinitionModel } from '../../models/collectionDefinition.model';
+import { Link } from 'react-router-dom';
 
 export const CollectionGridItemSub = (props: {
     collDefinition: CollDefinitionModel;
@@ -41,7 +41,7 @@ export const CollectionGridItemSub = (props: {
                     {collDefinition.icon || 'more_horiz'}
                 </Icon>
                 <Typography variant={'caption'}>
-                    {collDefinition.label}
+                    {collDefinition.label || collDefinition._id}
                 </Typography>
             </Paper>
         </Link>

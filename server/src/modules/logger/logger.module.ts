@@ -1,6 +1,7 @@
 import * as path          from 'path';
 import * as winston       from 'winston';
 import { LoggerInstance } from 'winston';
+import { ENV }            from '../../env';
 import {
     Logger,
     LogLevel
@@ -8,7 +9,7 @@ import {
 
 const winstonLogger: LoggerInstance
           = new winston.Logger({
-                                   level: 'silly',
+                                   level: ENV.logger.level,
                                    exitOnError: false
                                });
 
@@ -22,7 +23,7 @@ winstonLogger.add(winston.transports.Console, {
 ['info', 'warn', 'error'].forEach(level => {
     winstonLogger.add(winston.transports.File, {
         name: `${level}-file`,
-        filename: path.join(process.cwd(), '_local_data', 'log', `${level}.log`),
+        filename: path.join(process.cwd(), ENV.logger.path, `${level}.log`),
         json: false,
         level: level
     });

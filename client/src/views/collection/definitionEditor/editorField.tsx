@@ -8,8 +8,8 @@ import {
     IconButton,
     Paper
 }                                      from 'material-ui';
+import { CollDefinitionModelField }    from 'props-cms.connector-common';
 import * as React                      from 'react';
-import { CollDefinitionModelField }    from '../../../models/collectionDefinition.model';
 import { SimpleTextField }             from '../../../util/index';
 import { CollDefinitionFieldSettings } from './editorFieldSettings';
 

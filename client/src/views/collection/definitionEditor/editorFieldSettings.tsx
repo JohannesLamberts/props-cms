@@ -3,16 +3,32 @@ import {
     MenuItem,
     Switch,
     TextField
-}                                          from 'material-ui';
-import * as React                          from 'react';
+}                                            from 'material-ui';
 import {
-    CollDefinitionFieldOptionsInitials,
     CollDefinitionFieldTypeIdent,
-    CollDefinitionFieldTypes,
     CollDefinitionModelField
-}                                          from '../../../models/collectionDefinition.model';
-import { SimpleTextField }                 from '../../../util/index';
-import { CollDefinitionFieldTypeSettings } from './editorFieldTypeSettings';
+}                                            from 'props-cms.connector-common';
+import * as React                            from 'react';
+import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
+import { SimpleTextField }                   from '../../../util/index';
+import { CollDefinitionFieldTypeSettings }   from './editorFieldTypeSettings';
+
+const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string> = {
+    text: 'Text',
+    textArea: 'Text (mehrzeilig)',
+    boolean: 'Boolean',
+    number: 'Number',
+    color: 'Color',
+    time: 'Time',
+    date: 'Date',
+    file: 'File',
+    image: 'Image',
+    select: 'Select (1)',
+    selectMultiple: 'Select (n)',
+    tags: 'Tags',
+    import: 'Import',
+    subContent: 'Content'
+};
 
 export const CollDefinitionFieldSettings = (props: {
     field: CollDefinitionModelField;
@@ -31,16 +47,16 @@ export const CollDefinitionFieldSettings = (props: {
                     const newValue = event.target.value as CollDefinitionFieldTypeIdent;
                     onDataChange({
                                      type: newValue,
-                                     typeOptions: CollDefinitionFieldOptionsInitials[newValue]
+                                     typeOptions: InitialCollDefinitionFieldOptions[newValue]
                                  });
                 }}
             >
-                {Object.keys(CollDefinitionFieldTypes).map(fieldTypeIdent => (
+                {Object.keys(CollDefinitionFieldTypeNames).map(fieldTypeIdent => (
                     <MenuItem
                         key={fieldTypeIdent}
                         value={fieldTypeIdent}
                     >
-                        {CollDefinitionFieldTypes[fieldTypeIdent]}
+                        {CollDefinitionFieldTypeNames[fieldTypeIdent]}
                     </MenuItem>
                 ))}
             </TextField>

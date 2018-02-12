@@ -1,19 +1,23 @@
-import * as Immutable             from 'immutable';
+import * as Immutable                         from 'immutable';
 import {
     Icon,
     MenuItem,
     TextField
-}                                 from 'material-ui';
-import * as React                 from 'react';
-import { connect }                from 'react-redux';
-import { CollDefinitionModel }    from '../../../../models/collectionDefinition.model';
-import { CollElementModel }       from '../../../../models/collectionElement.model';
-import { DatabaseActions }        from '../../../../redux/database.reducer';
-import { StoreState }             from '../../../../redux/store';
-import { CollElementModelEditor } from './editorElement';
+}                                             from 'material-ui';
+import {
+    CollDefinitionFieldOptions,
+    CollDefinitionModel,
+    CollElementModel
+}                                             from 'props-cms.connector-common';
+import * as React                             from 'react';
+import { connect }                            from 'react-redux';
+import { DatabaseActions }                    from '../../../../redux/database.reducer';
+import { StoreState }                         from '../../../../redux/store';
+import { CollElementEditorFieldSubContentOf } from './editorFieldSubContentOf';
 
 interface DefinitionProps {
-    data: CollElementModel;
+    typeOptions: CollDefinitionFieldOptions['subContent'];
+    record?: CollElementModel;
     onDataChange: (newData: CollElementModel) => void;
     collDefinitions: CollDefinitionModel[];
     onMount: () => void;
@@ -26,13 +30,14 @@ class CollElementEditorFieldSubContentInternal extends React.PureComponent<Defin
     }
 
     render() {
-        const { data, onDataChange, collDefinitions } = this.props;
 
-        if (!collDefinitions) {
-            return null;
-        }
+        const { onDataChange, collDefinitions, typeOptions } = this.props;
 
-        const selectedDefinition = collDefinitions.filter(def => def._id === data.collection)[0];
+        const record = this.props.record || {
+            collection: '',
+            data: {},
+            dataOverwrites: []
+        };
 
         return (
             <div
@@ -44,44 +49,44 @@ class CollElementEditorFieldSubContentInternal extends React.PureComponent<Defin
                     display: 'flex'
                 }}
             >
-                <TextField
-                    style={{
-                        flexBasis: '80px',
-                        flexGrow: 0
-                    }}
-                    value={data.collection || 'NONE'}
-                    label={'Collection'}
-                    select={true}
-                    onChange={event => {
-                        onDataChange(Object.assign({},
-                                                   data,
-                                                   {
-                                                       collection: event.target.value,
-                                                       data: {},
-                                                       dataOverwrites: []
-                                                   }));
-                    }}
-                >
-                    {(collDefinitions || []).map(definition => (
-                        <MenuItem
-                            key={definition._id}
-                            value={definition._id}
-                        >
-                            <Icon>{definition.icon}</Icon>{' '}{definition.label}
-                        </MenuItem>
-                    ))}
-                </TextField>
+                {typeOptions.options.length !== 1 && (
+                    <TextField
+                        style={{
+                            flexBasis: '80px',
+                            flexGrow: 0
+                        }}
+                        value={record && record.collection || 'NONE'}
+                        label={'Collection'}
+                        select={true}
+                        onChange={event => {
+                            onDataChange(Object.assign({},
+                                                       record,
+                                                       {
+                                                           collection: event.target.value,
+                                                           data: {},
+                                                           dataOverwrites: []
+                                                       }));
+                        }}
+                    >
+                        {(collDefinitions || [])
+                            .filter(definition =>
+                                        typeOptions.options.length === 0
+                                        || typeOptions.options.indexOf(definition._id!) !== -1)
+                            .map(definition => (
+                                <MenuItem
+                                    key={definition._id}
+                                    value={definition._id}
+                                >
+                                    <Icon>{definition.icon}</Icon>{' '}{definition.label || definition._id}
+                                </MenuItem>
+                            ))}
+                    </TextField>
+                )}
                 <div style={{ flexGrow: 1 }}>
-                    {selectedDefinition
-                        ? (
-                            <CollElementModelEditor
-                                collElement={data}
-                                collDefinition={collDefinitions.filter(def => def._id === data.collection)[0]}
-                                onDataChange={newData => onDataChange(Object.assign({}, data, newData))}
-                            />
-                        )
-                        : <span>Loading CollDefinition</span>
-                    }
+                    <CollElementEditorFieldSubContentOf
+                        record={record}
+                        onDataChange={onDataChange}
+                    />
                 </div>
             </div>
         );

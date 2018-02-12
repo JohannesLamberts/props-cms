@@ -4,8 +4,10 @@ import {
     FormControlLabel,
     Icon,
     Paper,
-    Switch
+    Switch,
+    Typography
 }                                     from 'material-ui';
+import { CollDefinitionModel }        from 'props-cms.connector-common';
 import * as React                     from 'react';
 import { connect }                    from 'react-redux';
 import {
@@ -13,10 +15,9 @@ import {
     withRouter
 }                                     from 'react-router';
 import { Link }                       from 'react-router-dom';
-import { CollDefinitionModel }        from '../../../models/collectionDefinition.model';
 import { DatabaseActions }            from '../../../redux/database.reducer';
 import { StoreState }                 from '../../../redux/store';
-import { DbApiService }               from '../../../services/database.api_service';
+import { DatabaseApiService }         from '../../../services/database.api_service';
 import { IconSelect }                 from '../../../util/components/iconSelect';
 import { SimpleTextField }            from '../../../util/index';
 import { CollDefinitionFieldsEditor } from './editorFields';
@@ -58,11 +59,12 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
                         flexFlow: 'column nowrap'
                     }}
                 >
-                    <SimpleTextField
-                        label={'Ident'}
-                        value={collDefinition.ident}
-                        onBlur={ident => onDataChange({ ident })}
-                    />
+                    <Typography
+                        variant={'title'}
+                        style={{ margin: '0.5rem' }}
+                    >
+                        {collDefinition._id}
+                    </Typography>
                     <SimpleTextField
                         label={'Label'}
                         value={collDefinition.label}
@@ -111,9 +113,9 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
     }
 }
 
-export default withRouter((props: RouteComponentProps<{ collectionId: string }>) => {
+export const CollectionDefinitionEditor = withRouter((props: RouteComponentProps<{ collIdent: string }>) => {
 
-    const collectionId = props.match.params.collectionId;
+    const { collIdent } = props.match.params;
 
     const Component = connect(
         (store: StoreState) => {
@@ -121,18 +123,18 @@ export default withRouter((props: RouteComponentProps<{ collectionId: string }>)
                 collDefinition:
                     store.database.get('models')
                          .get(collectionKey, Immutable.Map())
-                         .get(collectionId, {})
+                         .get(collIdent, {})
             };
         },
         (dispatch) => ({
             onMount: () => {
-                dispatch(DatabaseActions.requireId(collectionKey, collectionId));
+                dispatch(DatabaseActions.requireId(collectionKey, collIdent));
             },
             onDataChange: data => {
-                dispatch(DatabaseActions.patch(collectionKey, collectionId, data));
+                dispatch(DatabaseActions.patch(collectionKey, collIdent, data));
             },
             onDelete: () => {
-                DbApiService.delete('coll_definition', collectionId);
+                DatabaseApiService.delete('coll_definition', collIdent);
             }
         }))(CollDefinitionEditor);
 

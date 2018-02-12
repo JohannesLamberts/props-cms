@@ -1,13 +1,11 @@
 import {
     Button,
     Icon
-}                                    from 'material-ui';
-import * as React                    from 'react';
-import {
-    CollDefinitionFieldOptionsInitials,
-    CollDefinitionModelField
-}                                    from '../../../models/collectionDefinition.model';
-import { CollDefinitionFieldEditor } from './editorField';
+}                                            from 'material-ui';
+import { CollDefinitionModelField }          from 'props-cms.connector-common';
+import * as React                            from 'react';
+import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
+import { CollDefinitionFieldEditor }         from './editorField';
 
 const randomId = (length: number = 16): string => {
     let str = '';
@@ -50,7 +48,7 @@ export const CollDefinitionFieldsEditor = (props: {
                         key: '',
                         label: '',
                         type: 'text',
-                        typeOptions: CollDefinitionFieldOptionsInitials.text,
+                        typeOptions: InitialCollDefinitionFieldOptions.text,
                         helpText: '',
                         isArray: false,
                         allowOverwrite: false

@@ -1,12 +1,19 @@
+import { Collections }   from 'props-cms.connector-common';
 import { DefinitionsDb } from '../database/definition/definition.db';
-import { Collections }   from '../models/_collections';
 import { Api }           from '../modules/api/api';
 import { EHttpState }    from '../modules/api/httpState';
-import { MongoID }       from '../modules/database/db.module';
 
-export const DefinitionsApi = new Api('db');
+export const DatabaseApi = new Api('db');
 
-DefinitionsApi
+const randomId = (length: number = 16): string => {
+    let str = '';
+    for (let i = 0; i < length; i++) {
+        str += Math.floor(Math.random() * 16).toString(16);
+    }
+    return str;
+};
+
+DatabaseApi
     .addRoute<{ collection: keyof Collections }>('/:collection')
     .get((req, res, { params }) => {
         DefinitionsDb
@@ -22,18 +29,18 @@ DefinitionsApi
     }>((req, res, { body, params }) => {
         DefinitionsDb
             .collection(params.collection)
-            .insertOne(body.data)
+            .insertOne(Object.assign({ _id: randomId() }, body.data))
             .then(({ insertedId }) => {
                 res.status(EHttpState.eCreated)
                    .json({ insertedId });
             });
     });
 
-DefinitionsApi
+DatabaseApi
     .addRoute<{ id: string, collection: keyof Collections }>('/:collection/:id')
     .get((req, res, { params }) => {
         DefinitionsDb.collection(params.collection)
-                     .findOne({ _id: new MongoID(params.id) })
+                     .findOne({ _id: params.id })
                      .then(document => {
                          if (!document) {
                              res.status(EHttpState.eNotFound)
@@ -47,14 +54,14 @@ DefinitionsApi
     .patch<{ data: any }>((req, res, { body, params }) => {
         delete body.data._id;
         DefinitionsDb.collection(params.collection)
-                     .updateOne({ _id: new MongoID(params.id) }, { $set: body.data })
+                     .updateOne({ _id: params.id }, { $set: body.data })
                      .then(() => {
                          res.sendStatus(EHttpState.eOk);
                      });
     })
     .delete((req, res, { params }) => {
         DefinitionsDb.collection(params.collection)
-                     .deleteOne({ _id: new MongoID(params.id) })
+                     .deleteOne({ _id: params.id })
                      .then(() => {
                          res.sendStatus(EHttpState.eOk);
                      });

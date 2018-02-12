@@ -5,18 +5,21 @@ import {
     MuiThemeProvider,
     Toolbar,
     Typography
-}                             from 'material-ui';
-import { Theme }              from 'material-ui/styles';
-import withStyles             from 'material-ui/styles/withStyles';
-import * as React             from 'react';
+}                                     from 'material-ui';
+import { Theme }                      from 'material-ui/styles';
+import withStyles                     from 'material-ui/styles/withStyles';
+import * as React                     from 'react';
 import {
     Link,
     NavLink,
     Route,
     Switch
-}                             from 'react-router-dom';
-import { DarkTheme }          from './styles/theme';
-import { LibComponentImport } from './util';
+}                                     from 'react-router-dom';
+import { DarkTheme }                  from './styles/theme';
+import { CollectionGrid }             from './views/collection/collection_grid';
+import { CollectionDefinitionEditor } from './views/collection/definitionEditor/editor';
+import { CollectionElementEditor }    from './views/collection/element/editor/editor';
+import { CollectionElementList }      from './views/collection/element/list';
 
 const links = {
     layers: '/collection'
@@ -24,14 +27,14 @@ const links = {
 
 const rootPages = {
     '/': () => 'HELLO THERE',
-    '/collection': LibComponentImport(
-        () => import('./views/collection/collection_grid')),
-    '/collection/:collectionId/elements': LibComponentImport(
-        () => import('./views/collection/element/list')),
-    '/collection/:collectionId/elements/:elementId': LibComponentImport(
-        () => import('./views/collection/element/editor/editor')),
-    '/collection/:collectionId': LibComponentImport(
-        () => import('./views/collection/definitionEditor/editor'))
+    '/collection':
+        () => <CollectionGrid/>,
+    '/collection/:collIdent/elements':
+        () => <CollectionElementList/>,
+    '/collection/:collIdent/elements/:elementId':
+        () => <CollectionElementEditor/>,
+    '/collection/:collIdent':
+        () => <CollectionDefinitionEditor/>
 };
 
 const styles = (theme: Theme) => ({
