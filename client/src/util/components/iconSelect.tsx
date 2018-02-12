@@ -1,21 +1,43 @@
+import * as classNames       from 'classnames';
 import {
     Button,
     Icon,
     ListSubheader,
     Menu,
-    MenuItem,
     MenuList,
-    Typography
+    Typography,
+    withStyles,
+    WithStyles
 }                            from 'material-ui';
 import * as React            from 'react';
 import { IconSelectOptions } from './iconSelectOptions';
 
-interface IconSelectProps {
+const styles = {
+    iconList: {
+        display: 'flex',
+        flexFlow: 'row wrap'
+    },
+    iconSelectedButton: {
+        backgroundColor: 'rgba(0,0,0,0.14)'
+    },
+    iconButton: {
+        padding: '0.4em',
+        cursor: 'pointer',
+        height: '1em',
+        width: '1em',
+        boxSizing: 'content-box',
+        '&:hover': {
+            backgroundColor: 'rgba(0,0,0,0.08)'
+        }
+    }
+};
+
+type IconSelectProps = {
     icon: string;
     onIconChange: (newIcon: string) => void;
-}
+} & WithStyles<keyof typeof styles>;
 
-export class IconSelect extends React.PureComponent<IconSelectProps, {
+export const IconSelect = withStyles(styles)(class extends React.PureComponent<IconSelectProps, {
     open: boolean;
 }> {
 
@@ -37,7 +59,7 @@ export class IconSelect extends React.PureComponent<IconSelectProps, {
     }
 
     render() {
-        const { onIconChange, icon } = this.props;
+        const { onIconChange, icon, classes } = this.props;
         return (
             <div>
                 <Typography variant={'caption'}>
@@ -56,31 +78,36 @@ export class IconSelect extends React.PureComponent<IconSelectProps, {
                     {Object.keys(IconSelectOptions).map(label => (
                         <MenuList
                             key={label}
-                            subheader={<ListSubheader>{label}</ListSubheader>}
-                        >
-                            <div
+                            subheader={<ListSubheader
                                 style={{
-                                    display: 'flex',
-                                    flexFlow: 'row wrap'
+                                    zIndex: 2,
+                                    backgroundColor: 'white'
                                 }}
                             >
-
+                                {label}
+                            </ListSubheader>}
+                        >
+                            <li className={classNames('material-icons', classes.iconList)}>
                                 {IconSelectOptions[label].map(option => (
-                                    <MenuItem
+                                    <div
+                                        className={classNames(classes.iconButton,
+                                                              {
+                                                                  [classes.iconSelectedButton]: option === icon
+                                                              })}
                                         key={option}
                                         onClick={() => {
                                             onIconChange(option);
                                             this.handleClose();
                                         }}
                                     >
-                                        <Icon>{option}</Icon>
-                                    </MenuItem>
+                                        {option}
+                                    </div>
                                 ))}
-                            </div>
+                            </li>
                         </MenuList>
                     ))}
                 </Menu>
             </div>
         );
     }
-}
+});
