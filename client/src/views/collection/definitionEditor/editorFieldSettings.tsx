@@ -31,7 +31,8 @@ const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string>
     selectMultiple: 'Select (n)',
     tags: 'Tags',
     import: 'Import',
-    subContent: 'Content'
+    subContent: 'Content',
+    subDefinition: 'Definition'
 };
 
 const styles = {
@@ -48,8 +49,8 @@ const CollDefinitionFieldSettings = (props: {
     onDataChange: (data: Partial<CollDefinitionModelField>) => void;
 
 } & WithStyles<keyof typeof styles>) => {
-    const { field, onDataChange, classes } = props;
 
+    const { field, onDataChange, classes } = props;
     const { type, typeOptions } = field;
 
     let FormComponent = formComponents[type] as TypeSettingsComponent<any>;

@@ -2,6 +2,7 @@ import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
 import Boolean                          from './boolean';
 import Select                           from './select';
 import SubContent                       from './subContent';
+import SubDefinition                    from './subDefinition';
 import Text                             from './text';
 import TextArea                         from './textArea';
 import { TypeEditorComponent }          from './typeEditorProps';
@@ -12,6 +13,7 @@ const formComponents: {
     boolean: Boolean,
     select: Select,
     subContent: SubContent,
+    subDefinition: SubDefinition,
     text: Text,
     textArea: TextArea
 };

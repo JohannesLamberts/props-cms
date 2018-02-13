@@ -4,15 +4,13 @@ import {
     Typography,
     WithStyles,
     withStyles
-}                               from 'material-ui';
-import {
-    CollDefinitionModel,
-    CollElementModel
-}                               from 'props-cms.connector-common';
-import * as React               from 'react';
-import { InitialFieldTypeData } from '../../../../initializers/collectionElementDataRecordInitial';
-import CollElementEditorField   from './editorFieldTypeEditor';
-import InsertButton             from './insertButton';
+}                                   from 'material-ui';
+import { CollElementModel }         from 'props-cms.connector-common';
+import * as React                   from 'react';
+import { CollDefinitionModelField } from '../../../../../../connector/common/src';
+import { InitialFieldTypeData }     from '../../../../initializers/collectionElementDataRecordInitial';
+import CollElementEditorField       from './editorFieldTypeEditor';
+import InsertButton                 from './insertButton';
 
 const styles = {
     root: {
@@ -22,36 +20,34 @@ const styles = {
     },
     fieldArrayItem: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        '& > *:not(:last-child)': {
+            flexGrow: 1
+        }
     } as React.CSSProperties
 };
 
 const decorateStyles = withStyles(styles);
 
 type CollElementModelEditorProps = {
-    onDataChange: (data: Partial<CollElementModel>) => void;
-    collElement: CollElementModel;
-    collDefinition: CollDefinitionModel;
+    onDataChange: (data: Partial<CollElementModel['data']>) => void;
+    data: CollElementModel['data'];
+    fields: CollDefinitionModelField[];
 } & WithStyles<keyof typeof styles>;
 
 const CollElementModelEditor = (props: CollElementModelEditorProps) => {
 
-    const { collElement, collDefinition, onDataChange, classes } = props;
+    const { data, fields, onDataChange, classes } = props;
 
     return (
         <div className={classes.root}>
-            {collDefinition.fields.map((field, index) => {
+            {fields.map((field, index) => {
 
                 const update = (newFieldData: any) => {
-                    onDataChange(
-                        {
-                            data: Object.assign({},
-                                                collElement.data,
-                                                { [field.key]: newFieldData })
-                        });
+                    onDataChange({ [field.key]: newFieldData });
                 };
 
-                let fieldData: any | undefined = collElement.data[field.key];
+                let fieldData: any | undefined = data[field.key];
 
                 if (field.isArray) {
                     fieldData = fieldData || [];
@@ -61,7 +57,7 @@ const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                                 {field.label}
                             </Typography>
                             {fieldData.map((fieldDataEl, fieldIndex) => (
-                                <div key={fieldIndex}>
+                                <div key={fieldIndex + '_' + fieldData.length}>
                                     <InsertButton
                                         onClick={() => {
                                             const shallow = fieldData.slice();

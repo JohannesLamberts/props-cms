@@ -37,15 +37,19 @@ class CollElementEditorFieldSubContentOfInternal extends React.PureComponent<Def
 
         return (
             <CollElementModelEditor
-                collElement={record}
-                collDefinition={collDefinition}
-                onDataChange={newData => onDataChange(Object.assign({}, record, newData))}
+                data={record.data}
+                fields={collDefinition.fields}
+                onDataChange={newData => ({
+                    data: Object.assign({},
+                                        record.data,
+                                        newData)
+                })}
             />
         );
     }
 }
 
-export const CollElementEditorFieldSubContentOf = connect(
+const decorateStore = connect(
     (store: StoreState) => {
         return {
             collDefinitions: store.database
@@ -57,4 +61,7 @@ export const CollElementEditorFieldSubContentOf = connect(
         onMount: () => {
             dispatch(DatabaseActions.require('coll_definition'));
         }
-    }))(CollElementEditorFieldSubContentOfInternal);
+    }));
+
+export const CollElementEditorFieldSubContentOf
+                 = decorateStore(CollElementEditorFieldSubContentOfInternal);

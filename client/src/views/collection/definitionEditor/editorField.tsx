@@ -13,7 +13,7 @@ import {
 import { CollDefinitionModelField } from 'props-cms.connector-common';
 import * as React                   from 'react';
 import { SimpleTextField }          from '../../../util/index';
-import CollDefinitionFieldSettings  from './editorFieldSettings';
+import CollDefinitionFieldList      from './editorFieldSettings';
 
 const styles = {
     row: {
@@ -62,7 +62,7 @@ class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitionFieldE
                             {field.label}
                         </DialogTitle>
                         <DialogContent>
-                            <CollDefinitionFieldSettings
+                            <CollDefinitionFieldList
                                 field={field}
                                 onDataChange={onDataChange}
                             />

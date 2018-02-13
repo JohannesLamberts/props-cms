@@ -105,7 +105,7 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                 <div className={classes.fieldEditArea}>
                     <CollDefinitionFieldsEditor
                         fields={collDefinition.fields || []}
-                        onDataChange={(newFields) => onDataChange({ fields: newFields })}
+                        onDataChange={fields => onDataChange({ fields })}
                     />
                 </div>
             </div>

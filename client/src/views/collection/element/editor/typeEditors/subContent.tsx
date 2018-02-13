@@ -1,6 +1,6 @@
 import { Typography }                   from 'material-ui';
+import { CollElementModelDataRecord }   from 'props-cms.connector-common';
 import * as React                       from 'react';
-import { CollElementModelDataRecord }   from '../../../../../../../connector/common/src';
 import CollElementEditorFieldSubContent from '../editorFieldSubContent';
 import { TypeElementEditorProps }       from './typeEditorProps';
 

@@ -1,4 +1,4 @@
-import { CollDefinitionFieldOptions } from '../../../connector/common/src/collectionDefinition.model';
+import { CollDefinitionFieldOptions } from 'props-cms.connector-common';
 
 export const InitialCollDefinitionFieldOptions: CollDefinitionFieldOptions = {
     text: undefined,
@@ -20,5 +20,8 @@ export const InitialCollDefinitionFieldOptions: CollDefinitionFieldOptions = {
     import: undefined,
     subContent: {
         options: []
+    },
+    subDefinition: {
+        fields: []
     }
 };
