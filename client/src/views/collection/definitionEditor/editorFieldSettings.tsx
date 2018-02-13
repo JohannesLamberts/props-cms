@@ -14,19 +14,8 @@ import {
 import * as React                            from 'react';
 import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
 import { SimpleTextField }                   from '../../../util/index';
-
-import SelectForm           from './typeSettings/select';
-import SelectMultipleForm   from './typeSettings/selectMultiple';
-import SubContetForm        from './typeSettings/subContent';
-import { TypeSettingProps } from './typeSettings/typeOptionProps';
-
-const formComponents: {
-    [P in CollDefinitionFieldTypeIdent]?: React.ComponentType<TypeSettingProps<P>>
-    } = {
-    select: SelectForm,
-    selectMultiple: SelectMultipleForm,
-    subContent: SubContetForm
-};
+import formComponents                        from './typeSettings/index';
+import { TypeSettingsComponent }             from './typeSettings/typeOptionProps';
 
 const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string> = {
     text: 'Text',
@@ -63,7 +52,7 @@ const CollDefinitionFieldSettings = (props: {
 
     const { type, typeOptions } = field;
 
-    let FormComponent = formComponents[type] as React.ComponentType<TypeSettingProps<any>> | undefined;
+    let FormComponent = formComponents[type] as TypeSettingsComponent<any>;
 
     return (
         <div>

@@ -4,15 +4,15 @@ import {
     Typography,
     WithStyles,
     withStyles
-}                                 from 'material-ui';
+}                               from 'material-ui';
 import {
     CollDefinitionModel,
     CollElementModel
-}                                 from 'props-cms.connector-common';
-import * as React                 from 'react';
-import { InitialFieldTypeData }   from '../../../../initializers/collectionElementDataRecordInitial';
-import { CollElementEditorField } from './editorField';
-import InsertButton               from './insertButton';
+}                               from 'props-cms.connector-common';
+import * as React               from 'react';
+import { InitialFieldTypeData } from '../../../../initializers/collectionElementDataRecordInitial';
+import CollElementEditorField   from './editorFieldTypeEditor';
+import InsertButton             from './insertButton';
 
 const styles = {
     root: {
