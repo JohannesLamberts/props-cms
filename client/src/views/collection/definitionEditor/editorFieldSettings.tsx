@@ -2,7 +2,8 @@ import {
     FormControlLabel,
     MenuItem,
     Switch,
-    TextField
+    TextField,
+    Typography
 }                                            from 'material-ui';
 import {
     CollDefinitionFieldTypeIdent,
@@ -11,7 +12,19 @@ import {
 import * as React                            from 'react';
 import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
 import { SimpleTextField }                   from '../../../util/index';
-import { CollDefinitionFieldTypeSettings }   from './editorFieldTypeSettings';
+
+import SelectForm           from './typeSettings/select';
+import SelectMultipleForm   from './typeSettings/selectMultiple';
+import SubContetForm        from './typeSettings/subContent';
+import { TypeSettingProps } from './typeSettings/typeOptionProps';
+
+const formComponents: {
+    [P in CollDefinitionFieldTypeIdent]?: React.ComponentType<TypeSettingProps<P>>
+    } = {
+    select: SelectForm,
+    selectMultiple: SelectMultipleForm,
+    subContent: SubContetForm
+};
 
 const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string> = {
     text: 'Text',
@@ -36,6 +49,15 @@ export const CollDefinitionFieldSettings = (props: {
 
 }) => {
     const { field, onDataChange } = props;
+
+    const { type, typeOptions } = field;
+
+    let FormComponent = formComponents[type] as React.ComponentType<TypeSettingProps<any>> | undefined;
+
+    if (!FormComponent) {
+        return null;
+    }
+
     return (
         <div>
             <TextField
@@ -84,11 +106,22 @@ export const CollDefinitionFieldSettings = (props: {
                 }
                 label={'Allow-Overwrite'}
             />
-            <CollDefinitionFieldTypeSettings
-                typeIdent={field.type}
-                typeOptions={field.typeOptions}
-                onTypeDataChange={typeOptions => onDataChange({ typeOptions })}
-            />
+            <div
+                style={{
+                    backgroundColor: 'rgba(0,0,0,0.07)',
+                    padding: '12px'
+                }}
+            >
+                <Typography variant={'caption'}>
+                    OPTIONEN
+                </Typography>
+                <FormComponent
+                    typeOptions={typeOptions}
+                    onChange={partial => {
+                        onDataChange({ typeOptions: Object.assign({}, typeOptions, partial) });
+                    }}
+                />
+            </div>
         </div>
     );
 };
