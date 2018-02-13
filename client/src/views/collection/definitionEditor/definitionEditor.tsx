@@ -1,68 +1,68 @@
-import * as Immutable                 from 'immutable';
+import * as Immutable             from 'immutable';
 import {
     Button,
     FormControlLabel,
     Icon,
     Paper,
     Switch,
-    Typography
-}                                     from 'material-ui';
-import { CollDefinitionModel }        from 'props-cms.connector-common';
-import * as React                     from 'react';
-import { connect }                    from 'react-redux';
+    Typography,
+    withStyles,
+    WithStyles
+}                                 from 'material-ui';
+import { CollDefinitionModel }    from 'props-cms.connector-common';
+import * as React                 from 'react';
+import { connect }                from 'react-redux';
 import {
     RouteComponentProps,
     withRouter
-}                                     from 'react-router';
-import { Link }                       from 'react-router-dom';
-import { DatabaseActions }            from '../../../redux/database.reducer';
-import { StoreState }                 from '../../../redux/store';
-import { DatabaseApiService }         from '../../../services/database.api_service';
-import { IconSelect }                 from '../../../util/components/iconSelect';
-import { SimpleTextField }            from '../../../util/index';
-import { CollDefinitionFieldsEditor } from './editorFields';
+}                                 from 'react-router';
+import { Link }                   from 'react-router-dom';
+import { compose }                from 'redux';
+import { DatabaseActions }        from '../../../redux/database.reducer';
+import { StoreState }             from '../../../redux/store';
+import { DatabaseApiService }     from '../../../services/database.api_service';
+import IconSelect                 from '../../../util/components/iconSelect';
+import { SimpleTextField }        from '../../../util/index';
+import CollDefinitionFieldsEditor from './editorFieldList';
 
 const collectionKey = 'coll_definition';
+
+const styles = {
+    root: {
+        display: 'flex'
+    },
+    definitionEditArea: {
+        margin: '0.5rem',
+        padding: '1rem',
+        display: 'flex',
+        flexFlow: 'column nowrap'
+    },
+    fieldEditArea: {
+        flexGrow: 1
+    }
+};
 
 type DefinitionProps<TData = any> = {
     onMount: () => void;
     onDelete: () => void;
     onDataChange: (data: Partial<CollDefinitionModel>) => void;
     collDefinition: CollDefinitionModel;
-};
+} & WithStyles<keyof typeof styles>;
 
-class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
+const decorateStyle = withStyles(styles);
 
-    constructor(props: DefinitionProps) {
-        super(props);
-        this.state = {};
-    }
+class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
     }
 
     render() {
-        const { collDefinition, onDataChange, onDelete } = this.props;
+        const { collDefinition, onDataChange, onDelete, classes } = this.props;
         return (
-            <div
-                style={{
-                    display: 'flex',
-                    padding: '0.5rem'
-                }}
-            >
-                <Paper
-                    style={{
-                        margin: '0.5rem',
-                        padding: '0.5rem',
-                        display: 'flex',
-                        flexFlow: 'column nowrap'
-                    }}
-                >
-                    <Typography
-                        variant={'title'}
-                        style={{ margin: '0.5rem' }}
-                    >
+            <div className={classes.root}>
+                <Paper className={classes.definitionEditArea}>
+                    <Typography variant={'title'}>
                         {collDefinition._id}
                     </Typography>
                     <SimpleTextField
@@ -91,7 +91,7 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
                     />
                     {collDefinition.root && (
                         <Link to={`/collection/${collDefinition._id}/elements`}>
-                            <Button>
+                            <Button fullWidth={true}>
                                 <Icon>launch</Icon>
                                 Einträge
                             </Button>
@@ -102,7 +102,7 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
                         Löschen
                     </Button>
                 </Paper>
-                <div style={{ flexGrow: 1 }}>
+                <div className={classes.fieldEditArea}>
                     <CollDefinitionFieldsEditor
                         fields={collDefinition.fields || []}
                         onDataChange={(newFields) => onDataChange({ fields: newFields })}
@@ -113,20 +113,19 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps, {}> {
     }
 }
 
-export const CollectionDefinitionEditor = withRouter((props: RouteComponentProps<{ collIdent: string }>) => {
-
-    const { collIdent } = props.match.params;
-
-    const Component = connect(
-        (store: StoreState) => {
-            return {
-                collDefinition:
-                    store.database.get('models')
-                         .get(collectionKey, Immutable.Map())
-                         .get(collIdent, {})
-            };
-        },
-        (dispatch) => ({
+const decorateStore = connect(
+    (store: StoreState, props: RouteComponentProps<{ collIdent: string }>) => {
+        const { collIdent } = props.match.params;
+        return {
+            collDefinition:
+                store.database.get('models')
+                     .get(collectionKey, Immutable.Map())
+                     .get(collIdent, {})
+        };
+    },
+    (dispatch, props: RouteComponentProps<{ collIdent: string }>) => {
+        const { collIdent } = props.match.params;
+        return {
             onMount: () => {
                 dispatch(DatabaseActions.requireId(collectionKey, collIdent));
             },
@@ -136,8 +135,9 @@ export const CollectionDefinitionEditor = withRouter((props: RouteComponentProps
             onDelete: () => {
                 DatabaseApiService.delete('coll_definition', collIdent);
             }
-        }))(CollDefinitionEditor);
+        };
+    });
 
-    return <Component/>;
-
-});
+export default compose(withRouter,
+                       decorateStore,
+                       decorateStyle)(CollDefinitionEditor);

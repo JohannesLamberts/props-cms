@@ -1,27 +1,45 @@
 import {
     Icon,
-    IconButton
-}                                 from 'material-ui';
+    IconButton,
+    Typography,
+    WithStyles,
+    withStyles
+}                               from 'material-ui';
 import {
     CollDefinitionModel,
     CollElementModel
-}                                 from 'props-cms.connector-common';
-import * as React                 from 'react';
-import { InitialFieldTypeData }   from '../../../../initializers/collectionElementDataRecordInitial';
-import { CollElementEditorField } from './editorField';
+}                               from 'props-cms.connector-common';
+import * as React               from 'react';
+import { InitialFieldTypeData } from '../../../../initializers/collectionElementDataRecordInitial';
+import CollElementEditorField   from './editorFieldTypeEditor';
+import InsertButton             from './insertButton';
+
+const styles = {
+    root: {
+        '& > *:not(:last-child)': {
+            marginBottom: '1rem'
+        }
+    },
+    fieldArrayItem: {
+        display: 'flex',
+        alignItems: 'center'
+    } as React.CSSProperties
+};
+
+const decorateStyles = withStyles(styles);
 
 type CollElementModelEditorProps = {
     onDataChange: (data: Partial<CollElementModel>) => void;
     collElement: CollElementModel;
     collDefinition: CollDefinitionModel;
-};
+} & WithStyles<keyof typeof styles>;
 
-export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
+const CollElementModelEditor = (props: CollElementModelEditorProps) => {
 
-    const { collElement, collDefinition, onDataChange } = props;
+    const { collElement, collDefinition, onDataChange, classes } = props;
 
     return (
-        <div>
+        <div className={classes.root}>
             {collDefinition.fields.map((field, index) => {
 
                 const update = (newFieldData: any) => {
@@ -37,43 +55,25 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
 
                 if (field.isArray) {
                     fieldData = fieldData || [];
-                    const InsertButton = (insertButtonProps: { insertIndex: number }) => (
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '0.1rem',
-                                borderRadius: '2dp',
-                                color: 'grey',
-                                cursor: 'pointer'
-                            }}
-                            onClick={() => {
-                                const shallow = fieldData.slice();
-                                shallow.splice(insertButtonProps.insertIndex,
-                                               0,
-                                               InitialFieldTypeData(field));
-                                update(shallow);
-                            }}
-                        >
-                            <Icon style={{ fontSize: '0.9rem' }}>add</Icon>
-                        </div>
-                    );
                     return (
                         <div key={index}>
+                            <Typography variant={'caption'}>
+                                {field.label}
+                            </Typography>
                             {fieldData.map((fieldDataEl, fieldIndex) => (
                                 <div key={fieldIndex}>
                                     <InsertButton
-                                        insertIndex={fieldIndex}
-                                    />
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center'
+                                        onClick={() => {
+                                            const shallow = fieldData.slice();
+                                            shallow.splice(fieldIndex,
+                                                           0,
+                                                           InitialFieldTypeData(field));
+                                            update(shallow);
                                         }}
-                                    >
+                                    />
+                                    <div className={classes.fieldArrayItem}>
                                         <CollElementEditorField
-                                            field={field}
+                                            field={Object.assign({}, field, { label: '' })}
                                             record={fieldDataEl}
                                             onDataChange={(newFieldData) => {
                                                 const shallow = fieldData.slice();
@@ -94,24 +94,31 @@ export const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                                 </div>
                             ))}
                             <InsertButton
-                                insertIndex={fieldData.length}
+                                onClick={() => {
+                                    const shallow = fieldData.slice();
+                                    shallow.splice(fieldData.length,
+                                                   0,
+                                                   InitialFieldTypeData(field));
+                                    update(shallow);
+                                }}
                             />
                         </div>
                     );
                 }
 
                 return (
-                    <div key={index}>
-                        <CollElementEditorField
-                            field={field}
-                            record={fieldData}
-                            onDataChange={(newFieldData) => {
-                                update(newFieldData);
-                            }}
-                        />
-                    </div>
+                    <CollElementEditorField
+                        key={index}
+                        field={field}
+                        record={fieldData}
+                        onDataChange={(newFieldData) => {
+                            update(newFieldData);
+                        }}
+                    />
                 );
             })}
         </div>
     );
 };
+
+export default decorateStyles(CollElementModelEditor);

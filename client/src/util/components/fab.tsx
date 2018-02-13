@@ -13,7 +13,9 @@ const styles = {
     } as React.CSSProperties
 };
 
-export default withStyles(styles)((props: {
+const decorateStyles = withStyles(styles);
+
+const Fab = (props: {
     onClick?: () => void;
     children: React.ReactNode;
 } & WithStyles<keyof typeof styles>) => {
@@ -27,4 +29,6 @@ export default withStyles(styles)((props: {
             {props.children}
         </Button>
     );
-});
+};
+
+export default decorateStyles(Fab);

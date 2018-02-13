@@ -3,21 +3,39 @@ import {
     Icon,
     IconButton,
     TextField,
-    Typography
+    Typography,
+    withStyles,
+    WithStyles
 }                              from 'material-ui';
 import { InputAdornment }      from 'material-ui/Input';
 import { CollDefinitionModel } from 'props-cms.connector-common';
 import * as React              from 'react';
 
-interface CollectionGridSectionProps {
+const styles = {
+    header: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end'
+    } as React.CSSProperties,
+    tilesWrapper: {
+        display: 'flex',
+        flexFlow: 'row wrap',
+        width: '100%',
+        padding: '1rem 0'
+    }
+};
+
+const decorateStyles = withStyles(styles);
+
+type CollectionGridSectionProps = {
     label: string;
     models: CollDefinitionModel[];
     onPush: (id: string) => void;
     onDelete: (id: string) => void;
     tile: React.ComponentType<{ collDefinition: CollDefinitionModel; onDelete: () => void; }>;
-}
+} & WithStyles<keyof typeof styles>;
 
-export class CollectionGridSection extends React.PureComponent<CollectionGridSectionProps, {
+class CollectionGridSection extends React.PureComponent<CollectionGridSectionProps, {
     newIdent: string;
 }> {
 
@@ -29,16 +47,10 @@ export class CollectionGridSection extends React.PureComponent<CollectionGridSec
     }
 
     render() {
-        const { label, models, tile: TileComponent, onDelete, onPush } = this.props;
+        const { label, models, tile: TileComponent, onDelete, onPush, classes } = this.props;
         return (
             <section>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-end'
-                    }}
-                >
+                <div className={classes.header}>
                     <Typography variant={'headline'}>
                         {label}
                     </Typography>
@@ -62,14 +74,7 @@ export class CollectionGridSection extends React.PureComponent<CollectionGridSec
                     </div>
                 </div>
                 <Divider/>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexFlow: 'row wrap',
-                        width: '100%',
-                        padding: '1rem 0'
-                    }}
-                >
+                <div className={classes.tilesWrapper}>
                     {models.map(collDefinition => (
                         <TileComponent
                             collDefinition={collDefinition}
@@ -81,3 +86,5 @@ export class CollectionGridSection extends React.PureComponent<CollectionGridSec
         );
     }
 }
+
+export default decorateStyles(CollectionGridSection);

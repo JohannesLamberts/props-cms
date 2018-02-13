@@ -2,7 +2,9 @@ import * as Immutable                         from 'immutable';
 import {
     Icon,
     MenuItem,
-    TextField
+    TextField,
+    WithStyles,
+    withStyles
 }                                             from 'material-ui';
 import {
     CollDefinitionFieldOptions,
@@ -15,15 +17,34 @@ import { DatabaseActions }                    from '../../../../redux/database.r
 import { StoreState }                         from '../../../../redux/store';
 import { CollElementEditorFieldSubContentOf } from './editorFieldSubContentOf';
 
-interface DefinitionProps {
+const styles = {
+    root: {
+        backgroundColor: 'rgba(0,0,0,0.07)',
+        borderRadius: '2px',
+        flexGrow: 1,
+        padding: '1rem',
+        display: 'flex',
+        '& > *': {
+            flexGrow: 1
+        }
+    },
+    typeSelect: {
+        flexBasis: '80px',
+        flexGrow: 0
+    }
+};
+
+type DefinitionProps = {
     typeOptions: CollDefinitionFieldOptions['subContent'];
     record?: CollElementModel;
     onDataChange: (newData: CollElementModel) => void;
     collDefinitions: CollDefinitionModel[];
     onMount: () => void;
-}
+} & WithStyles<keyof typeof styles>;
 
-class CollElementEditorFieldSubContentInternal extends React.PureComponent<DefinitionProps> {
+const decorateStyle = withStyles(styles);
+
+class CollElementEditorFieldSubContent extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
@@ -31,7 +52,7 @@ class CollElementEditorFieldSubContentInternal extends React.PureComponent<Defin
 
     render() {
 
-        const { onDataChange, collDefinitions, typeOptions } = this.props;
+        const { onDataChange, collDefinitions, typeOptions, classes } = this.props;
 
         const record = this.props.record || {
             collection: '',
@@ -40,21 +61,11 @@ class CollElementEditorFieldSubContentInternal extends React.PureComponent<Defin
         };
 
         return (
-            <div
-                style={{
-                    backgroundColor: 'rgba(0,0,0,0.07)',
-                    flexGrow: 1,
-                    padding: '0.5rem',
-                    margin: '0.5rem',
-                    display: 'flex'
-                }}
-            >
+            <div className={classes.root}>
+                {/* Select subContentType */}
                 {typeOptions.options.length !== 1 && (
                     <TextField
-                        style={{
-                            flexBasis: '80px',
-                            flexGrow: 0
-                        }}
+                        className={classes.typeSelect}
                         value={record && record.collection || 'NONE'}
                         label={'Collection'}
                         select={true}
@@ -82,18 +93,16 @@ class CollElementEditorFieldSubContentInternal extends React.PureComponent<Defin
                             ))}
                     </TextField>
                 )}
-                <div style={{ flexGrow: 1 }}>
-                    <CollElementEditorFieldSubContentOf
-                        record={record}
-                        onDataChange={onDataChange}
-                    />
-                </div>
+                <CollElementEditorFieldSubContentOf
+                    record={record}
+                    onDataChange={onDataChange}
+                />
             </div>
         );
     }
 }
 
-export const CollElementEditorFieldSubContent = connect(
+const decorateStore = connect(
     (store: StoreState) => {
         return {
             collDefinitions: store.database
@@ -106,4 +115,6 @@ export const CollElementEditorFieldSubContent = connect(
         onMount: () => {
             dispatch(DatabaseActions.require('coll_definition'));
         }
-    }))(CollElementEditorFieldSubContentInternal);
+    }));
+
+export default decorateStore(decorateStyle(CollElementEditorFieldSubContent));

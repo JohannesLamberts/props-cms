@@ -18,7 +18,7 @@ export const LightTheme = createMuiTheme(
             },
             MuiFormControl: {
                 root: {
-                    margin: '0.5rem'
+                    margin: '0.5rem 0'
                 },
                 fullWidth: {
                     width: 'calc(100% - 1rem)'

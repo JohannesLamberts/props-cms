@@ -29,15 +29,21 @@ const styles = {
         '&:hover': {
             backgroundColor: 'rgba(0,0,0,0.08)'
         }
+    },
+    listSubheader: {
+        zIndex: 2,
+        backgroundColor: 'white'
     }
 };
+
+const decorateStyles = withStyles(styles);
 
 type IconSelectProps = {
     icon: string;
     onIconChange: (newIcon: string) => void;
 } & WithStyles<keyof typeof styles>;
 
-export const IconSelect = withStyles(styles)(class extends React.PureComponent<IconSelectProps, {
+class IconSelect extends React.PureComponent<IconSelectProps, {
     open: boolean;
 }> {
 
@@ -78,14 +84,11 @@ export const IconSelect = withStyles(styles)(class extends React.PureComponent<I
                     {Object.keys(IconSelectOptions).map(label => (
                         <MenuList
                             key={label}
-                            subheader={<ListSubheader
-                                style={{
-                                    zIndex: 2,
-                                    backgroundColor: 'white'
-                                }}
-                            >
-                                {label}
-                            </ListSubheader>}
+                            subheader={(
+                                <ListSubheader className={classes.listSubheader}>
+                                    {label}
+                                </ListSubheader>
+                            )}
                         >
                             <li className={classNames('material-icons', classes.iconList)}>
                                 {IconSelectOptions[label].map(option => (
@@ -110,4 +113,6 @@ export const IconSelect = withStyles(styles)(class extends React.PureComponent<I
             </div>
         );
     }
-});
+}
+
+export default decorateStyles(IconSelect);

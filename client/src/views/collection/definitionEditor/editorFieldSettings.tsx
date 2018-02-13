@@ -2,7 +2,10 @@ import {
     FormControlLabel,
     MenuItem,
     Switch,
-    TextField
+    TextField,
+    Typography,
+    WithStyles,
+    withStyles
 }                                            from 'material-ui';
 import {
     CollDefinitionFieldTypeIdent,
@@ -11,7 +14,8 @@ import {
 import * as React                            from 'react';
 import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
 import { SimpleTextField }                   from '../../../util/index';
-import { CollDefinitionFieldTypeSettings }   from './editorFieldTypeSettings';
+import formComponents                        from './typeSettings/index';
+import { TypeSettingsComponent }             from './typeSettings/typeOptionProps';
 
 const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string> = {
     text: 'Text',
@@ -30,12 +34,26 @@ const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string>
     subContent: 'Content'
 };
 
-export const CollDefinitionFieldSettings = (props: {
+const styles = {
+    typeOptions: {
+        backgroundColor: 'rgba(0,0,0,0.07)',
+        padding: '12px'
+    }
+};
+
+const decorateStyles = withStyles(styles);
+
+const CollDefinitionFieldSettings = (props: {
     field: CollDefinitionModelField;
     onDataChange: (data: Partial<CollDefinitionModelField>) => void;
 
-}) => {
-    const { field, onDataChange } = props;
+} & WithStyles<keyof typeof styles>) => {
+    const { field, onDataChange, classes } = props;
+
+    const { type, typeOptions } = field;
+
+    let FormComponent = formComponents[type] as TypeSettingsComponent<any>;
+
     return (
         <div>
             <TextField
@@ -84,11 +102,21 @@ export const CollDefinitionFieldSettings = (props: {
                 }
                 label={'Allow-Overwrite'}
             />
-            <CollDefinitionFieldTypeSettings
-                typeIdent={field.type}
-                typeOptions={field.typeOptions}
-                onTypeDataChange={typeOptions => onDataChange({ typeOptions })}
-            />
+            {FormComponent && (
+                <div className={classes.typeOptions}>
+                    <Typography variant={'caption'}>
+                        OPTIONEN
+                    </Typography>
+                    <FormComponent
+                        typeOptions={typeOptions}
+                        onChange={partial => {
+                            onDataChange({ typeOptions: Object.assign({}, typeOptions, partial) });
+                        }}
+                    />
+                </div>
+            )}
         </div>
     );
 };
+
+export default decorateStyles(CollDefinitionFieldSettings);

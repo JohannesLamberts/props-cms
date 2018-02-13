@@ -6,20 +6,37 @@ import {
     DialogTitle,
     Icon,
     IconButton,
-    Paper
-}                                      from 'material-ui';
-import { CollDefinitionModelField }    from 'props-cms.connector-common';
-import * as React                      from 'react';
-import { SimpleTextField }             from '../../../util/index';
-import { CollDefinitionFieldSettings } from './editorFieldSettings';
+    Paper,
+    WithStyles,
+    withStyles
+}                                   from 'material-ui';
+import { CollDefinitionModelField } from 'props-cms.connector-common';
+import * as React                   from 'react';
+import { SimpleTextField }          from '../../../util/index';
+import CollDefinitionFieldSettings  from './editorFieldSettings';
 
-interface CollDefinitionFieldEditorProps {
+const styles = {
+    row: {
+        margin: '0.5rem',
+        padding: '0.5rem',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    } as React.CSSProperties,
+    rowActions: {
+        flexShrink: 0
+    }
+};
+
+const decorateStyles = withStyles(styles);
+
+type CollDefinitionFieldEditorProps = {
     field: CollDefinitionModelField;
     onDataChange: (data: Partial<CollDefinitionModelField>) => void;
     onDelete: () => void;
-}
+} & WithStyles<keyof typeof styles>;
 
-export class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitionFieldEditorProps, {
+class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitionFieldEditorProps, {
     editorOpen: boolean;
 }> {
 
@@ -31,7 +48,8 @@ export class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitio
     }
 
     render() {
-        const { field, onDataChange, onDelete } = this.props;
+
+        const { field, onDataChange, onDelete, classes } = this.props;
 
         return (
             <div>
@@ -56,15 +74,7 @@ export class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitio
                         </DialogActions>
                     </Dialog>
                 )}
-                <Paper
-                    style={{
-                        margin: '0.5rem',
-                        padding: '0.5rem',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                    }}
-                >
+                <Paper className={classes.row}>
                     <SimpleTextField
                         TextFieldProps={{
                             fullWidth: true,
@@ -87,7 +97,7 @@ export class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitio
                         value={field.label}
                         onBlur={value => onDataChange({ label: value })}
                     />
-                    <div style={{ flexShrink: 0 }}>
+                    <div className={classes.rowActions}>
                         <IconButton onClick={() => this.setState({ editorOpen: true })}>
                             <Icon>edit</Icon>
                         </IconButton>
@@ -100,3 +110,5 @@ export class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitio
         );
     }
 }
+
+export default decorateStyles(CollDefinitionFieldEditor);

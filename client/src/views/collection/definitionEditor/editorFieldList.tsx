@@ -5,7 +5,7 @@ import {
 import { CollDefinitionModelField }          from 'props-cms.connector-common';
 import * as React                            from 'react';
 import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
-import { CollDefinitionFieldEditor }         from './editorField';
+import CollDefinitionFieldEditor             from './editorField';
 
 const randomId = (length: number = 16): string => {
     let str = '';
@@ -15,7 +15,7 @@ const randomId = (length: number = 16): string => {
     return str;
 };
 
-export const CollDefinitionFieldsEditor = (props: {
+const CollDefinitionEditorFieldList = (props: {
     fields: CollDefinitionModelField[];
     onDataChange: (data: CollDefinitionModelField[]) => void;
 }) => {
@@ -60,3 +60,5 @@ export const CollDefinitionFieldsEditor = (props: {
         </div>
     );
 };
+
+export default CollDefinitionEditorFieldList;
