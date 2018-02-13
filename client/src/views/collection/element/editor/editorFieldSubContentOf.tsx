@@ -1,13 +1,13 @@
-import * as Immutable             from 'immutable';
+import * as Immutable         from 'immutable';
 import {
     CollDefinitionModel,
     CollElementModel
-}                                 from 'props-cms.connector-common';
-import * as React                 from 'react';
-import { connect }                from 'react-redux';
-import { DatabaseActions }        from '../../../../redux/database.reducer';
-import { StoreState }             from '../../../../redux/store';
-import { CollElementModelEditor } from './editorElement';
+}                             from 'props-cms.connector-common';
+import * as React             from 'react';
+import { connect }            from 'react-redux';
+import { DatabaseActions }    from '../../../../redux/database.reducer';
+import { StoreState }         from '../../../../redux/store';
+import CollElementModelEditor from './editorContent';
 
 interface DefinitionProps {
     record: CollElementModel;
@@ -26,6 +26,10 @@ class CollElementEditorFieldSubContentOfInternal extends React.PureComponent<Def
         const { record, onDataChange, collDefinitions } = this.props;
 
         const collDefinition = collDefinitions.get(record.collection);
+
+        if (!record.collection) {
+            return null;
+        }
 
         if (!collDefinition) {
             return <span>Loading CollDefinition for '{record.collection}'</span>;

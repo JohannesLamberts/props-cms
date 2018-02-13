@@ -2,17 +2,18 @@ import {
     FormControlLabel,
     MenuItem,
     Switch,
-    TextField
-}                                           from 'material-ui';
+    TextField,
+    Typography
+}                                       from 'material-ui';
 import {
     CollDefinitionFieldOptions,
     CollDefinitionModelField,
     CollElementDataEntry,
     CollElementModelDataRecord
-}                                           from 'props-cms.connector-common';
-import * as React                           from 'react';
-import { SimpleTextField }                  from '../../../../util/index';
-import { CollElementEditorFieldSubContent } from './editorFieldSubContent';
+}                                       from 'props-cms.connector-common';
+import * as React                       from 'react';
+import { SimpleTextField }              from '../../../../util/index';
+import CollElementEditorFieldSubContent from './editorFieldSubContent';
 
 interface CollElementEditorFieldProps {
     field: CollDefinitionModelField;
@@ -85,11 +86,16 @@ export const CollElementEditorField = (props: CollElementEditorFieldProps) => {
             );
         case 'subContent':
             return (
-                <CollElementEditorFieldSubContent
-                    typeOptions={field.typeOptions}
-                    record={record as CollElementModelDataRecord['subContent']}
-                    onDataChange={onDataChange}
-                />
+                <div>
+                    <Typography variant={'caption'}>
+                        {field.label}
+                    </Typography>
+                    <CollElementEditorFieldSubContent
+                        typeOptions={field.typeOptions}
+                        record={record as CollElementModelDataRecord['subContent']}
+                        onDataChange={onDataChange}
+                    />
+                </div>
             );
         default:
             return <span>NOT IMPLEMENTED: {field.type}</span>;

@@ -1,17 +1,27 @@
 import {
     Chip,
     Icon,
-    TextField
+    TextField,
+    WithStyles,
+    withStyles
 }                         from 'material-ui';
 import { InputAdornment } from 'material-ui/Input';
 import * as React         from 'react';
 
-interface TagInputProps {
+const styles = {
+    chip: {
+        margin: '0.2rem'
+    }
+};
+
+type TagInputProps = {
     values: string[];
     onChange: (newValues: string[]) => void;
-}
+} & WithStyles<keyof typeof styles>;
 
-export default class extends React.PureComponent<TagInputProps, {
+const decorateStyles = withStyles(styles);
+
+class TagInput extends React.PureComponent<TagInputProps, {
     tagInput: string;
 }> {
     constructor(props: TagInputProps) {
@@ -22,14 +32,14 @@ export default class extends React.PureComponent<TagInputProps, {
     }
 
     render() {
-        const { values, onChange } = this.props;
+        const { values, onChange, classes } = this.props;
         const { tagInput } = this.state;
         return (
             <div>
                 <div>
                     {values.map((value, index) => (
                         <Chip
-                            style={{ margin: '0.2rem' }}
+                            className={classes.chip}
                             key={value + index}
                             label={value}
                             onDelete={() => {
@@ -68,3 +78,5 @@ export default class extends React.PureComponent<TagInputProps, {
         );
     }
 }
+
+export default decorateStyles(TagInput);

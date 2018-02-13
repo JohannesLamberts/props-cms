@@ -4,7 +4,9 @@ import {
     Icon,
     IconButton,
     Paper,
-    Typography
+    Typography,
+    withStyles,
+    WithStyles
 }                             from 'material-ui';
 import {
     CollDefinitionModel,
@@ -17,6 +19,7 @@ import {
     withRouter
 }                             from 'react-router';
 import { Link }               from 'react-router-dom';
+import { compose }            from 'redux';
 import { InitialElementData } from '../../../initializers/collectionElementDataRecordInitial';
 import { DatabaseActions }    from '../../../redux/database.reducer';
 import { StoreState }         from '../../../redux/store';
@@ -26,19 +29,28 @@ import {
     SimpleTable
 }                             from '../../../util/index';
 
-interface DefinitionProps {
+const styles = {
+    root: {
+        width: '100%'
+    },
+    wrapper: {
+        backgroundColor: 'rgba(0,0,0,0.07)',
+        padding: '1rem',
+        display: 'flex',
+        justifyContent: 'space-between'
+    } as React.CSSProperties
+};
+
+type DefinitionProps = {
     collDefinition: CollDefinitionModel;
     collElements: CollElementModel[];
     onMount: () => void;
     onPush: (model: CollElementModel) => void;
-}
+} & WithStyles<keyof typeof styles>;
 
-class CollElementList extends React.PureComponent<DefinitionProps, {}> {
+const decorateStyles = withStyles(styles);
 
-    constructor(props: DefinitionProps) {
-        super(props);
-        this.state = {};
-    }
+class CollElementList extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
@@ -54,10 +66,10 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
             );
         }
 
-        const { collDefinition, collElements } = this.props;
+        const { collDefinition, collElements, classes } = this.props;
 
         return (
-            <Paper style={{ width: '100%' }}>
+            <Paper className={classes.root}>
                 <FloatingActionButton
                     onClick={() => this.props.onPush(
                         {
@@ -68,14 +80,7 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
                 >
                     <Icon>add</Icon>
                 </FloatingActionButton>
-                <div
-                    style={{
-                        backgroundColor: 'rgba(0,0,0,0.07)',
-                        padding: '1rem',
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }}
-                >
+                <div className={classes.wrapper}>
                     <Typography variant={'headline'}>
                         {collDefinition.label}
                     </Typography>
@@ -110,27 +115,26 @@ class CollElementList extends React.PureComponent<DefinitionProps, {}> {
     }
 }
 
-export const CollectionElementList = withRouter((props: RouteComponentProps<{ collIdent: string }>) => {
-
-    const { collIdent } = props.match.params;
-
-    const Component = connect(
-        (store: StoreState) => {
-            return {
-                collElements: store.database
-                                   .get('models')
-                                   .get('coll_element', Immutable.Map())
-                                   .toArray()
-                                   .filter((el: CollElementModel) => {
-                                       return el.collection === collIdent;
-                                   }),
-                collDefinition: store.database
-                                     .get('models')
-                                     .get('coll_definition', Immutable.Map())
-                                     .get(collIdent)
-            };
-        },
-        (dispatch) => ({
+export const decorateStore = connect(
+    (store: StoreState, props: RouteComponentProps<{ collIdent: string }>) => {
+        const { collIdent } = props.match.params;
+        return {
+            collElements: store.database
+                               .get('models')
+                               .get('coll_element', Immutable.Map())
+                               .toArray()
+                               .filter((el: CollElementModel) => {
+                                   return el.collection === collIdent;
+                               }),
+            collDefinition: store.database
+                                 .get('models')
+                                 .get('coll_definition', Immutable.Map())
+                                 .get(collIdent)
+        };
+    },
+    (dispatch, props: RouteComponentProps<{ collIdent: string }>) => {
+        const { collIdent } = props.match.params;
+        return {
             onMount: () => {
                 dispatch(DatabaseActions.require('coll_element'));
                 dispatch(DatabaseActions.requireId('coll_definition', collIdent));
@@ -141,8 +145,9 @@ export const CollectionElementList = withRouter((props: RouteComponentProps<{ co
                     .then(() => dispatch(DatabaseActions
                                              .require('coll_element')));
             }
-        }))(CollElementList);
+        };
+    });
 
-    return <Component/>;
-
-});
+export default compose(withRouter,
+                       decorateStore,
+                       decorateStyles)(CollElementList);

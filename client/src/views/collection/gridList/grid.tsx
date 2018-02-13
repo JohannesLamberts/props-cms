@@ -1,20 +1,33 @@
-import * as Immutable            from 'immutable';
-import { CollDefinitionModel }   from 'props-cms.connector-common';
-import * as React                from 'react';
-import { connect }               from 'react-redux';
-import { DatabaseActions }       from '../../redux/database.reducer';
-import { StoreState }            from '../../redux/store';
-import { DatabaseApiService }    from '../../services/database.api_service';
-import { CollectionGridItem }    from './collection_grid_item_root';
-import { CollectionGridItemSub } from './collection_grid_item_sub';
-import { CollectionGridSection } from './collection_grid_section';
+import * as Immutable          from 'immutable';
+import {
+    WithStyles,
+    withStyles
+}                              from 'material-ui';
+import { CollDefinitionModel } from 'props-cms.connector-common';
+import * as React              from 'react';
+import { connect }             from 'react-redux';
+import { compose }             from 'redux';
+import { DatabaseActions }     from '../../../redux/database.reducer';
+import { StoreState }          from '../../../redux/store';
+import { DatabaseApiService }  from '../../../services/database.api_service';
+import CollectionGridItemRoot  from './gridItemRoot';
+import CollectionGridItemSub   from './griditemSub';
+import CollectionGridSection   from './gridSection';
 
-interface DefinitionProps {
+const styles = {
+    root: {
+        width: '100%'
+    }
+};
+
+type DefinitionProps = {
     collDefinitions: CollDefinitionModel[];
     onMount: () => void;
     onPush: (ident: string, root: boolean) => void;
     onDelete: (ident: string) => void;
-}
+} & WithStyles<keyof typeof styles>;
+
+const decorateStyle = withStyles(styles);
 
 class Definition extends React.PureComponent<DefinitionProps, {}> {
 
@@ -28,27 +41,23 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
     }
 
     render() {
-        const { collDefinitions, onPush, onDelete } = this.props;
+        const { collDefinitions, onPush, onDelete, classes } = this.props;
         return (
-            <div
-                style={{
-                    width: '100%'
-                }}
-            >
+            <div className={classes.root}>
                 <CollectionGridSection
                     label={'Main'}
                     models={collDefinitions
                         .filter(collDefinition => collDefinition.root)}
-                    onPush={id => this.props.onPush(id, true)}
-                    onDelete={id => this.props.onDelete(id)}
-                    tile={CollectionGridItem}
+                    onPush={id => onPush(id, true)}
+                    onDelete={id => onDelete(id)}
+                    tile={CollectionGridItemRoot}
                 />
                 <CollectionGridSection
                     label={'Sub'}
                     models={collDefinitions
                         .filter(collDefinition => !collDefinition.root)}
-                    onPush={id => this.props.onPush(id, false)}
-                    onDelete={id => this.props.onDelete(id)}
+                    onPush={id => onPush(id, false)}
+                    onDelete={id => onDelete(id)}
                     tile={CollectionGridItemSub}
                 />
             </div>
@@ -56,7 +65,7 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
     }
 }
 
-export const CollectionGrid = connect(
+const decorateStore = connect(
     (store: StoreState) => {
         return {
             collDefinitions: store.database
@@ -91,4 +100,8 @@ export const CollectionGrid = connect(
                     dispatch(DatabaseActions.require('coll_definition'));
                 });
         }
-    }))(Definition);
+    }));
+
+export const CollectionGrid
+                 = compose(decorateStore,
+                           decorateStyle)(Definition);

@@ -1,32 +1,32 @@
 import {
     AppBar,
     Icon,
-    IconButton,
     MuiThemeProvider,
     Toolbar,
     Typography
-}                                     from 'material-ui';
-import { Theme }                      from 'material-ui/styles';
-import withStyles                     from 'material-ui/styles/withStyles';
-import * as React                     from 'react';
+}                                 from 'material-ui';
+import { Theme }                  from 'material-ui/styles';
+import withStyles                 from 'material-ui/styles/withStyles';
+import * as React                 from 'react';
 import {
-    Link,
     NavLink,
+    Redirect,
     Route,
     Switch
-}                                     from 'react-router-dom';
-import { DarkTheme }                  from './styles/theme';
-import { CollectionGrid }             from './views/collection/collection_grid';
-import { CollectionDefinitionEditor } from './views/collection/definitionEditor/editor';
-import { CollectionElementEditor }    from './views/collection/element/editor/editor';
-import { CollectionElementList }      from './views/collection/element/list';
+}                                 from 'react-router-dom';
+import { DarkTheme }              from './styles/theme';
+import CollectionDefinitionEditor from './views/collection/definitionEditor/definitionEditor';
+import CollectionElementEditor    from './views/collection/element/editor/elementEditor';
+import CollectionElementList      from './views/collection/element/elementList';
+import { CollectionGrid }         from './views/collection/gridList/grid';
 
 const links = {
+    dashboard: '/dashboard',
     layers: '/collection'
 };
 
 const rootPages = {
-    '/': () => 'HELLO THERE',
+    '/dashboard': () => 'HELLO THERE',
     '/collection':
         () => <CollectionGrid/>,
     '/collection/:collIdent/elements':
@@ -76,21 +76,9 @@ export const AppRoot = withStyles(styles)(({ classes }) => {
                 <MuiThemeProvider theme={DarkTheme}>
                     <AppBar position={'static'}>
                         <Toolbar className={classes.toolbar}>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <Link to={'/'}>
-                                    <IconButton>
-                                        <Icon>menu</Icon>
-                                    </IconButton>
-                                </Link>
-                                <Typography variant={'title'}>
-                                    CMS
-                                </Typography>
-                            </div>
+                            <Typography variant={'title'}>
+                                CMS
+                            </Typography>
                             <nav className={classes.nav}>
                                 {Object.keys(links).map(linkIcon => (
                                     <NavLink
@@ -108,6 +96,11 @@ export const AppRoot = withStyles(styles)(({ classes }) => {
             </header>
             <div className={classes.content}>
                 <Switch>
+                    <Redirect
+                        path={'/'}
+                        exact={true}
+                        to={`/dashboard`}
+                    />
                     {Object.keys(rootPages).map(path => (
                         <Route
                             exact={true}
