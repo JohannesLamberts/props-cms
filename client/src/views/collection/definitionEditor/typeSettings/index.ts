@@ -2,6 +2,7 @@ import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
 import SelectForm                       from './select';
 import SelectMultipleForm               from './selectMultiple';
 import SubContetForm                    from './subContent';
+import SubDefinition                    from './subDefinition';
 import { TypeSettingsComponent }        from './typeOptionProps';
 
 const formComponents: {
@@ -9,7 +10,8 @@ const formComponents: {
     } = {
     select: SelectForm,
     selectMultiple: SelectMultipleForm,
-    subContent: SubContetForm
+    subContent: SubContetForm,
+    subDefinition: SubDefinition
 };
 
 export default formComponents;

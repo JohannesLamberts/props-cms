@@ -78,9 +78,14 @@ class CollElementEditor extends React.PureComponent<DefinitionProps> {
                 </div>
                 <div className={classes.content}>
                     <CollElementModelEditor
-                        collDefinition={collDefinition}
-                        collElement={collElement}
-                        onDataChange={onDataChange}
+                        fields={collDefinition.fields}
+                        data={collElement.data}
+                        onDataChange={partialData =>
+                            onDataChange({
+                                             data: Object.assign({},
+                                                                 collElement.data,
+                                                                 partialData)
+                                         })}
                     />
                 </div>
             </Paper>

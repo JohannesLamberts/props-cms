@@ -1,6 +1,6 @@
 {
   "name": "props-cms.connector-common",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Common model data.",
   "repository": "https://github.com/JohannesLamberts/react-cms/tree/master/connector/common",
   "keywords": [

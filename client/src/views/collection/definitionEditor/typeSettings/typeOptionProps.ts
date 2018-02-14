@@ -1,5 +1,7 @@
-import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
-import { CollDefinitionFieldOptions }   from '../../../../../../connector/common/src';
+import {
+    CollDefinitionFieldOptions,
+    CollDefinitionFieldTypeIdent
+} from 'props-cms.connector-common';
 
 export type TypeSettingProps<TKey extends CollDefinitionFieldTypeIdent> = {
     typeOptions: CollDefinitionFieldOptions[TKey];

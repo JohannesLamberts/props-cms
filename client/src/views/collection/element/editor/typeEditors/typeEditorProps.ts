@@ -5,7 +5,7 @@ import {
 } from 'props-cms.connector-common';
 
 export type TypeElementEditorProps<TKey extends CollDefinitionFieldTypeIdent> = {
-    field: CollDefinitionModelField;
+    field: CollDefinitionModelField<TKey>;
     record?: CollElementDataEntry<TKey>;
     onDataChange: (newData: CollElementDataEntry<TKey>) => void;
 };

@@ -22,6 +22,9 @@ export interface CollDefinitionFieldOptions {
     subContent: {
         options: string[]
     };
+    subDefinition: {
+        fields: CollDefinitionModelField[];
+    };
     // disable primitive options like import: string
     // allows general use of partial updates
     [key: string]: undefined | Record<string, any>;

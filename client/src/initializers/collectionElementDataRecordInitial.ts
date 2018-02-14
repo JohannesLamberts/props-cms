@@ -1,9 +1,9 @@
 import {
+    CollDefinitionFieldTypeIdent,
     CollDefinitionModel,
-    CollDefinitionModelField
-}                                       from '../../../connector/common/src/collectionDefinition.model';
-import { CollElementModelDataRecord }   from '../../../connector/common/src/collectionElement.model';
-import { CollDefinitionFieldTypeIdent } from '../../../connector/common/src/fieldTypes';
+    CollDefinitionModelField,
+    CollElementModelDataRecord
+} from 'props-cms.connector-common';
 
 export const InitialCollElementModelDataRecord: {[P in CollDefinitionFieldTypeIdent]: (
     CollElementModelDataRecord[P] | ((field: CollDefinitionModelField<P>) => CollElementModelDataRecord[P])
@@ -30,7 +30,8 @@ export const InitialCollElementModelDataRecord: {[P in CollDefinitionFieldTypeId
             data: {},
             dataOverwrites: []
         };
-    }
+    },
+    subDefinition: {}
 };
 
 export const InitialElementData = (collDefinition: CollDefinitionModel): Record<string, any> => {

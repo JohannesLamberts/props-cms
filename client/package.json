@@ -23,7 +23,7 @@
     "immutable": "^3.8.2",
     "material-ui": "^1.0.0-beta.33",
     "moment": "^2.19.3",
-    "props-cms.connector-common": "^0.1.0",
+    "props-cms.connector-common": "^0.1.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",

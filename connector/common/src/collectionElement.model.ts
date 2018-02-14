@@ -22,6 +22,7 @@ export interface CollElementModelDataRecord {
         }[];
     };
     subContent: CollElementModel;
+    subDefinition: Record<string, CollElementDataEntry>;
 }
 
 export type CollElementDataEntry<T extends CollDefinitionFieldTypeIdent = any> = CollElementModelDataRecord[T];
