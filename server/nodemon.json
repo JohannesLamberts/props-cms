@@ -3,5 +3,5 @@
     "build/**/*.js",
     "build/*.js"
   ],
-  "exec": "npm run run"
+  "exec": "npm run start"
 }
