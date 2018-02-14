@@ -1,5 +1,7 @@
 // Get Plugins
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import * as moment      from 'moment';
+import 'moment/locale/de';
 import * as React       from 'react';
 import * as ReactDOM    from 'react-dom';
 import { Provider }     from 'react-redux';
@@ -10,6 +12,8 @@ import {
     Store
 }                       from './redux/store';
 import { LightTheme }   from './styles/theme';
+
+moment.locale('de');
 
 ReactDOM.render(
     <Provider store={Store}>
