@@ -1,5 +1,6 @@
 import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
 import Boolean                          from './boolean';
+import Date                             from './date';
 import Select                           from './select';
 import SelectMultiple                   from './selectMultiple';
 import SubContent                       from './subContent';
@@ -13,6 +14,7 @@ const formComponents: {
     [P in CollDefinitionFieldTypeIdent]?: TypeEditorComponent<P>
     } = {
     boolean: Boolean,
+    date: Date,
     select: Select,
     selectMultiple: SelectMultiple,
     subContent: SubContent,

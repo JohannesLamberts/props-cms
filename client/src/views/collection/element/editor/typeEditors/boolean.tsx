@@ -7,12 +7,12 @@ import { TypeElementEditorProps } from './typeEditorProps';
 
 export default ({ field, record, onDataChange }: TypeElementEditorProps<'boolean'>) => (
     <FormControlLabel
-        control={
+        control={(
             <Switch
                 checked={record}
                 onChange={(event, checked) => onDataChange(checked)}
             />
-        }
+        )}
         label={field.label}
     />
 );
