@@ -1,6 +1,7 @@
 import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
 import Boolean                          from './boolean';
 import Select                           from './select';
+import SelectMultiple                   from './selectMultiple';
 import SubContent                       from './subContent';
 import SubDefinition                    from './subDefinition';
 import Tags                             from './tags';
@@ -13,6 +14,7 @@ const formComponents: {
     } = {
     boolean: Boolean,
     select: Select,
+    selectMultiple: SelectMultiple,
     subContent: SubContent,
     subDefinition: SubDefinition,
     text: Text,
