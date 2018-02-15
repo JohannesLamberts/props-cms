@@ -15,8 +15,8 @@ const winstonLogger: LoggerInstance
 
 winstonLogger.add(winston.transports.Console, {
     colorize: true,
-    name: 'info-console',
-    level: 'info',
+    name: 'console',
+    level: ENV.logger.level,
     timestamp: true
 });
 
