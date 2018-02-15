@@ -25,6 +25,7 @@ const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string>
     color: 'Color',
     time: 'Time',
     date: 'Date',
+    dateTime: 'DateTime',
     file: 'File',
     image: 'Image',
     select: 'Select (1)',

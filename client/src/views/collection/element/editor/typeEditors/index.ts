@@ -1,6 +1,7 @@
 import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
 import Boolean                          from './boolean';
 import Date                             from './date';
+import DateTime                         from './dateTime';
 import Import                           from './import';
 import Select                           from './select';
 import SelectMultiple                   from './selectMultiple';
@@ -17,6 +18,7 @@ const formComponents: {
     } = {
     boolean: Boolean,
     date: Date,
+    dateTime: DateTime,
     import: Import,
     select: Select,
     selectMultiple: SelectMultiple,
