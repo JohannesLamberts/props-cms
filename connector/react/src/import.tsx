@@ -10,6 +10,7 @@ import CmsRender            from './renderer';
 export interface CmsImportProps {
     ident: string;
     query?: Object;
+    enclose?: React.ComponentType<{ children: React.ReactNode }>;
 }
 
 export default class extends React.Component<CmsImportProps, {
@@ -50,7 +51,10 @@ export default class extends React.Component<CmsImportProps, {
             return null;
         }
         return (
-            <CmsRender data={this.state.models}/>
+            <CmsRender
+                data={this.state.models}
+                enclose={this.props.enclose}
+            />
         );
     }
 }

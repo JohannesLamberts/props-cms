@@ -1,6 +1,6 @@
 {
   "name": "props-cms.connector-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Framework-specific connector for react.",
   "repository": "https://github.com/JohannesLamberts/react-cms/tree/master/connector/react",
   "keywords": [
