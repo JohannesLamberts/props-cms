@@ -9,6 +9,7 @@ export interface CollElementModelDataRecord {
     color: string;
     time: Date | undefined;
     date: Date | undefined;
+    dateTime: Date | undefined;
     file: string; // update
     image: string; // update
     select: string;
@@ -16,10 +17,7 @@ export interface CollElementModelDataRecord {
     tags: string[];
     import: {
         collection: string;
-        query?: {
-            key: string;
-            val: string;
-        }[];
+        filter: Record<string, CollElementDataEntry>;
     };
     subContent: CollElementModel;
     subDefinition: Record<string, CollElementDataEntry>;

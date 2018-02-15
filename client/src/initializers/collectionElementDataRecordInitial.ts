@@ -15,13 +15,15 @@ export const InitialCollElementModelDataRecord: {[P in CollDefinitionFieldTypeId
     color: '',
     time: undefined,
     date: undefined,
+    dateTime: undefined,
     file: '', // update
     image: '', // update
     select: '',
     selectMultiple: [],
     tags: [],
     import: {
-        collection: ''
+        collection: '',
+        filter: {}
     },
     subContent: (field) => {
         const options = field.typeOptions.options;
