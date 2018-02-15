@@ -102,6 +102,7 @@ class ColorInput extends React.PureComponent<ColorInputProps, ColorInputState> {
                 value={textVal}
                 onChange={this.handleChange}
                 onBlur={this.handleBlur}
+                helperText={error ? 'Ungültiger Farbcode, Optionen: hex, rgb(a), hsl(a)' : ''}
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
