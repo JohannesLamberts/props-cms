@@ -9,6 +9,7 @@ import {
 
 export interface CmsImportProps {
     data: CollElementModel | CollElementModel[];
+    enclose?: React.ComponentType<{ children: React.ReactNode }>;
 }
 
 const RenderImport = ({ importFn, inject }: {
@@ -38,24 +39,22 @@ export default class extends React.Component<CmsImportProps> {
 
     render() {
 
-        const { data } = this.props;
+        const { data, enclose: EncloseComponent } = this.props;
         const collections: CollectionImports = this.context[CmsConnectorChannel].collections;
 
-        if (Array.isArray(data)) {
-            return data.map(model => (
+        const modelArr = Array.isArray(data) ? data : [data];
+
+        return modelArr.map(model => {
+            const rendered = (
                 <RenderImport
                     key={model._id}
                     importFn={collections[model.collection]}
                     inject={model.data}
                 />
-            ));
-        }
-
-        return (
-            <RenderImport
-                importFn={collections[data.collection]}
-                inject={data.data}
-            />
-        );
+            );
+            return EncloseComponent
+                ? <EncloseComponent>{rendered}</EncloseComponent>
+                : rendered;
+        });
     }
 }
