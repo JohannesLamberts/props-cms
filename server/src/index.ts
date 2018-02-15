@@ -4,8 +4,9 @@ import { DatabaseApi }      from './api.database';
 import { ServiceApi }       from './api.service';
 import { ENV }              from './env';
 import { createExpressApp } from './modules/http/express.module';
+import { createWebsocket }  from './modules/websocket/websocket.module';
 
-const { webserver } = ENV;
+const { websocket, webserver } = ENV;
 
 const { api, editor } = webserver;
 
@@ -25,4 +26,8 @@ if (editor) {
         app.get('/', AppFrontend);
         app.get('/*', AppFrontend);
     });
+}
+
+if (websocket) {
+    createWebsocket(websocket.port);
 }
