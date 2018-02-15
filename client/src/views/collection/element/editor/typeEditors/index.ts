@@ -1,5 +1,6 @@
 import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
 import Boolean                          from './boolean';
+import Color                            from './color';
 import Date                             from './date';
 import DateTime                         from './dateTime';
 import Import                           from './import';
@@ -17,6 +18,7 @@ const formComponents: {
     [P in CollDefinitionFieldTypeIdent]?: TypeEditorComponent<P>
     } = {
     boolean: Boolean,
+    color: Color,
     date: Date,
     dateTime: DateTime,
     import: Import,
