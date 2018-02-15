@@ -21,7 +21,8 @@ export const InitialCollElementModelDataRecord: {[P in CollDefinitionFieldTypeId
     selectMultiple: [],
     tags: [],
     import: {
-        collection: ''
+        collection: '',
+        filter: {}
     },
     subContent: (field) => {
         const options = field.typeOptions.options;
