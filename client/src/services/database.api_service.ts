@@ -1,6 +1,6 @@
 import { HttpApi } from './api';
 
-const DatabaseApiConnector = new HttpApi(`http://${window.location.hostname}:4001/db`);
+const DatabaseApiConnector = new HttpApi(process.env.REACT_APP_URL_API + '/db');
 
 export class DatabaseApiService {
 
