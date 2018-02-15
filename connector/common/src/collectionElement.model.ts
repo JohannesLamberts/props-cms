@@ -16,10 +16,7 @@ export interface CollElementModelDataRecord {
     tags: string[];
     import: {
         collection: string;
-        query?: {
-            key: string;
-            val: string;
-        }[];
+        filter: Record<string, CollElementDataEntry>;
     };
     subContent: CollElementModel;
     subDefinition: Record<string, CollElementDataEntry>;
