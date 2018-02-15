@@ -1,6 +1,6 @@
 import { ENV }          from './env';
-import HttpServerApi    from './httpServers/api';
-import HttpServerEditor from './httpServers/editor';
+import HttpServerApi    from './httpServer.api';
+import HttpServerEditor from './httpServer.editor';
 
 const { api, editor } = ENV.webserver;
 

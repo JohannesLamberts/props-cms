@@ -1,6 +1,6 @@
-import { DefinitionsDb } from '../database/definition/definition.db';
-import { Api }           from '../modules/api/api';
-import { EHttpState }    from '../modules/api/httpState';
+import { DefinitionsDb } from './database.main';
+import { Api }           from './modules/http_server/api';
+import { EHttpState }    from './modules/http_server/httpState';
 
 export const ServiceApi = new Api('service');
 

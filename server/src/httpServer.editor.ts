@@ -1,7 +1,7 @@
 import * as express      from 'express';
 import * as path         from 'path';
-import { WebserverCfg }  from '../env';
-import { ExpressModule } from '../modules/http_server/express.module';
+import { WebserverCfg }  from './env';
+import { ExpressModule } from './modules/http_server/express.module';
 
 export default (cfg: WebserverCfg) => ExpressModule.create(cfg.port, (app) => {
     const AppFrontend = (req, res) => {

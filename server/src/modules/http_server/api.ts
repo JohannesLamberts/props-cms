@@ -2,7 +2,7 @@ import * as express     from 'express';
 import { Application }  from 'express-serve-static-core';
 import { Logger }       from '../logger/logger';
 import { LoggerModule } from '../logger/logger.module';
-import { ApiRoute }     from './route';
+import { ApiRoute }     from './apiRoute';
 
 const ApiLogger = LoggerModule.spawn('API');
 
