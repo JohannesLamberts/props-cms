@@ -9,6 +9,7 @@ export interface CollElementModelDataRecord {
     color: string;
     time: Date | undefined;
     date: Date | undefined;
+    dateTime: Date | undefined;
     file: string; // update
     image: string; // update
     select: string;

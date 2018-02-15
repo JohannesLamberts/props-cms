@@ -6,6 +6,7 @@ export type CollDefinitionFieldTypeIdent =
     | 'color'
     | 'time'
     | 'date'
+    | 'dateTime'
     | 'file'
     | 'image'
     | 'select'

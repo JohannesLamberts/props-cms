@@ -9,6 +9,7 @@ export interface CollDefinitionFieldOptions {
     color: undefined;
     time: undefined;
     date: undefined;
+    dateTime: undefined;
     file: undefined;
     image: undefined;
     select: {
