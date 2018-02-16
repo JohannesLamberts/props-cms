@@ -1,4 +1,3 @@
-import * as Immutable             from 'immutable';
 import {
     Button,
     FormControlLabel,
@@ -18,14 +17,14 @@ import {
 }                                 from 'react-router';
 import { Link }                   from 'react-router-dom';
 import { compose }                from 'redux';
-import { DatabaseActions }        from '../../../redux/database.reducer';
-import { StoreState }             from '../../../redux/store';
-import { DatabaseApiService }     from '../../../services/database.api_service';
+import {
+    DatabaseDelete,
+    DatabasePatch
+}                                 from '../../../redux/database/database.actions';
+import { withDatabaseConnect }    from '../../../redux/database/database.decorate';
 import IconSelect                 from '../../../util/components/iconSelect';
 import { SimpleTextField }        from '../../../util/index';
 import CollDefinitionFieldsEditor from './editorFieldList';
-
-const collectionKey = 'coll_definition';
 
 const styles = {
     root: {
@@ -59,6 +58,11 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
 
     render() {
         const { collDefinition, onDataChange, onDelete, classes } = this.props;
+
+        if (!collDefinition) {
+            return null;
+        }
+
         return (
             <div className={classes.root}>
                 <Paper className={classes.definitionEditArea}>
@@ -113,31 +117,31 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
     }
 }
 
+const decorateDatabase = withDatabaseConnect(
+    {},
+    (props: RouteComponentProps<{ collIdent: string }>) => ({
+        collDefinition: {
+            collection: 'coll_definition' as 'coll_definition',
+            id: props.match.params.collIdent
+        }
+    })
+);
+
 const decorateStore = connect(
-    (store: StoreState, props: RouteComponentProps<{ collIdent: string }>) => {
-        const { collIdent } = props.match.params;
-        return {
-            collDefinition:
-                store.database.get('models')
-                     .get(collectionKey, Immutable.Map())
-                     .get(collIdent, {})
-        };
-    },
+    null,
     (dispatch, props: RouteComponentProps<{ collIdent: string }>) => {
         const { collIdent } = props.match.params;
         return {
-            onMount: () => {
-                dispatch(DatabaseActions.requireId(collectionKey, collIdent));
-            },
             onDataChange: data => {
-                dispatch(DatabaseActions.patch(collectionKey, collIdent, data));
+                dispatch(DatabasePatch('coll_definition', collIdent, data));
             },
             onDelete: () => {
-                DatabaseApiService.delete('coll_definition', collIdent);
+                DatabaseDelete('coll_definition', collIdent);
             }
         };
     });
 
 export default compose(withRouter,
                        decorateStore,
+                       decorateDatabase,
                        decorateStyle)(CollDefinitionEditor);

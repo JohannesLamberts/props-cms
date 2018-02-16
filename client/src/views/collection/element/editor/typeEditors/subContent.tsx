@@ -1,4 +1,3 @@
-import * as Immutable             from 'immutable';
 import {
     Typography,
     withStyles,
@@ -6,9 +5,7 @@ import {
 }                                 from 'material-ui';
 import { CollDefinitionModel }    from 'props-cms.connector-common';
 import * as React                 from 'react';
-import { connect }                from 'react-redux';
-import { DatabaseActions }        from '../../../../../redux/database.reducer';
-import { StoreState }             from '../../../../../redux/store';
+import { withDatabaseConnect }    from '../../../../../redux/database/database.decorate';
 import { CollectionSelect }       from '../../../../../util/index';
 import CollElementModelEditor     from '../editorContent';
 import { TypeElementEditorProps } from './typeEditorProps';
@@ -31,7 +28,7 @@ const styles = {
 };
 
 type SubContentProps = {
-    collDefinition?: CollDefinitionModel;
+    collDefinition: CollDefinitionModel;
     onMount: () => void;
 } & TypeElementEditorProps<'subContent'> & WithStyles<keyof typeof styles>;
 
@@ -106,19 +103,13 @@ class SubContentEdit
     }
 }
 
-const decorateStore = connect(
-    (store: StoreState, { record }: TypeElementEditorProps<'subContent'>) => {
-        return {
-            collDefinition: store.database
-                                 .get('models')
-                                 .get('coll_definition', Immutable.Map())
-                                 .get(record ? record.collection : '')
-        };
-    },
-    (dispatch, { record }: TypeElementEditorProps<'subContent'>) => ({
-        onMount: () => {
-            dispatch(DatabaseActions.requireId('coll_definition', record ? record.collection : ''));
+const decorateDatabase = withDatabaseConnect(
+    {},
+    ({ record }: TypeElementEditorProps<'subContent'>) => ({
+        collDefinition: {
+            collection: 'coll_definition' as 'coll_definition',
+            id: record ? record.collection : ''
         }
     }));
 
-export default decorateStore(decorateStyle(SubContentEdit) as any); // TODO: remove as any
+export default decorateDatabase(decorateStyle(SubContentEdit) as any); // TODO: remove as any
