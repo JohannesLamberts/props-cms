@@ -17,6 +17,10 @@ install_and_build: &install_and_build
       command: npm run build
 version: 2
 jobs:
+  checkout:
+    <<: *default
+    steps:
+      - checkout
   build_client:
     <<: *default
     working_directory: ~/client
@@ -41,7 +45,16 @@ workflows:
   version: 2
   build-all:
     jobs:
+      - checkout
       - build_client
+          requires:
+            - checkout
       - build_server
+          requires:
+            - checkout
       - build_connector_common
+          requires:
+            - checkout
       - build_connector_react
+          requires:
+            - checkout
