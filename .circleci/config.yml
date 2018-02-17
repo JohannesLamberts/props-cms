@@ -9,7 +9,7 @@ install_and_build: &install_with_cache
       key: npm-cache-{{ checksum "package.json" }}
       paths:
         - node_modules
-  - run
+  - run:
       name: Build
       command: npm run build
 version: 2
