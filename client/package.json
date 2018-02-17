@@ -33,9 +33,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "socket.io-client": "^2.0.4",
-    "typed-immutable": "file:../../typescript-immutable",
-    "typescript-immutable": "file:../../typescript-immutable"
+    "socket.io-client": "^2.0.4"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.3",
