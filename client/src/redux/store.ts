@@ -12,20 +12,17 @@ import {
 }                           from 'redux';
 import logger               from 'redux-logger';
 import thunk                from 'redux-thunk';
-import {
-    DatabaseReducer,
-    DatabaseState
-}                           from './database.reducer';
+import * as Database        from './database/database.reducer';
 
 export interface StoreState {
     routing: RouterState;
-    database: DatabaseState;
+    database: Database.TState;
 }
 
 const reducers = combineReducers(
     {
         routing: routerReducer,
-        database: DatabaseReducer
+        database: Database.Reducer
     });
 
 export const browserHistory = createBrowserHistory();
@@ -37,7 +34,3 @@ export const Store = createStore(reducers,
                                      routerMiddleware(browserHistory)));
 
 export type StoreDispatch = Dispatch<StoreState>;
-
-export interface StoreDispatchProp {
-    dispatch: StoreDispatch;
-}

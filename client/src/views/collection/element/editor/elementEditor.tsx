@@ -1,4 +1,3 @@
-import * as Immutable         from 'immutable';
 import {
     CircularProgress,
     Icon,
@@ -6,22 +5,22 @@ import {
     Typography,
     withStyles,
     WithStyles
-}                             from 'material-ui';
+}                              from 'material-ui';
 import {
     CollDefinitionModel,
     CollElementModel
-}                             from 'props-cms.connector-common';
-import * as React             from 'react';
-import { connect }            from 'react-redux';
+}                              from 'props-cms.connector-common';
+import * as React              from 'react';
+import { connect }             from 'react-redux';
 import {
     RouteComponentProps,
     withRouter
-}                             from 'react-router';
-import { Link }               from 'react-router-dom';
-import { compose }            from 'redux';
-import { DatabaseActions }    from '../../../../redux/database.reducer';
-import { StoreState }         from '../../../../redux/store';
-import CollElementModelEditor from './editorContent';
+}                              from 'react-router';
+import { Link }                from 'react-router-dom';
+import { compose }             from 'redux';
+import { DatabasePatch }       from '../../../../redux/database/database.actions';
+import { withDatabaseConnect } from '../../../../redux/database/database.decorate';
+import CollElementModelEditor  from './editorContent';
 
 const collectionKey = 'coll_element';
 
@@ -93,33 +92,29 @@ class CollElementEditor extends React.PureComponent<DefinitionProps> {
     }
 }
 
+const decorateDatabase = withDatabaseConnect(
+    {},
+    (props: RouteComponentProps<{ collIdent: string; elementId: string }>) => ({
+        collDefinition: {
+            collection: 'coll_definition' as 'coll_definition',
+            id: props.match.params.collIdent
+        },
+        collElement: {
+            collection: 'coll_element' as 'coll_element',
+            id: props.match.params.elementId
+        }
+    })
+);
+
 const decorateStore = connect(
-    (store: StoreState, props: RouteComponentProps<{ collIdent: string; elementId: string }>) => {
-        const { collIdent, elementId } = props.match.params;
-        return {
-            collDefinition:
-                store.database.get('models')
-                     .get('coll_definition', Immutable.Map())
-                     .get(collIdent),
-            collElement:
-                store.database.get('models')
-                     .get('coll_element', Immutable.Map())
-                     .get(elementId)
-        };
-    },
-    (dispatch, props: RouteComponentProps<{ collIdent: string; elementId: string }>) => {
-        const { collIdent, elementId } = props.match.params;
-        return {
-            onMount: () => {
-                dispatch(DatabaseActions.requireId('coll_definition', collIdent));
-                dispatch(DatabaseActions.requireId('coll_element', elementId));
-            },
-            onDataChange: data => {
-                dispatch(DatabaseActions.patch(collectionKey, elementId, data));
-            }
-        };
-    });
+    null,
+    (dispatch, props: RouteComponentProps<{ collIdent: string; elementId: string }>) => ({
+        onDataChange: data => {
+            dispatch(DatabasePatch(collectionKey, props.match.params.elementId, data));
+        }
+    }));
 
 export default compose(withRouter,
                        decorateStore,
+                       decorateDatabase,
                        decorateStyles)(CollElementEditor);

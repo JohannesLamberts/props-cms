@@ -1,4 +1,3 @@
-import * as Immutable          from 'immutable';
 import {
     Icon,
     MenuItem,
@@ -6,9 +5,7 @@ import {
 }                              from 'material-ui';
 import { CollDefinitionModel } from 'props-cms.connector-common';
 import * as React              from 'react';
-import { connect }             from 'react-redux';
-import { DatabaseActions }     from '../../redux/database.reducer';
-import { StoreState }          from '../../redux/store';
+import { withDatabaseConnect } from '../../redux/database/database.decorate';
 
 interface DefinitionProps {
     className?: string;
@@ -59,19 +56,6 @@ class CollElementEditorFieldSubContent extends React.PureComponent<DefinitionPro
     }
 }
 
-const decorateStore = connect(
-    (store: StoreState) => {
-        return {
-            collDefinitions: store.database
-                                  .get('models')
-                                  .get('coll_definition', Immutable.Map())
-                                  .toArray()
-        };
-    },
-    (dispatch) => ({
-        onMount: () => {
-            dispatch(DatabaseActions.require('coll_definition'));
-        }
-    }));
+const decorateDatabase = withDatabaseConnect({ collDefinitions: 'coll_definition' }, {});
 
-export default decorateStore(CollElementEditorFieldSubContent);
+export default decorateDatabase(CollElementEditorFieldSubContent);

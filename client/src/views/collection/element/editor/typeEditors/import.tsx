@@ -1,4 +1,3 @@
-import * as Immutable             from 'immutable';
 import {
     FormControlLabel,
     Switch,
@@ -7,14 +6,12 @@ import {
     WithStyles
 }                                 from 'material-ui';
 import * as React                 from 'react';
-import { connect }                from 'react-redux';
 import {
     CollDefinitionModel,
     CollElementModelDataRecord
 }                                 from '../../../../../../../connector/common/src';
 import { InitialFieldData }       from '../../../../../initializers/collectionElementDataRecordInitial';
-import { DatabaseActions }        from '../../../../../redux/database.reducer';
-import { StoreState }             from '../../../../../redux/store';
+import { withDatabaseConnect }    from '../../../../../redux/database/database.decorate';
 import { CollectionSelect }       from '../../../../../util';
 import CollElementEditorField     from '../editorFieldTypeEditor';
 import { TypeElementEditorProps } from './typeEditorProps';
@@ -33,7 +30,7 @@ const styles = {
 const decorateStyles = withStyles(styles);
 
 class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
-    collDefinition: CollDefinitionModel | undefined;
+    collDefinition: CollDefinitionModel;
     onMount: () => void;
 } & WithStyles<keyof typeof styles>> {
 
@@ -133,19 +130,13 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
     }
 }
 
-const decorateStore = connect(
-    (store: StoreState, { record }: TypeElementEditorProps<'import'>) => {
-        return {
-            collDefinition: record ? store.database
-                                          .get('models')
-                                          .get('coll_definition', Immutable.Map())
-                                          .get(record.collection) : undefined           // TODO: remove ternary
-        };
-    },
-    (dispatch) => ({
-        onMount: () => {
-            dispatch(DatabaseActions.require('coll_definition'));
+const decorateDatabase = withDatabaseConnect(
+    {},
+    ({ record }: TypeElementEditorProps<'import'>) => ({
+        collDefinition: {
+            collection: 'coll_definition' as 'coll_definition',
+            id: record ? record.collection : ''
         }
     }));
 
-export default decorateStore(decorateStyles(Editor));
+export default decorateDatabase(decorateStyles(Editor));

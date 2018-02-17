@@ -1,4 +1,3 @@
-import * as Immutable          from 'immutable';
 import {
     WithStyles,
     withStyles
@@ -7,9 +6,11 @@ import { CollDefinitionModel } from 'props-cms.connector-common';
 import * as React              from 'react';
 import { connect }             from 'react-redux';
 import { compose }             from 'redux';
-import { DatabaseActions }     from '../../../redux/database.reducer';
-import { StoreState }          from '../../../redux/store';
-import { DatabaseApiService }  from '../../../services/database.api_service';
+import {
+    DatabaseDelete,
+    DatabasePush
+}                              from '../../../redux/database/database.actions';
+import { withDatabaseConnect } from '../../../redux/database/database.decorate';
 import CollectionGridItemRoot  from './gridItemRoot';
 import CollectionGridItemSub   from './griditemSub';
 import CollectionGridSection   from './gridSection';
@@ -66,42 +67,28 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
 }
 
 const decorateStore = connect(
-    (store: StoreState) => {
-        return {
-            collDefinitions: store.database
-                                  .get('models')
-                                  .get('coll_definition', Immutable.Map())
-                                  .toArray()
-                                  .sort((elA, elB) => elA.label.localeCompare(elB.label))
-        };
-    },
+    null,
     dispatch => ({
         onDelete: (collIdent: string) => {
-            DatabaseApiService.delete('coll_definition', collIdent)
-                              .then(() => {
-                                  dispatch(DatabaseActions.require('coll_definition'));
-                              });
-        },
-        onMount: () => {
-            dispatch(DatabaseActions.require('coll_definition'));
+            dispatch(DatabaseDelete('coll_definition', collIdent));
         },
         onPush: (_id: string, root: boolean) => {
-            DatabaseApiService
-                .push('coll_definition', {
-                    _id,
-                    root,
-                    label: '',
-                    icon: '',
-                    color: '',
-                    description: '',
-                    fields: []
-                } as CollDefinitionModel)
-                .then(() => {
-                    dispatch(DatabaseActions.require('coll_definition'));
-                });
+            dispatch(DatabasePush('coll_definition', {
+                _id,
+                root,
+                label: '',
+                icon: '',
+                color: '',
+                description: '',
+                fields: []
+            } as CollDefinitionModel));
         }
     }));
 
 export const CollectionGrid
-                 = compose(decorateStore,
+                 = compose(withDatabaseConnect({
+                                                   collDefinitions: 'coll_definition'
+                                               },
+                                               {}),
+                           decorateStore,
                            decorateStyle)(Definition);

@@ -1,4 +1,3 @@
-import * as Immutable         from 'immutable';
 import {
     CircularProgress,
     Icon,
@@ -21,9 +20,12 @@ import {
 import { Link }               from 'react-router-dom';
 import { compose }            from 'redux';
 import { InitialElementData } from '../../../initializers/collectionElementDataRecordInitial';
-import { DatabaseActions }    from '../../../redux/database.reducer';
+import {
+    DatabasePush,
+    DatabaseRequire,
+    DatabaseRequireId
+}                             from '../../../redux/database/database.actions';
 import { StoreState }         from '../../../redux/store';
-import { DatabaseApiService } from '../../../services/database.api_service';
 import {
     FloatingActionButton,
     SimpleTable
@@ -119,16 +121,18 @@ export const decorateStore = connect(
     (store: StoreState, props: RouteComponentProps<{ collIdent: string }>) => {
         const { collIdent } = props.match.params;
         return {
-            collElements: store.database
-                               .get('models')
-                               .get('coll_element', Immutable.Map())
-                               .toArray()
-                               .filter((el: CollElementModel) => {
-                                   return el.collection === collIdent;
-                               }),
+            collElements: (store.database
+                                .get('collections')
+                                .get('coll_element')
+                                .get('models')
+                                .toArray() as CollElementModel[])
+                .filter((el: CollElementModel) => {
+                    return el.collection === collIdent;
+                }),
             collDefinition: store.database
+                                 .get('collections')
+                                 .get('coll_definition')
                                  .get('models')
-                                 .get('coll_definition', Immutable.Map())
                                  .get(collIdent)
         };
     },
@@ -136,14 +140,11 @@ export const decorateStore = connect(
         const { collIdent } = props.match.params;
         return {
             onMount: () => {
-                dispatch(DatabaseActions.require('coll_element'));
-                dispatch(DatabaseActions.requireId('coll_definition', collIdent));
+                dispatch(DatabaseRequire('coll_element'));
+                dispatch(DatabaseRequireId('coll_definition', collIdent));
             },
             onPush: (model: CollElementModel) => {
-                DatabaseApiService
-                    .push('coll_element', model)
-                    .then(() => dispatch(DatabaseActions
-                                             .require('coll_element')));
+                dispatch(DatabasePush('coll_element', model));
             }
         };
     });
