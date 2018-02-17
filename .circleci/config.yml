@@ -7,13 +7,13 @@ install_and_build: &install_and_build
       command: ls
   - run:
       name: Show directory
-      command: cd ../ && ls
+      command: cd ../../ && ls
   - run:
       name: Show directory
-      command: cd ../ && ls
+      command: cd ../../../ && ls
   - run:
       name: Show directory
-      command: cd ../ && ls
+      command: cd ../../../../ && ls
   - restore_cache:
       keys:
         - npm-cache-{{ checksum "package.json" }}
