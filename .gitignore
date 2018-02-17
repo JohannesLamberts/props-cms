@@ -8,7 +8,7 @@
 
 # environment
 **/_local_data
-*.local.json
+*.local*
 
 .idea
 
