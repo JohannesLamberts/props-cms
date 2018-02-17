@@ -24,22 +24,22 @@ jobs:
       - checkout
   build_client:
     <<: *default
-    working_directory: ~/tmp/build/client
+    working_directory: ~/tmp/build/props-cms/client
     steps:
       *install_and_build
   build_server:
     <<: *default
-    working_directory: ~/tmp/build/server
+    working_directory: ~/tmp/build/props-cms/server
     steps:
       *install_and_build
   build_connector_common:
     <<: *default
-    working_directory: ~/tmp/build/connector/client
+    working_directory: ~/tmp/build/props-cms/connector/client
     steps:
       *install_and_build
   build_connector_react:
     <<: *default
-    working_directory: ~/tmp/build/connector/react
+    working_directory: ~/tmp/build/props-cms/connector/react
     steps:
       *install_and_build
 workflows:
