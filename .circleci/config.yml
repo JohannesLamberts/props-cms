@@ -28,7 +28,7 @@ jobs:
       - restore_cache:
           keys:
             - npm-cache-{{ checksum "package.json" }}
-      - run
+      - run:
         - npm i
       - save_cache:
           key: npm-cache-{{ checksum "package.json" }}
