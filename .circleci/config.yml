@@ -1,4 +1,4 @@
-install_and_build: &install_with_cache
+install_and_build: &install_and_build
   - restore_cache:
       keys:
         - npm-cache-{{ checksum "package.json" }}
