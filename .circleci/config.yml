@@ -15,24 +15,20 @@ install_and_build: &install_with_cache
 version: 2
 jobs:
   build_client:
-    working_directory: ~/tmp/client
+    working_directory: ~/client
     steps:
-      - cd client
       <<: *install_and_build
   build_server:
-    working_directory: ~/tmp/server
+    working_directory: ~/server
     steps:
-      - cd server
       <<: *install_and_build
   build_connector_common:
-    working_directory: ~/tmp/connector/client
+    working_directory: ~/connector/client
     steps:
-      - cd connector/client
       <<: *install_and_build
   build_connector_react:
-    working_directory: ~/tmp/connector/react
+    working_directory: ~/connector/react
     steps:
-      - cd connector/react
       <<: *install_and_build
 workflows:
   version: 2
