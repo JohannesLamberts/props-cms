@@ -18,22 +18,22 @@ install_and_build: &install_and_build
 version: 2
 jobs:
   build_client:
-    >>: *default
+    <<: *default
     working_directory: ~/client
     steps:
       - *install_and_build
   build_server:
-    >>: *default
+    <<: *default
     working_directory: ~/server
     steps:
       - *install_and_build
   build_connector_common:
-    >>: *default
+    <<: *default
     working_directory: ~/connector/client
     steps:
       - *install_and_build
   build_connector_react:
-    >>: *default
+    <<: *default
     working_directory: ~/connector/react
     steps:
       - *install_and_build
