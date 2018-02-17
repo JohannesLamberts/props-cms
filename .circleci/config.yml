@@ -19,6 +19,7 @@ version: 2
 jobs:
   checkout:
     <<: *default
+    working_directory: ~/
     steps:
       - checkout
   build_client:
