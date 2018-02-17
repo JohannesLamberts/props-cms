@@ -34,12 +34,18 @@ jobs:
     working_directory: /tmp/build
     steps:
       - checkout
+      - run
+          name: dir
+          command: echo $PWD
       - run:
           name: Show directory
           command: ls
       - run:
-          name: Show client directore
-          command: cd client && ls
+          name: Show directory
+          command: cd ../ && ls
+      - run:
+          name: Show directory
+          command: cd ../../ && ls
   build_client:
     <<: *default
     working_directory: /tmp/build/client
