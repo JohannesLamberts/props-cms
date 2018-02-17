@@ -41,7 +41,7 @@ jobs:
       *install_and_build
   build_connector_common:
     <<: *default
-    working_directory: ~/props-cms/connector/client
+    working_directory: ~/props-cms/connector/common
     steps:
       *install_and_build
   build_connector_react:
