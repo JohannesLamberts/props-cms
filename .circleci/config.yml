@@ -19,27 +19,27 @@ version: 2
 jobs:
   checkout:
     <<: *default
-    working_directory: ~/
+    working_directory: ~/tmp/build
     steps:
       - checkout
   build_client:
     <<: *default
-    working_directory: ~/client
+    working_directory: ~/tmp/build/client
     steps:
       *install_and_build
   build_server:
     <<: *default
-    working_directory: ~/server
+    working_directory: ~/tmp/build/server
     steps:
       *install_and_build
   build_connector_common:
     <<: *default
-    working_directory: ~/connector/client
+    working_directory: ~/tmp/build/connector/client
     steps:
       *install_and_build
   build_connector_react:
     <<: *default
-    working_directory: ~/connector/react
+    working_directory: ~/tmp/build/connector/react
     steps:
       *install_and_build
 workflows:
