@@ -6,22 +6,20 @@ import {
     DatabaseRequireId
 }                      from './database.actions';
 
-type FullRequest<TKeys extends string = string> = {
-    [key in TKeys]: keyof Collections
-    };
+type FullRequest<TKeys extends string = string> = { readonly [key in TKeys]: keyof Collections };
 
-type IDRequest<TKeys extends string = string> = {
-    [key in TKeys]: {
-    collection: keyof Collections;
-    id: string;
+interface FilteredRequestElement {
+    readonly collection: keyof Collections;
+    readonly id: string;
 }
-    };
+
+type FilteredRequest<TKeys extends string = string> = { readonly [key in TKeys]: FilteredRequestElement };
 
 export const withDatabaseConnect = <TProps = {},
     TKeysFull extends string = string,
     TKeysId extends string = string>
 (requestFull: FullRequest<TKeysFull> | ((props: TProps) => FullRequest<TKeysFull>),
- requestId: IDRequest<TKeysId> | ((props: TProps) => IDRequest<TKeysId>)) => {
+ requestId: FilteredRequest<TKeysId> | ((props: TProps) => FilteredRequest<TKeysId>)) => {
 
     return connect(
         (store: StoreState, props: TProps) => {
