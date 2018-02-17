@@ -46,15 +46,15 @@ workflows:
   build-all:
     jobs:
       - checkout
-      - build_client
+      - build_client:
           requires:
             - checkout
-      - build_server
+      - build_server:
           requires:
             - checkout
-      - build_connector_common
+      - build_connector_common:
           requires:
             - checkout
-      - build_connector_react
+      - build_connector_react:
           requires:
             - checkout
