@@ -1,6 +1,6 @@
 default: &default
   docker:
-    - image: mongo:3.4.4
+    - image: circleci/node:8.9.1
 install_and_build: &install_and_build
   restore_cache:
     keys:
