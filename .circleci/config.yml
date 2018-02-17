@@ -1,3 +1,6 @@
+default: &default
+  docker:
+    - image: mongo:3.4.4
 install_and_build: &install_and_build
   restore_cache:
     keys:
@@ -15,18 +18,22 @@ install_and_build: &install_and_build
 version: 2
 jobs:
   build_client:
+    >>: *default
     working_directory: ~/client
     steps:
       - *install_and_build
   build_server:
+    >>: *default
     working_directory: ~/server
     steps:
       - *install_and_build
   build_connector_common:
+    >>: *default
     working_directory: ~/connector/client
     steps:
       - *install_and_build
   build_connector_react:
+    >>: *default
     working_directory: ~/connector/react
     steps:
       - *install_and_build
