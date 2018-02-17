@@ -13,7 +13,18 @@ interface EnvCfg {
             pw: string;
         }
     };
-    webserver: Record<string, WebserverCfg>;
+    webserver: {
+        editor?: {
+            port: number;
+            src: string;
+        },
+        api?: {
+            port: number;
+        }
+    };
+    websocket?: {
+        port: number;
+    };
     logger: {
         path: string;
         level: 'off' | 'silly' | 'debug' | 'verbose' | 'info' | 'warn' | 'error';

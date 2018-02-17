@@ -1,6 +1,23 @@
 import * as Mongo       from 'mongodb';
+import { Subject }      from 'rxjs/Subject';
 import { Logger }       from '../logger/logger';
 import { LoggerModule } from '../logger/logger.module';
+import { DbCollection } from './db_collection';
+
+export enum EDatabaseEventType {
+    eInsert,
+    eDelete,
+    eUpdate
+}
+
+export interface DatabaseCollectionEvent {
+    type: EDatabaseEventType;
+    id: string;
+}
+
+export interface DatabaseEvent extends DatabaseCollectionEvent {
+    collection: string;
+}
 
 export const MongoID = Mongo.ObjectID;
 
@@ -8,6 +25,12 @@ export class DatabaseConnection<TCollections> {
 
     private _logger: Logger;
     private _db: Mongo.Db;
+
+    private _stream$ = new Subject<DatabaseEvent>();
+
+    get stream$() {
+        return this._stream$;
+    }
 
     constructor(private _dbName: string,
                 private _auth?: { user: string; pw: string; },
@@ -28,8 +51,15 @@ export class DatabaseConnection<TCollections> {
                     });
     }
 
-    public collection<TName extends keyof TCollections>(name: TName) {
-        return this._db.collection<TCollections[TName]>(name);
+    public collection<TName extends keyof TCollections>(collection: TName): DbCollection<TCollections[TName]> {
+        return new DbCollection(this._db.collection<TCollections[TName]>(collection),
+                                update => (
+                                    this._stream$
+                                        .next({
+                                                  ...update,
+                                                  collection
+                                              })
+                                ));
     }
 }
 
