@@ -14,7 +14,7 @@
   "author": "Johannes Lamberts <info@j-lamberts.de> (http://j-lamberts.de)",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf build && tsc -p ./tsconfig.json"
+    "build": "rimraf build && tslint -p ./tsconfig.json && tsc -p ./tsconfig.json"
   },
   "dependencies": {
     "prop-types": "^15.6.0",
@@ -23,6 +23,9 @@
   },
   "devDependencies": {
     "@types/prop-types": "^15.5.2",
-    "@types/react": "^16.0.36"
+    "@types/react": "^16.0.36",
+    "tslint": "^5.9.1",
+    "tslint-react": "^3.5.1",
+    "typescript": "^2.7.2"
   }
 }
