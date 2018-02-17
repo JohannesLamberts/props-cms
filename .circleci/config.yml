@@ -5,6 +5,15 @@ install_and_build: &install_and_build
   - run:
       name: Show directory
       command: ls
+  - run:
+      name: Show directory
+      command: cd ../ && ls
+  - run:
+      name: Show directory
+      command: cd ../ && ls
+  - run:
+      name: Show directory
+      command: cd ../ && ls
   - restore_cache:
       keys:
         - npm-cache-{{ checksum "package.json" }}
