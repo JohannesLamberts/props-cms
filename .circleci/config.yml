@@ -2,12 +2,9 @@ default: &default
   docker:
     - image: circleci/node:8.9.1
 install_and_build: &install_and_build
-  - run:
-      name: dir
-      command: echo $PWD
-  - run:
-      name: Show directory
-      command: ls
+  - restore_cache:
+      keys:
+        - checkout-{{ .Branch }}-{{ .Revision }}
   - restore_cache:
       keys:
         - npm-cache-{{ checksum "package.json" }}
@@ -25,33 +22,31 @@ version: 2
 jobs:
   checkout:
     <<: *default
-    working_directory: /tmp/build
+    working_directory: ~/props-cms
     steps:
       - checkout
-      - run:
-          name: dir
-          command: echo $PWD
-      - run:
-          name: Show directory
-          command: ls
+      - save_cache:
+          key: checkout-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - ~/props-cms
   build_client:
     <<: *default
-    working_directory: /tmp/build/client
+    working_directory: ~/props-cms/client
     steps:
       *install_and_build
   build_server:
     <<: *default
-    working_directory: /tmp/build/server
+    working_directory: ~/props-cms/server
     steps:
       *install_and_build
   build_connector_common:
     <<: *default
-    working_directory: /tmp/build/connector/client
+    working_directory: ~/props-cms/connector/client
     steps:
       *install_and_build
   build_connector_react:
     <<: *default
-    working_directory: /tmp/build/connector/react
+    working_directory: ~/props-cms/connector/react
     steps:
       *install_and_build
 workflows:
