@@ -2,19 +2,19 @@ default: &default
   docker:
     - image: circleci/node:8.9.1
 install_and_build: &install_and_build
-  restore_cache:
-    keys:
-      - npm-cache-{{ checksum "package.json" }}
-  run:
-    name: Install
-    command: npm i
-  save_cache:
-    key: npm-cache-{{ checksum "package.json" }}
-    paths:
-      - node_modules
-  run:
-    name: Build
-    command: npm run build
+  - restore_cache:
+      keys:
+        - npm-cache-{{ checksum "package.json" }}
+  - run:
+      name: Install
+      command: npm i
+  - save_cache:
+      key: npm-cache-{{ checksum "package.json" }}
+      paths:
+        - node_modules
+  - run:
+      name: Build
+      command: npm run build
 version: 2
 jobs:
   build_client:
