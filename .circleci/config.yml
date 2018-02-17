@@ -29,7 +29,8 @@ jobs:
           keys:
             - npm-cache-{{ checksum "package.json" }}
       - run:
-        - npm i
+        name: Install
+        command: npm i
       - save_cache:
           key: npm-cache-{{ checksum "package.json" }}
           paths:
