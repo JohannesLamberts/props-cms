@@ -1,35 +1,35 @@
 install_and_build: &install_and_build
-  - restore_cache:
-      keys:
-        - npm-cache-{{ checksum "package.json" }}
-  - run:
-      name: Install
-      command: npm i
-  - save_cache:
-      key: npm-cache-{{ checksum "package.json" }}
-      paths:
-        - node_modules
-  - run:
-      name: Build
-      command: npm run build
+  restore_cache:
+    keys:
+      - npm-cache-{{ checksum "package.json" }}
+  run:
+    name: Install
+    command: npm i
+  save_cache:
+    key: npm-cache-{{ checksum "package.json" }}
+    paths:
+      - node_modules
+  run:
+    name: Build
+    command: npm run build
 version: 2
 jobs:
   build_client:
     working_directory: ~/client
     steps:
-      <<: *install_and_build
+      - *install_and_build
   build_server:
     working_directory: ~/server
     steps:
-      <<: *install_and_build
+      - *install_and_build
   build_connector_common:
     working_directory: ~/connector/client
     steps:
-      <<: *install_and_build
+      - *install_and_build
   build_connector_react:
     working_directory: ~/connector/react
     steps:
-      <<: *install_and_build
+      - *install_and_build
 workflows:
   version: 2
   build-all:
