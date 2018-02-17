@@ -25,16 +25,6 @@ jobs:
     working_directory: ~/props-cms
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - npm-cache-{{ checksum "package.json" }}
-      - run:
-          name: Install
-          command: npm i
-      - save_cache:
-          key: npm-cache-{{ checksum "package.json" }}
-          paths:
-            - node_modules
       - save_cache:
           key: checkout-{{ .Branch }}-{{ .Revision }}
           paths:
