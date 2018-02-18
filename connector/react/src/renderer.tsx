@@ -35,7 +35,7 @@ const RenderImport = ({ importFn, inject }: {
 
 export default class extends React.Component<CmsImportProps> {
 
-    static childContextTypes = CmsConnectorContextType;
+    static contextTypes = CmsConnectorContextType;
 
     render() {
 
