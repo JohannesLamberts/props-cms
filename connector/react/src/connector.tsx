@@ -19,10 +19,12 @@ export type CmsContextRequest =
      callback: (nodes: CollElementModel[],
                 err?: Error) => void) => void;
 
+export interface CmsSubscription {
+    unsubscribe: () => void;
+}
+
 export interface CmsContext {
-    subscribe: (collIdent: string, query: Object, callback: CmsConnectorSubscriptionCallback) => {
-        unsubscribe: () => void;
-    };
+    subscribe: (collIdent: string, query: Object, callback: CmsConnectorSubscriptionCallback) => CmsSubscription;
     collections: CollectionImports;
 }
 
@@ -84,7 +86,7 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
     handleSubscribe(collIdent: string, query: Object, callback: CmsConnectorSubscriptionCallback) {
         const newSubscription = {
             collIdent,
-            query: JSON.stringify(query),
+            query,
             callback,
             fullfilled: false
         };
@@ -167,7 +169,7 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
         const { api } = this.props;
 
         return CmsConnector
-            .fetch<CollElementModel[]>(api + `/${collIdent}?queries=${JSON.stringify(unfulfilledQuerys)}`)
+            .fetch<CollElementModel[]>(api + `/${collIdent}?query=${JSON.stringify({ $or: unfulfilledQuerys })}`)
             .then(models => {
                 const modelIds = models.map(model => model._id);
                 this._cache[collIdent] = [
