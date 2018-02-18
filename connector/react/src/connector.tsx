@@ -1,7 +1,11 @@
-import * as PropTypes       from 'prop-types';
-import { CollElementModel } from 'props-cms.connector-common';
-import * as React           from 'react';
-import { debounce }         from 'throttle-debounce';
+import * as PropTypes from 'prop-types';
+import {
+    Collections,
+    CollElementModel
+}                     from 'props-cms.connector-common';
+import * as React     from 'react';
+import * as SOCKET    from 'socket.io-client';
+import { debounce }   from 'throttle-debounce';
 
 export const CmsConnectorChannel = '__CMS_CONNECTOR__';
 
@@ -44,10 +48,22 @@ interface CmsConnectorSubscription {
     fullfilled: boolean;
 }
 
+export enum EDatabaseEventType {
+    eInsert,
+    eDelete,
+    eUpdate
+}
+
+export interface DatabaseEvent {
+    type: EDatabaseEventType;
+    id: string;
+    collection: keyof Collections;
+}
+
 class CmsConnector extends React.Component<CmsConnectorProps> {
 
     static childContextTypes = CmsConnectorContextType;
-
+    private _ws: SOCKET | null = null;
     private _subscriptions: CmsConnectorSubscription[] = [];
     private _cache: {
         [P in string]?: CollElementModel[]
@@ -78,9 +94,72 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
     }
 
     constructor(props: CmsConnectorProps) {
+
         super(props);
+
         this.handleSubscribe = this.handleSubscribe.bind(this);
+        this.handleWebsocketUpdate = this.handleWebsocketUpdate.bind(this);
+
         this._runFetch = debounce(20, false, this._runFetch.bind(this));
+
+        if (props.websocket) {
+            this._ws = SOCKET(props.websocket);
+
+            this._ws.on('db.next', this.handleWebsocketUpdate);
+
+            this._ws.on('connect', () => {
+                this._ws.emit('db.subscribe', 'subscribe');
+            });
+
+            this._ws.on('disconnect', () => {
+                console.debug(`WS disconnected`);
+            });
+        }
+    }
+
+    handleWebsocketUpdate(data: DatabaseEvent) {
+
+        if (data.collection !== 'coll_element') {
+            return;
+        }
+
+        const { api } = this.props;
+
+        for (const ident of Object.keys(this._cache)) {
+            const models = this._cache[ident];
+            if (!models) {
+                continue;
+            }
+            for (let i = 0; i < models.length; i++) {
+                const model = models[i];
+                if (model._id !== data.id) {
+                    continue;
+                }
+                switch (data.type) {
+                    case EDatabaseEventType.eUpdate:
+                    case EDatabaseEventType.eInsert:
+                        CmsConnector
+                            .fetch<CollElementModel[]>(
+                                api + `/collection?query=${JSON.stringify({ _id: data.id })}`)
+                            .then(fetchedModels => {
+                                if (fetchedModels.length !== 1) {
+                                    console.debug(`Expected to return exactly one model`);
+                                }
+                                const collIdent = fetchedModels[0].collection;
+                                this._collectionInsert(collIdent, fetchedModels);
+                                this._collectionSend(collIdent);
+                            });
+                        break;
+                    case EDatabaseEventType.eDelete:
+                        models.splice(i, 1);
+                        break;
+                    default:
+                        throw new Error(`Switch case not handled: ${data.type}`);
+                }
+                return;
+            }
+        }
+
     }
 
     handleSubscribe(collIdent: string, query: Object, callback: CmsConnectorSubscriptionCallback) {
@@ -166,22 +245,30 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
             return Promise.resolve();
         }
 
-        const { api } = this.props;
+        const { api }  = this.props,
+              apiQuery = unfulfilledQuerys.length === 1
+                  ? '{}'
+                  : JSON.stringify({ $or: unfulfilledQuerys });
 
         return CmsConnector
-            .fetch<CollElementModel[]>(api + `/${collIdent}?query=${JSON.stringify({ $or: unfulfilledQuerys })}`)
+            .fetch<CollElementModel[]>(
+                api + `/collection/${collIdent}?query=${apiQuery}`)
             .then(models => {
-                const modelIds = models.map(model => model._id);
-                this._cache[collIdent] = [
-                    ...(this._cache[collIdent] || []).filter(currModel =>
-                                                                 modelIds.indexOf(currModel._id) === -1),
-                    ...models
-                ];
+                this._collectionInsert(collIdent, models);
                 for (const sub of unfulfilled) {
                     sub.fullfilled = true;
                 }
                 this._collectionSend(collIdent);
             });
+    }
+
+    private _collectionInsert(collIdent: string, models: CollElementModel[]) {
+        const modelIds = models.map(model => model._id);
+        this._cache[collIdent] = [
+            ...(this._cache[collIdent] || []).filter(currModel =>
+                                                         modelIds.indexOf(currModel._id) === -1),
+            ...models
+        ];
     }
 
     private _collectionSend(collIdent: string) {
