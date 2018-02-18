@@ -45,6 +45,10 @@ export default class extends React.Component<CmsImportProps> {
         const modelArr = Array.isArray(data) ? data : [data];
 
         return modelArr.map(model => {
+            if (!model.collection) {
+                // TODO: Error in development
+                return null;
+            }
             const rendered = (
                 <RenderImport
                     key={model._id}
