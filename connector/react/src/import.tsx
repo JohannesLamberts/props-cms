@@ -3,7 +3,8 @@ import * as React           from 'react';
 import {
     CmsConnectorChannel,
     CmsConnectorContextType,
-    CmsContext
+    CmsContext,
+    CmsSubscription
 }                           from './connector';
 import CmsRender            from './renderer';
 
@@ -20,6 +21,8 @@ export default class extends React.Component<CmsImportProps, {
 
     static contextTypes = CmsConnectorContextType;
 
+    private _subscription: CmsSubscription;
+
     constructor(props: CmsImportProps) {
         super(props);
         this.state = {
@@ -32,7 +35,7 @@ export default class extends React.Component<CmsImportProps, {
         if (!context) {
             return;
         }
-        context.request(
+        this._subscription = context.subscribe(
             this.props.ident,
             this.props.query || {},
             (models, err) => {
@@ -41,6 +44,10 @@ export default class extends React.Component<CmsImportProps, {
                                   err
                               });
             });
+    }
+
+    componentWillUnmount() {
+        this._subscription.unsubscribe();
     }
 
     render() {

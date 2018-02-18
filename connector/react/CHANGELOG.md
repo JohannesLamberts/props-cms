@@ -1,3 +1,7 @@
+#0.1.2
+###### *18.02.2018*
+- Debounce & cache queries
+- Support live-updates via websocket
 #0.1.1
 ###### *15.02.2018*
 - add property: 
