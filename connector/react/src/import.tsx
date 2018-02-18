@@ -32,7 +32,7 @@ export default class extends React.Component<CmsImportProps, {
         if (!context) {
             return;
         }
-        context.request(
+        context.subscribe(
             this.props.ident,
             this.props.query || {},
             (models, err) => {
