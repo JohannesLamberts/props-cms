@@ -1,33 +1,32 @@
-import * as express         from 'express';
-import * as path            from 'path';
-import { DatabaseApi }      from './api.database';
-import { ServiceApi }       from './api.service';
-import { ENV }              from './env';
-import { createExpressApp } from './modules/http/express.module';
-import { createWebsocket }  from './modules/websocket/websocket.module';
+import { MongoDbDatabaseWrapper } from 'server-modules/build/modules/mongodb/database';
+import { ENV }                    from './env';
+import { Server }                 from './environment';
 
-const { websocket, webserver } = ENV;
+const { name, auth } = ENV.db;
 
-const { api, editor } = webserver;
+const Client = Server.createMongoDb({ auth });
 
-if (api) {
-    createExpressApp(api.port, app => {
-        DatabaseApi.register(app);
-        ServiceApi.register(app);
-    });
-}
+const DbConfig = {
+    collections: {
+        coll_definition: {
+            // watch: true
+        },
+        coll_element: {
+            // watch: true
+        }
+    }
+};
 
-if (editor) {
-    createExpressApp(editor.port, app => {
-        const AppFrontend = (req, res) => {
-            res.sendFile(path.join(process.cwd(), editor.src!, 'index.html'));
-        };
-        app.use('/static', express.static(path.join(editor.src!, 'static')));
-        app.get('/', AppFrontend);
-        app.get('/*', AppFrontend);
-    });
-}
+export let Database: MongoDbDatabaseWrapper<typeof DbConfig>;
 
-if (websocket) {
-    createWebsocket(websocket.port);
-}
+Client.connect()
+      .then(() => {
+          Database = Client.database(
+              name,
+              DbConfig
+          );
+
+          import('./http/api');
+          import('./http/editor');
+          import('./websocket/websocket');
+      });
