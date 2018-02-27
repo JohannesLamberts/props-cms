@@ -1,9 +1,12 @@
-import { Collections } from 'props-cms.connector-common';
+import {
+    CollectionKey,
+    Collections
+} from 'props-cms.connector-common';
 import {
     ImmutableMap,
     ImmutableMapUndef,
     ImmutableRecord
-}                      from 'typescript-immutable';
+} from 'typescript-immutable';
 
 const InitialCollectionState = new ImmutableRecord(
     {
@@ -13,7 +16,7 @@ const InitialCollectionState = new ImmutableRecord(
 
 const InitialState = new ImmutableRecord(
     {
-        collections: new ImmutableMap<keyof Collections, typeof InitialCollectionState>(
+        collections: new ImmutableMap<CollectionKey, typeof InitialCollectionState>(
             InitialCollectionState)
     });
 
@@ -21,7 +24,7 @@ export type TState = typeof InitialState;
 
 export const DATABASE_RECIEVE = 'DATABASE_RECIEVE';
 
-export type ActionRecieve<TKey extends keyof Collections> = {
+export type ActionRecieve<TKey extends CollectionKey> = {
     type: typeof DATABASE_RECIEVE;
     payload: {
         complete: boolean;

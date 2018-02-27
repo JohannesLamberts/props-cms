@@ -1,34 +1,22 @@
-import { Collections }       from 'props-cms.connector-common';
+import { DatabaseUpdate }    from 'props-cms.connector-common';
 import * as React            from 'react';
 import { connect }           from 'react-redux';
 import * as SOCKET           from 'socket.io-client';
 import { DatabaseRequireId } from './database.actions';
 
-export enum EDatabaseEventType {
-    eInsert,
-    eDelete,
-    eUpdate
-}
-
-export interface DatabaseEvent {
-    type: EDatabaseEventType;
-    id: string;
-    collection: keyof Collections;
-}
-
 const decorateStore = connect(
     null,
     dispatch => ({
-        onNext: (data: DatabaseEvent) => {
-            switch (data.type) {
-                case EDatabaseEventType.eUpdate:
-                case EDatabaseEventType.eInsert:
+        onNext: (data: DatabaseUpdate) => {
+            switch (data.operationType) {
+                case 'update':
+                case 'insert':
                     dispatch(DatabaseRequireId(data.collection,
-                                               data.id,
+                                               data._id,
                                                true));
                     break;
                 default:
-                    console.debug(`Not implemented: ${data.type}`);
+                    console.debug(`Not implemented: ${data.operationType}`);
                     break;
             }
         }
@@ -37,7 +25,7 @@ const decorateStore = connect(
 interface WSComponentProps {
     url?: string;
     children?: React.ReactNode;
-    onNext: (data: DatabaseEvent) => void;
+    onNext: (data: DatabaseUpdate) => void;
 }
 
 class WSComponent extends React.Component<WSComponentProps> {
@@ -56,7 +44,7 @@ class WSComponent extends React.Component<WSComponentProps> {
 
             ws.on('connect', () => {
                 console.debug(`WS connected`);
-                ws.emit('db.subscribe', 'subscribe');
+                ws.emit('db.subscribe', ['coll_definition', 'coll_element']);
             });
 
             ws.on('disconnect', () => {

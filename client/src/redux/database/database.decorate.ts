@@ -1,15 +1,18 @@
-import { Collections } from 'props-cms.connector-common';
-import { connect }     from 'react-redux';
-import { StoreState }  from '../store';
+import {
+    CollectionKey,
+    Collections
+}                     from 'props-cms.connector-common';
+import { connect }    from 'react-redux';
+import { StoreState } from '../store';
 import {
     DatabaseRequire,
     DatabaseRequireId
-}                      from './database.actions';
+}                     from './database.actions';
 
-type FullRequest<TKeys extends string = string> = { readonly [key in TKeys]: keyof Collections };
+type FullRequest<TKeys extends string = string> = { readonly [key in TKeys]: CollectionKey };
 
 interface FilteredRequestElement {
-    readonly collection: keyof Collections;
+    readonly collection: CollectionKey;
     readonly id: string;
 }
 
