@@ -4,11 +4,13 @@ import { WebsocketSubscriptionConnection } from './connection';
 
 const { websocket } = ENV;
 
-if (websocket) {
-    Server
-        .createWebsocket(
-            {
-                port: websocket.port,
-                connection: WebsocketSubscriptionConnection
-            });
-}
+export default () => {
+    if (websocket) {
+        Server
+            .createWebsocket(
+                {
+                    port: websocket.port,
+                    connection: WebsocketSubscriptionConnection
+                });
+    }
+};

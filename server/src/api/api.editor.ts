@@ -1,9 +1,9 @@
-import { Collections } from 'props-cms.connector-common';
+import { CollectionKey } from 'props-cms.connector-common';
 import {
     ApiSegment,
     EHttpState
-}                      from 'server-modules';
-import { Database }    from '../index';
+}                        from 'server-modules';
+import { getCollection } from '../database/database';
 
 const randomId = (length: number = 16): string => {
     let str = '';
@@ -13,13 +13,12 @@ const randomId = (length: number = 16): string => {
     return str;
 };
 
-export const DatabaseApi = new ApiSegment('db');
+export const DatabaseApi: ApiSegment = new ApiSegment('db');
 
 DatabaseApi
-    .addRoute<{ collection: keyof Collections }>('/:collection')
+    .addRoute<{ collection: CollectionKey }>('/:collection')
     .get(({ params }, res) => {
-        Database
-            .collection(params.collection)
+        getCollection(params.collection)
             .find({})
             .toArray()
             .then(documents => {
@@ -29,8 +28,7 @@ DatabaseApi
     .post<{
         data: any
     }>(({ body, params }, res) => {
-        Database
-            .collection(params.collection)
+        getCollection(params.collection)
             .insertOne(
                 Object.assign(
                     {
@@ -44,15 +42,13 @@ DatabaseApi
     });
 
 DatabaseApi
-    .addRoute<{ id: string, collection: keyof Collections }>('/:collection/:id')
+    .addRoute<{ id: string, collection: CollectionKey }>('/:collection/:id')
     .get(({ params }, res) => {
-        Database
-            .collection(params.collection)
+        getCollection(params.collection)
             .findOne({ _id: params.id })
             .then(document => {
                 if (!document) {
-                    res.status(EHttpState.eNotFound)
-                       .end();
+                    res.sendStatus(EHttpState.eNotFound);
                 } else {
                     res.status(EHttpState.eOk)
                        .json(document);
@@ -63,16 +59,14 @@ DatabaseApi
         data: any
     }>(({ body, params }, res) => {
         delete body.data._id;
-        Database
-            .collection(params.collection)
+        getCollection(params.collection)
             .updateOne({ _id: params.id }, { $set: body.data })
             .then(() => {
                 res.sendStatus(EHttpState.eOk);
             });
     })
     .delete(({ params }, res) => {
-        Database
-            .collection(params.collection)
+        getCollection(params.collection)
             .deleteOne({ _id: params.id })
             .then(() => {
                 res.sendStatus(EHttpState.eOk);

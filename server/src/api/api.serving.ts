@@ -1,8 +1,8 @@
 import {
     ApiSegment,
     EHttpState
-}                   from 'server-modules';
-import { Database } from '../index';
+}                        from 'server-modules';
+import { getCollection } from '../database/database';
 
 export const ServiceApi = new ApiSegment('service');
 
@@ -11,8 +11,7 @@ ServiceApi
     .get<{
         query: string
     }>(({ query }, res) => {
-        Database
-            .collection('coll_element')
+        getCollection('coll_element')
             .find(JSON.parse(query.query || '{}'))
             .toArray()
             .then(elements => {
@@ -29,8 +28,7 @@ ServiceApi
     .get<{
         query: string
     }>(({ params, query }, res) => {
-        Database
-            .collection('coll_element')
+        getCollection('coll_element')
             .find({
                       $and: [
                           { collection: params.ident },

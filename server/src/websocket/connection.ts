@@ -1,27 +1,52 @@
+import {
+    ChangeStream,
+    Db
+}                              from 'mongodb';
 import { WebsocketConnection } from 'server-modules';
-import { Database }            from '../index';
+import { getCollection }       from '../database/database';
+
+const changeStreams: Record<string, ChangeStream> = {};
+
+const changeStream = (collectionName: string): ChangeStream => {
+    if (!changeStreams[collectionName]) {
+        changeStreams[collectionName] = getCollection(collectionName).watch();
+    }
+    return changeStreams[collectionName];
+};
 
 export class WebsocketSubscriptionConnection extends WebsocketConnection {
 
-    private _subscriptionActive = false;
+    private _subscriptions: Record<string, (args?: any) => void> = {};
 
     public init(): this {
 
         this._socketListener = this._socketListener.bind(this);
 
-        this._socket.on('db.subscribe', () => {
-            this.dbSubscribe();
+        this._socket.on('db.subscribe', (collections: string[]) => {
+            for (const collectionName of collections) {
+                if (!this._subscriptions[collectionName]) {
+                    const cb = (update) => {
+                        this._socket.emit('db.next', {
+                            collection: collectionName,
+                            operationType: update.operationType,
+                            _id: update.documentKey._id
+                        });
+                    };
+                    changeStream(collectionName).on('change', cb);
+                    this._subscriptions[collectionName] = cb;
+                }
+            }
         });
 
-        this._socket.on('db.unsubscribe', () => {
-            this.dbUnsubscribe();
+        this._socket.on('db.unsubscribe', (collections: string[]) => {
+            this._dbUnsubscribe(collections);
         });
 
         return this;
     }
 
     public destroy() {
-        this.dbUnsubscribe();
+        this._dbUnsubscribe(Object.keys(this._subscriptions));
         return;
     }
 
@@ -29,21 +54,16 @@ export class WebsocketSubscriptionConnection extends WebsocketConnection {
         collection: string;
         document: any
     }) {
-        console.debug(update);
         this._socket.emit('db.next', update);
     }
 
-    private dbSubscribe() {
-        if (!this._subscriptionActive) {
-            Database.emitter.on('change', this._socketListener);
+    private _dbUnsubscribe(collectionNames: string[]) {
+        for (const collectionName of collectionNames) {
+            const cb = this._subscriptions[collectionName];
+            if (cb) {
+                changeStream(collectionName).removeListener('change', cb);
+                delete this._subscriptions[collectionName];
+            }
         }
-        this._subscriptionActive = true;
-    }
-
-    private dbUnsubscribe() {
-        if (this._subscriptionActive) {
-            Database.emitter.removeListener('change', this._socketListener);
-        }
-        this._subscriptionActive = false;
     }
 }
