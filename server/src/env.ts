@@ -10,7 +10,7 @@ interface EnvCfg {
         name: string;
         auth?: {
             user: string;
-            pw: string;
+            password: string;
         }
     };
     webserver: {

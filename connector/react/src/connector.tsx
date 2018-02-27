@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 import {
-    Collections,
+    CollectionKey,
     CollElementModel
 }                     from 'props-cms.connector-common';
 import * as React     from 'react';
@@ -57,7 +57,7 @@ export enum EDatabaseEventType {
 export interface DatabaseEvent {
     type: EDatabaseEventType;
     id: string;
-    collection: keyof Collections;
+    collection: CollectionKey;
 }
 
 class CmsConnector extends React.Component<CmsConnectorProps> {

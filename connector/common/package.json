@@ -1,7 +1,7 @@
 {
   "name": "props-cms.connector-common",
-  "version": "0.1.3",
-  "description": "Common model data.",
+  "version": "0.1.4",
+  "description": "Common data for headless cms.",
   "repository": "https://github.com/JohannesLamberts/react-cms/tree/master/connector/common",
   "keywords": [
     "cms",

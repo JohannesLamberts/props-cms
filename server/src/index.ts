@@ -1,33 +1,11 @@
-import * as express         from 'express';
-import * as path            from 'path';
-import { DatabaseApi }      from './api.database';
-import { ServiceApi }       from './api.service';
-import { ENV }              from './env';
-import { createExpressApp } from './modules/http/express.module';
-import { createWebsocket }  from './modules/websocket/websocket.module';
+import MongoConnect from './database/database';
+import HttpAPI      from './http/api';
+import HttpEditor   from './http/editor';
+import Websocket    from './websocket/websocket';
 
-const { websocket, webserver } = ENV;
-
-const { api, editor } = webserver;
-
-if (api) {
-    createExpressApp(api.port, app => {
-        DatabaseApi.register(app);
-        ServiceApi.register(app);
+MongoConnect()
+    .then(() => {
+        HttpAPI();
+        HttpEditor();
+        Websocket();
     });
-}
-
-if (editor) {
-    createExpressApp(editor.port, app => {
-        const AppFrontend = (req, res) => {
-            res.sendFile(path.join(process.cwd(), editor.src!, 'index.html'));
-        };
-        app.use('/static', express.static(path.join(editor.src!, 'static')));
-        app.get('/', AppFrontend);
-        app.get('/*', AppFrontend);
-    });
-}
-
-if (websocket) {
-    createWebsocket(websocket.port);
-}

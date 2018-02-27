@@ -5,11 +5,11 @@ import {
     withStyles,
     WithStyles
 }                                 from 'material-ui';
-import * as React                 from 'react';
 import {
     CollDefinitionModel,
     CollElementModelDataRecord
-}                                 from '../../../../../../../connector/common/src';
+}                                 from 'props-cms.connector-common';
+import * as React                 from 'react';
 import { InitialFieldData }       from '../../../../../initializers/collectionElementDataRecordInitial';
 import { withDatabaseConnect }    from '../../../../../redux/database/database.decorate';
 import { CollectionSelect }       from '../../../../../util';

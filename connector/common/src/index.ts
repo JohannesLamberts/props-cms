@@ -9,3 +9,11 @@ export interface Collections {
     coll_definition: CollDefinitionModel;
     coll_element: CollElementModel;
 }
+
+export type CollectionKey = keyof Collections;
+
+export interface DatabaseUpdate {
+    collection: CollectionKey;
+    operationType: string;
+    _id: any;
+}
