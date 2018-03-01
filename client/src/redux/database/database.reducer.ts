@@ -23,6 +23,7 @@ const InitialState = new ImmutableRecord(
 export type TState = typeof InitialState;
 
 export const DATABASE_RECIEVE = 'DATABASE_RECIEVE';
+export const DATABASE_RECIEVE_DELETE = 'DATABASE_RECIEVE_DELETE';
 
 export type ActionRecieve<TKey extends CollectionKey> = {
     type: typeof DATABASE_RECIEVE;
@@ -33,8 +34,15 @@ export type ActionRecieve<TKey extends CollectionKey> = {
     };
 };
 
+export type ActionRecieveDelete = {
+    type: typeof DATABASE_RECIEVE_DELETE;
+    payload: {
+        operations: Record<CollectionKey, string[]>
+    };
+};
+
 export const Reducer = (state = InitialState,
-                        action: ActionRecieve<any>): TState => {
+                        action: ActionRecieve<any> | ActionRecieveDelete): TState => {
     switch (action.type) {
         case DATABASE_RECIEVE: {
             const { collection, models, complete } = action.payload;
@@ -50,6 +58,14 @@ export const Reducer = (state = InitialState,
                     })
                 )
             );
+        }
+        case DATABASE_RECIEVE_DELETE: {
+            const { operations } = action.payload;
+            return state.update('collections', collections =>
+                collections.map((collEl, collKey) =>
+                                    collEl.update('models', models =>
+                                        models.remove(operations[collKey] || [])
+                                    )));
         }
         default:
             return state;
