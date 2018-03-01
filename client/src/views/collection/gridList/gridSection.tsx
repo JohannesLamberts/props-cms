@@ -41,6 +41,7 @@ class CollectionGridSection extends React.PureComponent<CollectionGridSectionPro
 
     constructor(props: CollectionGridSectionProps) {
         super(props);
+        this._handlePush = this._handlePush.bind(this);
         this.state = {
             newIdent: ''
         };
@@ -60,7 +61,7 @@ class CollectionGridSection extends React.PureComponent<CollectionGridSectionPro
                                 disableUnderline: true,
                                 endAdornment: (
                                     <InputAdornment position="end">
-                                        <IconButton onClick={() => onPush(this.state.newIdent)}>
+                                        <IconButton onClick={this._handlePush}>
                                             <Icon>add</Icon>
                                         </IconButton>
                                     </InputAdornment>
@@ -70,6 +71,13 @@ class CollectionGridSection extends React.PureComponent<CollectionGridSectionPro
                             label={'New ident'}
                             value={this.state.newIdent}
                             onChange={event => this.setState({ newIdent: event.target.value })}
+                            inputProps={{
+                                onKeyDown: (event) => {
+                                    if (event.keyCode === 13) {
+                                        this._handlePush();
+                                    }
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -85,6 +93,10 @@ class CollectionGridSection extends React.PureComponent<CollectionGridSectionPro
                 </div>
             </section>
         );
+    }
+
+    private _handlePush() {
+        this.props.onPush(this.state.newIdent);
     }
 }
 
