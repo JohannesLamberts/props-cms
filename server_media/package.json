@@ -1,0 +1,42 @@
+{
+  "name": "props-cms.server-media",
+  "version": "0.1.0",
+  "description": "Media server for props-cms",
+  "repository": "https://github.com/JohannesLamberts/react-cms/tree/master/server-media",
+  "keywords": [
+    "cms",
+    "react",
+    "jam",
+    "node",
+    "media",
+    "server"
+  ],
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "author": "Johannes Lamberts <info@j-lamberts.de> (http://j-lamberts.de)",
+  "license": "MIT",
+  "scripts": {
+    "start": "node build/index.js",
+    "start.w": "nodemon",
+    "build": "rimraf build && tslint -p ./tsconfig.json && tsc -p ./tsconfig.json",
+    "build.w": "rimraf build && tsc -w -p ./tsconfig.json"
+  },
+  "dependencies": {
+    "mongodb": "^3.0.3",
+    "multer": "^1.3.0",
+    "server-modules": "file:../../easy-server-modules"
+  },
+  "devDependencies": {
+    "@types/express": "^4.11.1",
+    "@types/mongodb": "^3.0.5",
+    "@types/morgan": "^1.7.35",
+    "@types/multer": "^1.3.6",
+    "@types/node": "^8.9.4",
+    "@types/sharp": "^0.17.6",
+    "@types/socket.io": "^1.4.31",
+    "nodemon": "^1.17.1",
+    "rimraf": "^2.6.2",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.2"
+  }
+}
