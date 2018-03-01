@@ -136,7 +136,7 @@ const decorateStore = connect(
                 dispatch(DatabasePatch('coll_definition', collIdent, data));
             },
             onDelete: () => {
-                DatabaseDelete('coll_definition', collIdent);
+                dispatch(DatabaseDelete('coll_definition', collIdent));
             }
         };
     });
