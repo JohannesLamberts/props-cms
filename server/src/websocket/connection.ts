@@ -16,11 +16,9 @@ const changeStream = (collectionName: string): ChangeStream => {
 
 export class WebsocketSubscriptionConnection extends WebsocketConnection {
 
-    private _subscriptions: Record<string, (args?: any) => void> = {};
+    private _subscriptions: Record<string, Function> = {};
 
     public init(): this {
-
-        this._socketListener = this._socketListener.bind(this);
 
         this._socket.on('db.subscribe', (collections: string[]) => {
             for (const collectionName of collections) {
@@ -38,23 +36,12 @@ export class WebsocketSubscriptionConnection extends WebsocketConnection {
             }
         });
 
-        this._socket.on('db.unsubscribe', (collections: string[]) => {
-            this._dbUnsubscribe(collections);
-        });
-
         return this;
     }
 
     public destroy() {
         this._dbUnsubscribe(Object.keys(this._subscriptions));
         return;
-    }
-
-    private _socketListener(update: {
-        collection: string;
-        document: any
-    }) {
-        this._socket.emit('db.next', update);
     }
 
     private _dbUnsubscribe(collectionNames: string[]) {
