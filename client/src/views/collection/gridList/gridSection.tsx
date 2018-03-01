@@ -77,6 +77,7 @@ class CollectionGridSection extends React.PureComponent<CollectionGridSectionPro
                 <div className={classes.tilesWrapper}>
                     {models.map(collDefinition => (
                         <TileComponent
+                            key={collDefinition._id}
                             collDefinition={collDefinition}
                             onDelete={() => onDelete(collDefinition._id!)}
                         />
