@@ -1,4 +1,4 @@
-import { DownAPI }     from '../api/api.uploads';
+import { DownloadAPI } from '../api/api.downloads';
 import { MEDIA_ENV }   from '../env';
 import { MediaServer } from '../environment';
 
@@ -18,7 +18,7 @@ export default () => {
                     });
 
                     // TODO: authenticate
-                    DownAPI.registerOn(MediaServer.logger, app);
+                    DownloadAPI.registerOn(MediaServer.logger, app);
                 }
             });
 };

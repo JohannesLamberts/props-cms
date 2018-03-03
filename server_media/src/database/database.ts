@@ -17,6 +17,10 @@ export default (): Promise<void> => {
                  });
 };
 
+export const getFsCollection = () => {
+    return Database.collection('fs.files');
+};
+
 export const getFsBucket = (): GridFSBucket => {
     return new GridFSBucket(Database);
 };

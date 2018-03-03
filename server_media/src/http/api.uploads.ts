@@ -1,4 +1,4 @@
-import { UpAPI }       from '../api/api.downloads';
+import { UploadAPI }   from '../api/api.uploads';
 import { MEDIA_ENV }   from '../env';
 import { MediaServer } from '../environment';
 
@@ -18,7 +18,7 @@ export default () => {
                     });
 
                     // TODO: authenticate
-                    UpAPI.registerOn(MediaServer.logger, app);
+                    UploadAPI.registerOn(MediaServer.logger, app);
                 }
             });
 };

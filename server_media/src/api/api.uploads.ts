@@ -11,12 +11,21 @@ import { getFsBucket } from '../database/database';
 
 const upload = multer({ dest: '_tmp_file_update' }).single('file');
 
-export const DownAPI: ApiSegment = new ApiSegment('down');
+export const UploadAPI: ApiSegment = new ApiSegment('files');
 
 const writeFile = (req: Request, res: Response) => {
     const file: Express.Multer.File = req.file;
     const parsedFileName = path.parse(file.originalname);
-    const stream = getFsBucket().openUploadStream(parsedFileName.name);
+
+    const stream = getFsBucket()
+        .openUploadStream(parsedFileName.base,
+                          {
+                              contentType: file.mimetype,
+                              metadata: {
+                                  tags: []
+                              }
+                          });
+
     fs.createReadStream(file.path)
       .pipe(stream)
       .on('error', () => {
@@ -28,23 +37,23 @@ const writeFile = (req: Request, res: Response) => {
       });
 };
 
-DownAPI.addRoute('/files')
-       .post(upload,
-             (req, res) => {
-                 writeFile(req, res);
-             });
+UploadAPI.addRoute('')
+         .post(upload,
+               (req, res) => {
+                   writeFile(req, res);
+               });
 
-DownAPI.addRoute<{ file_id: string }>('/files/:file_id')
-       .put(upload,
-            (req, res) => {
-                getFsBucket()
-                    .delete(
-                        req.params.id,
-                        err => {
-                            if (err) {
-                                res.sendStatus(EHttpState.eServerError);
-                                return;
-                            }
-                            writeFile(req, res);
-                        });
-            });
+UploadAPI.addRoute<{ file_id: string }>('/:file_id')
+         .put(upload,
+              (req, res) => {
+                  getFsBucket()
+                      .delete(
+                          req.params.id,
+                          err => {
+                              if (err) {
+                                  res.sendStatus(EHttpState.eServerError);
+                                  return;
+                              }
+                              writeFile(req, res);
+                          });
+              });
