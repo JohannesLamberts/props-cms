@@ -21,11 +21,12 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "material-ui": "^1.0.0-beta.33",
-    "material-ui-pickers": "^1.0.0-beta.15.1",
+    "material-ui-pickers": "C:\\Development\\material-ui-pickers\\lib\\build\\material-ui-pickers-1.0.0-rc.1.tgz",
     "moment": "^2.19.3",
     "props-cms.connector-common": "^0.1.4",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
+    "react-file-upload": "../../react-file-upload",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -34,7 +35,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "socket.io-client": "^2.0.4",
-    "typescript-immutable": "^0.1.0"
+    "typescript-immutable": "^0.1.1"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.3",
