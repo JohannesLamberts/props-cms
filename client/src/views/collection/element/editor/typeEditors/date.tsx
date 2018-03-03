@@ -1,4 +1,5 @@
 import { DatePicker }             from 'material-ui-pickers';
+import { Moment }                 from 'moment';
 import * as React                 from 'react';
 import { TypeElementEditorProps } from './typeEditorProps';
 
@@ -10,7 +11,6 @@ export default ({ field, record, onDataChange }: TypeElementEditorProps<'date'>)
         value={record}
         label={field.label}
         format={'DD.MM.Y'}
-        returnMoment={false}
-        onChange={onDataChange as (date: Date) => void}
+        onChange={(date: Moment) => onDataChange(date.toDate())}
     />
 );

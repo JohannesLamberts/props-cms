@@ -1,11 +1,15 @@
-// Get Plugins
+import MomentUtils             from 'material-ui-pickers/utils/moment-utils';
+import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import MuiThemeProvider        from 'material-ui/styles/MuiThemeProvider';
 import * as moment             from 'moment';
 import 'moment/locale/de';
 import * as React              from 'react';
 import * as ReactDOM           from 'react-dom';
 import { Provider }            from 'react-redux';
-import { Router }              from 'react-router';
+import {
+    Route,
+    Router
+}                              from 'react-router';
 import { AppRoot }             from './app';
 import DBWebsocketSubscription from './redux/database/database.websocket';
 import {
@@ -20,8 +24,14 @@ ReactDOM.render(
     <Provider store={Store}>
         <Router history={browserHistory}>
             <MuiThemeProvider theme={LightTheme}>
-                <DBWebsocketSubscription url={process.env.REACT_APP_URL_WEBSOCKET}/>
-                <AppRoot/>
+                <Route
+                    render={() => (
+                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <DBWebsocketSubscription url={process.env.REACT_APP_URL_WEBSOCKET}/>
+                            <AppRoot/>
+                        </MuiPickersUtilsProvider>
+                    )}
+                />
             </MuiThemeProvider>
         </Router>
     </Provider>,

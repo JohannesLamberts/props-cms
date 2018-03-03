@@ -1,4 +1,5 @@
 import { TimePicker }             from 'material-ui-pickers';
+import { Moment }                 from 'moment';
 import * as React                 from 'react';
 import { TypeElementEditorProps } from './typeEditorProps';
 
@@ -11,7 +12,7 @@ export default ({ field, record, onDataChange }: TypeElementEditorProps<'time'>)
         value={record}
         label={field.label}
         format={'HH:mm'}
-        returnMoment={false}
-        onChange={onDataChange as (date: Date) => void}
+        onChange={(date: Moment) => onDataChange(date.toDate())}
+
     />
 );
