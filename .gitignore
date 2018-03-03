@@ -9,6 +9,7 @@
 # environment
 **/_local_data
 *.local*
+*.log
 
 .idea
 
