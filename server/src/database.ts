@@ -2,8 +2,8 @@ import {
     Collection,
     Db
 }                 from 'mongodb';
-import { ENV }    from '../env';
-import { Server } from '../environment';
+import { ENV }    from './env';
+import { Server } from './environment';
 
 const { name, auth } = ENV.db;
 const Client = Server.connectMongoDb({ auth });

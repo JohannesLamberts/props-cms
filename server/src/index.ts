@@ -1,7 +1,7 @@
-import MongoConnect from './database/database';
-import HttpAPI      from './http/api';
-import HttpEditor   from './http/editor';
-import Websocket    from './websocket/websocket';
+import MongoConnect from './database';
+import HttpAPI      from './http_api';
+import HttpEditor   from './http_editor';
+import Websocket    from './websocket';
 
 MongoConnect()
     .then(() => {

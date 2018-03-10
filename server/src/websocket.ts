@@ -3,7 +3,9 @@ import {
     Db
 }                              from 'mongodb';
 import { WebsocketConnection } from 'server-modules';
-import { getCollection }       from '../database/database';
+import { getCollection }       from './database';
+import { ENV }                 from './env';
+import { Server }              from './environment';
 
 const changeStreams: Record<string, ChangeStream> = {};
 
@@ -54,3 +56,16 @@ export class WebsocketSubscriptionConnection extends WebsocketConnection {
         }
     }
 }
+
+const { websocket } = ENV;
+
+export default () => {
+    if (websocket) {
+        Server
+            .createWebsocket(
+                {
+                    port: websocket.port,
+                    connection: WebsocketSubscriptionConnection
+                });
+    }
+};

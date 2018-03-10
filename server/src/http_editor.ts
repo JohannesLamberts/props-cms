@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as path    from 'path';
-import { ENV }      from '../env';
-import { Server }   from '../environment';
+import { ENV }      from './env';
+import { Server }   from './environment';
 
 const { editor } = ENV.webserver;
 

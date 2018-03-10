@@ -2,7 +2,7 @@ import {
     ApiSegment,
     EHttpState
 }                        from 'server-modules';
-import { getCollection } from '../database/database';
+import { getCollection } from '../database';
 
 export const ServiceApi = new ApiSegment('service');
 
