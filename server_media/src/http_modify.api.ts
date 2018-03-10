@@ -7,11 +7,13 @@ import * as multer     from 'multer';
 import * as path       from 'path';
 import { ApiSegment }  from 'server-modules';
 import { EHttpState }  from 'server-modules/build/modules/express/httpState';
-import { getFsBucket } from '../database/database';
+import { getFsBucket } from './database';
+import { MEDIA_ENV }   from './env';
+import { MediaServer } from './environment';
 
 const upload = multer({ dest: '_tmp_file_update' }).single('file');
 
-export const UploadAPI: ApiSegment = new ApiSegment('files');
+const UploadAPI: ApiSegment = new ApiSegment('files');
 
 const writeFile = (req: Request, res: Response) => {
     const file: Express.Multer.File = req.file;
@@ -59,3 +61,15 @@ UploadAPI.addRoute<{ file_id: string }>('/:file_id')
                               writeFile(req, res);
                           });
               });
+
+export default () => {
+    MediaServer
+        .createExpress(
+            {
+                port: MEDIA_ENV.port_up,
+                init: app => {
+                    // TODO: authenticate
+                    UploadAPI.registerOn(MediaServer.logger, app);
+                }
+            });
+};

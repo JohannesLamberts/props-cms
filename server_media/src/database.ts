@@ -2,8 +2,8 @@ import {
     Db,
     GridFSBucket
 }                      from 'mongodb';
-import { MEDIA_ENV }   from '../env';
-import { MediaServer } from '../environment';
+import { MEDIA_ENV }   from './env';
+import { MediaServer } from './environment';
 
 const { name, auth } = MEDIA_ENV.db;
 const Client = MediaServer.connectMongoDb({ auth });

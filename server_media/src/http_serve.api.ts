@@ -1,14 +1,16 @@
-import { ObjectID } from 'mongodb';
+import { ObjectID }    from 'mongodb';
 import {
     ApiSegment,
     EHttpState
-}                   from 'server-modules';
+}                      from 'server-modules';
 import {
     getFsBucket,
     getFsCollection
-}                   from '../database/database';
+}                      from './database';
+import { MEDIA_ENV }   from './env';
+import { MediaServer } from './environment';
 
-export const DownloadAPI: ApiSegment = new ApiSegment('files');
+const DownloadAPI: ApiSegment = new ApiSegment('files');
 
 DownloadAPI.addRoute<{ file_id: string }>('/file/:file_id')
            .get((req, res) => {
@@ -33,3 +35,15 @@ DownloadAPI.addRoute<{ file_id: string }>('/image/:file_id')
            .get((req, res) => {
                res.sendStatus(EHttpState.eNotImplemented);
            });
+
+export default () => {
+    MediaServer
+        .createExpress(
+            {
+                port: MEDIA_ENV.port_down,
+                init: app => {
+                    // TODO: authenticate
+                    DownloadAPI.registerOn(MediaServer.logger, app);
+                }
+            });
+};

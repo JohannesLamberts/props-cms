@@ -1,6 +1,6 @@
-import MongoConnect from './database/database';
-import HttpUpAPI    from './http/api.downloads';
-import HttpDownAPI  from './http/api.uploads';
+import MongoConnect from './database';
+import HttpDownAPI  from './http_modify.api';
+import HttpUpAPI    from './http_serve.api';
 
 MongoConnect()
     .then(() => {
