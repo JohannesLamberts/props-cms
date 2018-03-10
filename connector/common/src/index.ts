@@ -1,5 +1,6 @@
 import { CollDefinitionModel } from './collectionDefinition.model';
 import { CollElementModel }    from './collectionElement.model';
+import { MediaProviderModel }  from './mediaProvider.model';
 
 export * from './collectionDefinition.model';
 export * from './collectionElement.model';
@@ -8,6 +9,7 @@ export * from './fieldTypes';
 export interface Collections {
     coll_definition: CollDefinitionModel;
     coll_element: CollElementModel;
+    media_provider: MediaProviderModel;
 }
 
 export type CollectionKey = keyof Collections;
