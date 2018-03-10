@@ -30,10 +30,12 @@ const writeFile = (req: Request, res: Response) => {
       .pipe(stream)
       .on('error', () => {
           res.sendStatus(EHttpState.eServerError);
+          fs.unlink(file.path, () => null);
       })
       .on('finish', () => {
           res.json({ id: stream.id })
              .status(EHttpState.eOk);
+          fs.unlink(file.path, () => null);
       });
 };
 
