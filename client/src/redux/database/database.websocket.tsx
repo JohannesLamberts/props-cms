@@ -1,12 +1,14 @@
-import { DatabaseUpdate } from 'props-cms.connector-common';
-import * as React         from 'react';
-import { connect }        from 'react-redux';
-import * as SOCKET        from 'socket.io-client';
-import { CollectionKey }  from '../../../../connector/common/src';
+import {
+    CollectionKey,
+    DatabaseUpdate
+}                  from 'props-cms.connector-common';
+import * as React  from 'react';
+import { connect } from 'react-redux';
+import * as SOCKET from 'socket.io-client';
 import {
     DatabaseRecieveDeleteId,
     DatabaseRequireId
-}                         from './database.actions';
+}                  from './database.actions';
 
 const decorateStore = connect(
     null,
