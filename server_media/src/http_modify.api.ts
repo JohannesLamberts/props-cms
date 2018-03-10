@@ -13,7 +13,7 @@ import { MediaServer } from './environment';
 
 const upload = multer({ dest: '_tmp_file_update' }).single('file');
 
-const UploadAPI: ApiSegment = new ApiSegment('files');
+const UploadAPI: ApiSegment = new ApiSegment('upload');
 
 const writeFile = (req: Request, res: Response) => {
     const file: Express.Multer.File = req.file;
@@ -66,7 +66,7 @@ export default () => {
     MediaServer
         .createExpress(
             {
-                port: MEDIA_ENV.port_up,
+                port: MEDIA_ENV.port_modify,
                 init: app => {
                     // TODO: authenticate
                     UploadAPI.registerOn(MediaServer.logger, app);

@@ -12,7 +12,7 @@ import { MediaServer } from './environment';
 
 const DownloadAPI: ApiSegment = new ApiSegment('files');
 
-DownloadAPI.addRoute<{ file_id: string }>('/file/:file_id')
+DownloadAPI.addRoute<{ file_id: string }>('/raw/:file_id')
            .get((req, res) => {
                const _id = new ObjectID(req.params.file_id);
                getFsCollection()
@@ -40,7 +40,7 @@ export default () => {
     MediaServer
         .createExpress(
             {
-                port: MEDIA_ENV.port_down,
+                port: MEDIA_ENV.port_serve,
                 init: app => {
                     // TODO: authenticate
                     DownloadAPI.registerOn(MediaServer.logger, app);

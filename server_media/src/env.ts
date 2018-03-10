@@ -13,8 +13,8 @@ interface MediaEnvCfg {
             password: string;
         }
     };
-    port_up: number;
-    port_down: number;
+    port_serve: number;
+    port_modify: number;
     logger: {
         path: string;
         level: 'off' | 'silly' | 'debug' | 'verbose' | 'info' | 'warn' | 'error';
