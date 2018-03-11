@@ -111,10 +111,9 @@ const decorateStore = connect(
         }
     }));
 
-export const CollectionGrid
-                 = compose(withDatabaseConnect({
-                                                   collDefinitions: 'coll_definition'
-                                               },
-                                               {}),
-                           decorateStore,
-                           decorateStyle)(Definition);
+export default compose(withDatabaseConnect({
+                                               collDefinitions: 'coll_definition'
+                                           },
+                                           {}),
+                       decorateStore,
+                       decorateStyle)(Definition);

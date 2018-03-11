@@ -16,10 +16,11 @@ import {
 }                                 from 'react-router-dom';
 import { DarkTheme }              from './styles/theme';
 import CollectionDefinitionEditor from './views/components/editor/definitionEditor';
-import { CollectionGrid }         from './views/components/grid';
+import CollectionGrid             from './views/components/grid';
 import CollectionElementEditor    from './views/elements/editor/elementEditor';
 import CollectionElementList      from './views/elements/elementList';
-import { MediaDashboard }         from './views/media/mediaDashboard';
+import MediaDashboard             from './views/media/mediaDashboard';
+import MediaEditor                from './views/media/mediaEditor';
 
 const links = {
     dashboard: '/dashboard',
@@ -32,6 +33,8 @@ const rootPages = {
     '/dashboard': () => 'HELLO THERE',
     '/media':
         () => <MediaDashboard/>,
+    '/media/:providerIdent':
+        () => <MediaEditor/>,
     '/collection':
         () => <CollectionGrid/>,
     '/collection/:collIdent/elements':
@@ -48,7 +51,8 @@ const styles = (theme: Theme) => ({
         flexFlow: 'column nowrap',
         height: '100vh',
         '& > *:last-child': {
-            flexGrow: 1
+            flexGrow: 1,
+            display: 'flex'
         }
     },
     toolbar: {

@@ -104,10 +104,9 @@ const decorateStore = connect(
         }
     }));
 
-export const MediaDashboard
-                 = compose(withDatabaseConnect({
-                                                   providers: 'media_provider'
-                                               },
-                                               {}),
-                           decorateStore,
-                           decorateStyle)(MediaDashboardBase);
+export default compose(withDatabaseConnect({
+                                               providers: 'media_provider'
+                                           },
+                                           {}),
+                       decorateStore,
+                       decorateStyle)(MediaDashboardBase);

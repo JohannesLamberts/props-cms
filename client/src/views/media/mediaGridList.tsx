@@ -31,7 +31,7 @@ export class MediaGridList extends React.PureComponent<MediaGridListProps, {
 
     componentWillMount() {
         const api = new HttpApi(this.props.url);
-        api.get('files')
+        api.get('download')
            .then((files: MediaGridFile[]) => {
                this.setState({ files });
            });
@@ -50,7 +50,7 @@ export class MediaGridList extends React.PureComponent<MediaGridListProps, {
                             <div
                                 style={{
                                     height: '100px',
-                                    backgroundImage: `url(${this.props.url}files/image/${file._id}?height=100)`,
+                                    backgroundImage: `url(${this.props.url}/download/image/${file._id}?height=100)`,
                                     backgroundSize: 'contain',
                                     backgroundPosition: 'top',
                                     backgroundRepeat: 'no-repeat'
