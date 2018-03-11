@@ -1,9 +1,11 @@
-import MongoConnect from './database';
-import HttpDownAPI  from './http_modify.api';
-import HttpUpAPI    from './http_serve.api';
+import MongoConnect          from './database';
+import HttpServeAPI          from './http_modify.api';
+import HttpModifyAPI         from './http_serve.api';
+import SubscriptionWebsocket from './websocket';
 
 MongoConnect()
     .then(() => {
-        HttpUpAPI();
-        HttpDownAPI();
+        HttpModifyAPI();
+        HttpServeAPI();
+        SubscriptionWebsocket();
     });

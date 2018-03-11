@@ -4,8 +4,8 @@ import {
     EHttpState
 }                      from 'server-modules';
 import {
-    getFsBucket,
-    getFsCollection
+    getCollection,
+    getFsBucket
 }                      from './database';
 import { MEDIA_ENV }   from './env';
 import { MediaServer } from './environment';
@@ -15,7 +15,7 @@ const DownloadAPI: ApiSegment = new ApiSegment('files');
 DownloadAPI.addRoute<{ file_id: string }>('/raw/:file_id')
            .get((req, res) => {
                const _id = new ObjectID(req.params.file_id);
-               getFsCollection()
+               getCollection('fs.files')
                    .findOne({ _id })
                    .then(file => {
                        if (!file) {

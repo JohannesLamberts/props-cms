@@ -17,8 +17,8 @@ export default (): Promise<void> => {
                  });
 };
 
-export const getFsCollection = () => {
-    return Database.collection('fs.files');
+export const getCollection = (collectionName: string) => {
+    return Database.collection(collectionName);
 };
 
 export const getFsBucket = (): GridFSBucket => {

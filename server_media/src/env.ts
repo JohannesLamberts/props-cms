@@ -13,6 +13,7 @@ interface MediaEnvCfg {
             password: string;
         }
     };
+    port_subscriptions?: number;
     port_serve: number;
     port_modify: number;
     logger: {
