@@ -4,10 +4,11 @@ import {
     FileUploader
 }                 from '@j-lamberts/react-file-upload';
 import {
+    Icon,
     LinearProgress,
     Theme,
-    WithStyles,
-    withStyles
+    withStyles,
+    WithStyles
 }                 from 'material-ui';
 import * as React from 'react';
 
@@ -54,6 +55,14 @@ class MediaUploaderBase extends React.PureComponent<MediaUploaderProps> {
                                 classNameActive={classes.dropzone_active}
                                 onDrop={handleFiles}
                             >
+                                <Icon
+                                    style={{
+                                        display: 'block',
+                                        margin: 'auto'
+                                    }}
+                                >
+                                    file_upload
+                                </Icon>
                                 {queue.map((el, index) => (
                                     <div key={index}>
                                         {index} {el.name}
@@ -65,7 +74,6 @@ class MediaUploaderBase extends React.PureComponent<MediaUploaderProps> {
                                         />
                                     </div>
                                 ))}
-                                DROP FILES HERE
                             </FileDropzone>
                         </FileSelect>
                     </div>
