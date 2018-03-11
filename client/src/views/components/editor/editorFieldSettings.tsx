@@ -33,7 +33,7 @@ const CollDefinitionFieldTypeNames: Record<CollDefinitionFieldTypeIdent, string>
     tags: 'Tags',
     import: 'Import',
     subContent: 'Content',
-    subDefinition: 'Definition'
+    subDefinition: 'MediaDashboardBase'
 };
 
 const styles = {

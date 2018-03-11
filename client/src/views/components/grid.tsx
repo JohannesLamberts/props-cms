@@ -1,23 +1,29 @@
 import {
     WithStyles,
     withStyles
-}                              from 'material-ui';
-import { CollDefinitionModel } from 'props-cms.connector-common';
-import * as React              from 'react';
-import { connect }             from 'react-redux';
-import { compose }             from 'redux';
+}                                 from 'material-ui';
+import { CollDefinitionModel }    from 'props-cms.connector-common';
+import * as React                 from 'react';
+import { connect }                from 'react-redux';
+import { compose }                from 'redux';
 import {
     DatabaseDelete,
     DatabasePush
-}                              from '../../redux/database/database.actions';
-import { withDatabaseConnect } from '../../redux/database/database.decorate';
-import CollectionGridItemRoot  from './gridItemRoot';
-import CollectionGridItemSub   from './griditemSub';
-import CollectionGridSection   from './gridSection';
+}                                 from '../../redux/database/database.actions';
+import { withDatabaseConnect }    from '../../redux/database/database.decorate';
+import { SectionWithActionInput } from '../../util';
+import CollectionGridItemRoot     from './gridItemRoot';
+import CollectionGridItemSub      from './griditemSub';
 
 const styles = {
     root: {
         width: '100%'
+    },
+    tilesWrapper: {
+        display: 'flex',
+        flexFlow: 'row wrap',
+        width: '100%',
+        padding: '1rem 0'
     }
 };
 
@@ -29,6 +35,19 @@ type DefinitionProps = {
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyle = withStyles(styles);
+
+const sections = [
+    {
+        label: 'Main',
+        GridComponent: CollectionGridItemRoot,
+        root: true
+    },
+    {
+        label: 'Sub',
+        GridComponent: CollectionGridItemSub,
+        root: false
+    }
+];
 
 class Definition extends React.PureComponent<DefinitionProps, {}> {
 
@@ -45,22 +64,28 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
         const { collDefinitions, onPush, onDelete, classes } = this.props;
         return (
             <div className={classes.root}>
-                <CollectionGridSection
-                    label={'Main'}
-                    models={collDefinitions
-                        .filter(collDefinition => collDefinition.root)}
-                    onPush={id => onPush(id, true)}
-                    onDelete={id => onDelete(id)}
-                    tile={CollectionGridItemRoot}
-                />
-                <CollectionGridSection
-                    label={'Sub'}
-                    models={collDefinitions
-                        .filter(collDefinition => !collDefinition.root)}
-                    onPush={id => onPush(id, false)}
-                    onDelete={id => onDelete(id)}
-                    tile={CollectionGridItemSub}
-                />
+                {sections.map((section, index) => {
+                    const GridComponent = section.GridComponent;
+                    return (
+                        <SectionWithActionInput
+                            key={index}
+                            label={section.label}
+                            onEnter={id => onPush(id, true)}
+                        >
+                            <div className={classes.tilesWrapper}>
+                                {collDefinitions
+                                    .filter(collDefinition => collDefinition.root === section.root)
+                                    .map(collDefinition => (
+                                        <GridComponent
+                                            key={collDefinition._id}
+                                            collDefinition={collDefinition}
+                                            onDelete={() => onDelete(collDefinition._id!)}
+                                        />
+                                    ))}
+                            </div>
+                        </SectionWithActionInput>
+                    );
+                })}
             </div>
         );
     }
