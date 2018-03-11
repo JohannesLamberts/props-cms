@@ -22,6 +22,7 @@ const decorateStyles = withStyles(styles);
 
 type SectionWithActionInputProps = {
     label: string;
+    inputLabel: string;
     onEnter: (value: string) => void;
     children: React.ReactNode;
 } & WithStyles<keyof typeof styles>;
@@ -32,6 +33,7 @@ export class SectionWithActionInputBase extends React.PureComponent<SectionWithA
 
     constructor(props: SectionWithActionInputProps) {
         super(props);
+        this._handlePush = this._handlePush.bind(this);
         this.state = {
             inputTxt: ''
         };
@@ -39,7 +41,7 @@ export class SectionWithActionInputBase extends React.PureComponent<SectionWithA
 
     render() {
 
-        const { classes, label, children } = this.props;
+        const { classes, label, children, inputLabel } = this.props;
 
         return (
             <section>
@@ -60,7 +62,7 @@ export class SectionWithActionInputBase extends React.PureComponent<SectionWithA
                                 )
                             }}
                             margin={'dense'}
-                            label={'New ident'}
+                            label={inputLabel}
                             value={this.state.inputTxt}
                             onChange={event => this.setState({ inputTxt: event.target.value })}
                             inputProps={{

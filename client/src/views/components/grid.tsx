@@ -70,6 +70,7 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
                         <SectionWithActionInput
                             key={index}
                             label={section.label}
+                            inputLabel={'new component'}
                             onEnter={id => onPush(id, true)}
                         >
                             <div className={classes.tilesWrapper}>
