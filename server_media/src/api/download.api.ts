@@ -1,17 +1,15 @@
-import { ObjectID }    from 'mongodb';
+import { ObjectID } from 'mongodb';
 import {
     ApiSegment,
     EHttpState
-}                      from 'server-modules';
-import * as sharp      from 'sharp';
+}                   from 'server-modules';
+import * as sharp   from 'sharp';
 import {
     getCollection,
     getFsBucket
-}                      from './database';
-import { MEDIA_ENV }   from './env';
-import { MediaServer } from './environment';
+}                   from '../database';
 
-const DownloadAPI: ApiSegment = new ApiSegment('files');
+export const DownloadAPI: ApiSegment = new ApiSegment('download');
 
 DownloadAPI.addRoute('')
            .get((req, res) => {
@@ -83,24 +81,3 @@ DownloadAPI.addRoute<{ file_id: string }>('/image/:file_id')
                               .on('error', e => res.sendStatus(EHttpState.eServerError));
                    });
            });
-
-export default () => {
-    MediaServer
-        .createExpress(
-            {
-                port: MEDIA_ENV.port_serve,
-                init: app => {
-
-                    app.use((req, res, next) => {
-                        res.setHeader('Access-Control-Allow-Origin', '*');
-                        res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,PATCH,POST,DELETE');
-                        res.setHeader('Access-Control-Allow-Headers',
-                                      'Origin, X-Requested-With, Content-Type, Accept');
-                        next();
-                    });
-
-                    // TODO: authenticate
-                    DownloadAPI.registerOn(MediaServer.logger, app);
-                }
-            });
-};

@@ -14,8 +14,7 @@ interface MediaEnvCfg {
         }
     };
     port_subscriptions?: number;
-    port_serve: number;
-    port_modify: number;
+    port_api: number;
     logger: {
         path: string;
         level: 'off' | 'silly' | 'debug' | 'verbose' | 'info' | 'warn' | 'error';
