@@ -64,7 +64,7 @@ export const Reducer = (state = InitialState,
             return state.update('collections', collections =>
                 collections.map((collEl, collKey) =>
                                     collEl.update('models', models =>
-                                        models.remove(operations[collKey] || [])
+                                        models.remove(...(operations[collKey] || []))
                                     )));
         }
         default:
