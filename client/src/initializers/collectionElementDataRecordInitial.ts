@@ -16,8 +16,16 @@ export const InitialCollElementModelDataRecord: {[P in CollDefinitionFieldTypeId
     time: undefined,
     date: undefined,
     dateTime: undefined,
-    file: '', // update
-    image: '', // update
+    file: {
+        provider: '',
+        id: ''
+    },
+    image: {
+        provider: '',
+        id: '',
+        maxHeight: 0,
+        maxWidth: 0
+    },
     select: '',
     selectMultiple: [],
     tags: [],
@@ -28,7 +36,9 @@ export const InitialCollElementModelDataRecord: {[P in CollDefinitionFieldTypeId
     subContent: (field) => {
         const options = field.typeOptions.options;
         return {
-            collection: options.length === 1 ? options[0] : '',
+            collection: options.length === 1
+                ? options[0]
+                : '',
             data: {},
             dataOverwrites: []
         };
@@ -48,7 +58,9 @@ export const InitialFieldData = (field: CollDefinitionModelField): any => {
     if (field.isArray) {
         return [];
     } else {
-        return field.isArray ? [] : InitialFieldTypeData(field);
+        return field.isArray
+            ? []
+            : InitialFieldTypeData(field);
     }
 };
 

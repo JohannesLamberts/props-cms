@@ -16,17 +16,21 @@ import {
 }                                 from 'react-router-dom';
 import { DarkTheme }              from './styles/theme';
 import CollectionDefinitionEditor from './views/collection/definitionEditor/definitionEditor';
-import CollectionElementEditor    from './views/collection/element/editor/elementEditor';
-import CollectionElementList      from './views/collection/element/elementList';
+import CollectionElementEditor    from './views/collection/elementEditor/editor/elementEditor';
+import CollectionElementList      from './views/collection/elementEditor/elementList';
 import { CollectionGrid }         from './views/collection/gridList/grid';
+import { MediaDashboard }         from './views/media/mediaDashboard';
 
 const links = {
     dashboard: '/dashboard',
+    collections: '/media',
     layers: '/collection'
 };
 
 const rootPages = {
     '/dashboard': () => 'HELLO THERE',
+    '/media':
+        () => <MediaDashboard/>,
     '/collection':
         () => <CollectionGrid/>,
     '/collection/:collIdent/elements':

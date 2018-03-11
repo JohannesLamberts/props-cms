@@ -1,18 +1,33 @@
 import {
+    Button,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
-    Button
-}                 from 'material-ui';
-import * as React from 'react';
+    DialogTitle
+}                         from 'material-ui';
+import * as React         from 'react';
+import { ImmutableArray } from 'typescript-immutable';
+import {
+    MediaGridFile,
+    MediaGridList
+}                         from './mediaGridList';
 
-interface MediaDialogProps {
+interface MediaSelectDialogProps {
     multiple?: boolean;
-    onClose: (ok: boolean, selected: string[]) => void;
+    onClose: (ok: boolean, selected: MediaGridFile[]) => void;
 }
 
-export class MediaDialog extends React.PureComponent<MediaDialogProps> {
+export class MediaSelectDialog extends React.PureComponent<MediaSelectDialogProps, {
+    selectedFiles: ImmutableArray<MediaGridFile>
+}> {
+
+    constructor(props: MediaSelectDialogProps) {
+        super(props);
+        this.state = {
+            selectedFiles: new ImmutableArray<MediaGridFile>()
+        };
+    }
+
     render() {
         const { onClose } = this.props;
         return (
@@ -24,7 +39,33 @@ export class MediaDialog extends React.PureComponent<MediaDialogProps> {
                     Media
                 </DialogTitle>
                 <DialogContent>
-                    GRID
+                    SELECT PROVIDER
+                    <MediaGridList
+                        url={'http://localhost:4006/'}
+                    >
+                        {({ children, file }: {
+                            children: React.ReactNode; file: MediaGridFile
+                        }): React.ReactElement<any> => (
+                            <div
+                                onClick={() => {
+                                    const index = this.state.selectedFiles.indexOf(file);
+                                    this.setState(
+                                        {
+                                            selectedFiles: index === -1
+                                                ? this.state.selectedFiles.push(file)
+                                                : this.state.selectedFiles.remove(index)
+                                        });
+                                }}
+                                style={{
+                                    backgroundColor: this.state.selectedFiles.indexOf(file) === -1
+                                        ? 'grey'
+                                        : 'blue'
+                                }}
+                            >
+                                {children}
+                            </div>
+                        )}
+                    </MediaGridList>
                 </DialogContent>
                 <DialogActions>
                     <Button
