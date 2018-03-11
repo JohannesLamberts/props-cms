@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "props-cms.connector-common": "^0.1.4",
-    "server-modules": "^0.1.2"
+    "server-modules": "^0.1.6"
   },
   "devDependencies": {
     "@types/express": "^4.11.1",
