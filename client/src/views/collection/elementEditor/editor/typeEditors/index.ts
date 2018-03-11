@@ -3,6 +3,7 @@ import Boolean                          from './boolean';
 import Color                            from './color';
 import Date                             from './date';
 import DateTime                         from './dateTime';
+import File                             from './file';
 import Import                           from './import';
 import Select                           from './select';
 import SelectMultiple                   from './selectMultiple';
@@ -21,6 +22,7 @@ const formComponents: {
     color: Color,
     date: Date,
     dateTime: DateTime,
+    file: File,
     import: Import,
     select: Select,
     selectMultiple: SelectMultiple,
