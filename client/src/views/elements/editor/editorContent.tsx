@@ -10,7 +10,7 @@ import {
     CollElementModel
 }                               from 'props-cms.connector-common';
 import * as React               from 'react';
-import { InitialFieldTypeData } from '../../../../initializers/collectionElementDataRecordInitial';
+import { InitialFieldTypeData } from '../../../initializers/collectionElementDataRecordInitial';
 import CollElementEditorField   from './editorFieldTypeEditor';
 import InsertButton             from './insertButton';
 

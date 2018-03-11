@@ -10,9 +10,9 @@ import {
     CollElementModelDataRecord
 }                                 from 'props-cms.connector-common';
 import * as React                 from 'react';
-import { InitialFieldData }       from '../../../../../initializers/collectionElementDataRecordInitial';
-import { withDatabaseConnect }    from '../../../../../redux/database/database.decorate';
-import { CollectionSelect }       from '../../../../../util';
+import { InitialFieldData }       from '../../../../initializers/collectionElementDataRecordInitial';
+import { withDatabaseConnect }    from '../../../../redux/database/database.decorate';
+import { CollectionSelect }       from '../../../../util';
 import CollElementEditorField     from '../editorFieldTypeEditor';
 import { TypeElementEditorProps } from './typeEditorProps';
 

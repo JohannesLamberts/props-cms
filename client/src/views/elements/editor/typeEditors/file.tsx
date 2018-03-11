@@ -1,6 +1,6 @@
 import { Button }                 from 'material-ui';
 import * as React                 from 'react';
-import { MediaSelectDialog }      from '../../../../media/mediaSelectDialog';
+import { MediaSelectDialog }      from '../../../media/mediaSelectDialog';
 import { TypeElementEditorProps } from './typeEditorProps';
 
 export default class extends React.PureComponent<TypeElementEditorProps<'file'>, {

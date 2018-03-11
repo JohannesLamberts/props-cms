@@ -25,7 +25,7 @@
     "material-ui-pickers": "^1.0.0-rc.2",
     "moment": "^2.19.3",
     "prop-types": "^15.6.1",
-    "props-cms.connector-common": "^0.1.4",
+    "props-cms.connector-common": "^0.1.4-dev.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",

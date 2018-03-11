@@ -9,8 +9,8 @@ import { compose }             from 'redux';
 import {
     DatabaseDelete,
     DatabasePush
-}                              from '../../../redux/database/database.actions';
-import { withDatabaseConnect } from '../../../redux/database/database.decorate';
+}                              from '../../redux/database/database.actions';
+import { withDatabaseConnect } from '../../redux/database/database.decorate';
 import CollectionGridItemRoot  from './gridItemRoot';
 import CollectionGridItemSub   from './griditemSub';
 import CollectionGridSection   from './gridSection';

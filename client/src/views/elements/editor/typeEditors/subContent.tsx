@@ -5,8 +5,8 @@ import {
 }                                 from 'material-ui';
 import { CollDefinitionModel }    from 'props-cms.connector-common';
 import * as React                 from 'react';
-import { withDatabaseConnect }    from '../../../../../redux/database/database.decorate';
-import { CollectionSelect }       from '../../../../../util/index';
+import { withDatabaseConnect }    from '../../../../redux/database/database.decorate';
+import { CollectionSelect }       from '../../../../util/index';
 import CollElementModelEditor     from '../editorContent';
 import { TypeElementEditorProps } from './typeEditorProps';
 
