@@ -24,7 +24,7 @@ export default class extends React.PureComponent<TypeElementEditorProps<'file'>,
                 <Button
                     onClick={() => this.setState({ dialogOpen: true })}
                 >
-                    ADD
+                    Select
                 </Button>
                 {this.state.dialogOpen && (
                     <MediaSelectDialog
@@ -32,8 +32,7 @@ export default class extends React.PureComponent<TypeElementEditorProps<'file'>,
                         onClose={(ok, selected) => {
                             this.setState({ dialogOpen: false });
                             if (ok && selected[0]) {
-                                // TODO: IMPLEMENT
-                                // onDataChange(selected[0]);
+                                onDataChange(selected[0]);
                             }
                         }}
                     />

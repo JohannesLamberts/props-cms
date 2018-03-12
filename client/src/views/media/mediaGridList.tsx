@@ -44,43 +44,50 @@ export class MediaGridList extends React.PureComponent<MediaGridListProps, {
         return (
             <div>
                 <Grid container={true}>
-                    {this.state.files.map(file => {
+                    {this.state.files.map(
+                        file => {
 
-                        const preview = (
-                            <div
-                                style={{
-                                    height: '100px',
-                                    backgroundImage: `url(${this.props.url}/download/image/${file._id}?height=100)`,
-                                    backgroundSize: 'contain',
-                                    backgroundPosition: 'top',
-                                    backgroundRepeat: 'no-repeat'
-                                }}
-                            />
-                        );
+                            let preview: React.ReactNode = null;
 
-                        const content = WrapperComponent
-                            ? (
-                                            <WrapperComponent
-                                                file={file}
-                                            >
-                                                {preview}
-                                            </WrapperComponent>
-                                        )
-                            : preview;
+                            if (file.contentType.match(/^image/)) {
+                                preview = (
+                                    <div
+                                        style={{
+                                            height: '100px',
+                                            backgroundImage: `url(${this.props.url}/download`
+                                            + `/${file._id}/image?height=100)`,
+                                            backgroundSize: 'contain',
+                                            backgroundPosition: 'top',
+                                            backgroundRepeat: 'no-repeat'
+                                        }}
+                                    />
+                                );
+                            }
 
-                        return (
-                            <Grid
-                                item={true}
-                                key={file._id}
-                                xs={6}
-                                sm={4}
-                                md={3}
-                                style={{ wordWrap: 'break-word' }}
-                            >
-                                {content}
-                            </Grid>
-                        );
-                    })}
+                            const content = WrapperComponent
+                                ? (
+                                                <WrapperComponent
+                                                    file={file}
+                                                >
+                                                    {preview}
+                                                </WrapperComponent>
+                                            )
+                                : preview;
+
+                            return (
+                                <Grid
+                                    item={true}
+                                    key={file._id}
+                                    xs={6}
+                                    sm={4}
+                                    md={3}
+                                    style={{ wordWrap: 'break-word' }}
+                                >
+                                    {content}
+                                </Grid>
+                            );
+                        }
+                    )}
                 </Grid>
             </div>
         );

@@ -3,33 +3,48 @@ import {
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle
-}                         from 'material-ui';
-import * as React         from 'react';
-import { ImmutableArray } from 'typescript-immutable';
+    DialogTitle,
+    MenuItem,
+    TextField
+}                              from 'material-ui';
+import * as React              from 'react';
+import { ImmutableArray }      from 'typescript-immutable';
+import { MediaProviderModel }  from '../../../../connector/common/src/mediaProvider.model';
+import { withDatabaseConnect } from '../../redux/database/database.decorate';
+import { MediaFile }           from './media';
 import {
     MediaGridFile,
     MediaGridList
-}                         from './mediaGridList';
+}                              from './mediaGridList';
 
 interface MediaSelectDialogProps {
+    providers: MediaProviderModel[];
+    onMount: () => void;
     multiple?: boolean;
-    onClose: (ok: boolean, selected: MediaGridFile[]) => void;
+    onClose: (ok: boolean, selected: MediaFile[]) => void;
 }
 
-export class MediaSelectDialog extends React.PureComponent<MediaSelectDialogProps, {
-    selectedFiles: ImmutableArray<MediaGridFile>
+class MediaSelectDialogBase extends React.PureComponent<MediaSelectDialogProps, {
+    selectedFiles: ImmutableArray<MediaFile>;
+    mediaProvider?: string;
 }> {
 
     constructor(props: MediaSelectDialogProps) {
         super(props);
         this.state = {
-            selectedFiles: new ImmutableArray<MediaGridFile>()
+            selectedFiles: new ImmutableArray<MediaFile>()
         };
     }
 
+    componentWillMount() {
+        this.props.onMount();
+    }
+
     render() {
-        const { onClose } = this.props;
+        const { onClose, providers, multiple } = this.props;
+        const mediaProvider = this.state.mediaProvider || (providers[0]
+            ? providers[0].url
+            : '');
         return (
             <Dialog
                 open={true}
@@ -39,33 +54,66 @@ export class MediaSelectDialog extends React.PureComponent<MediaSelectDialogProp
                     Media
                 </DialogTitle>
                 <DialogContent>
-                    SELECT PROVIDER
-                    <MediaGridList
-                        url={'http://localhost:4006/'}
+                    <TextField
+                        value={mediaProvider || '%NONE%'}
+                        select={true}
+                        onChange={e => this.setState({ mediaProvider: e.target.value })}
                     >
-                        {({ children, file }: {
-                            children: React.ReactNode; file: MediaGridFile
-                        }): React.ReactElement<any> => (
-                            <div
-                                onClick={() => {
-                                    const index = this.state.selectedFiles.indexOf(file);
-                                    this.setState(
-                                        {
-                                            selectedFiles: index === -1
-                                                ? this.state.selectedFiles.push(file)
-                                                : this.state.selectedFiles.remove(index)
-                                        });
-                                }}
-                                style={{
-                                    backgroundColor: this.state.selectedFiles.indexOf(file) === -1
-                                        ? 'grey'
-                                        : 'blue'
-                                }}
+                        {providers.map(provider => (
+                            <MenuItem
+                                key={provider.url}
+                                value={provider.url}
                             >
-                                {children}
-                            </div>
-                        )}
-                    </MediaGridList>
+                                {provider.url}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    {mediaProvider && (
+                        <MediaGridList
+                            url={mediaProvider}
+                        >
+                            {({ children, file }: {
+                                children: React.ReactNode; file: MediaGridFile
+                            }): React.ReactElement<any> => (
+                                <div
+                                    onClick={() => {
+
+                                        const mediaFile: MediaFile = {
+                                            provider: mediaProvider,
+                                            id: file._id
+                                        };
+
+                                        if (!this.props.multiple) {
+                                            this.props.onClose(true, [mediaFile]);
+                                            return;
+                                        }
+
+                                        const index = this.state
+                                                          .selectedFiles
+                                                          .indexOfFn(checkFile =>
+                                                                         checkFile.id === file._id);
+
+                                        this.setState(
+                                            {
+                                                selectedFiles: index === -1
+                                                    ? this.state.selectedFiles.push(mediaFile)
+                                                    : this.state.selectedFiles.remove(index)
+                                            });
+                                    }}
+                                    style={{
+                                        backgroundColor: this.state
+                                                             .selectedFiles
+                                                             .indexOfFn(checkFile =>
+                                                                            checkFile.id === file._id) === -1
+                                            ? 'rgba(0,0,0,0)'
+                                            : 'rgba(0,0,0,0.4)'
+                                    }}
+                                >
+                                    {children}
+                                </div>
+                            )}
+                        </MediaGridList>
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -74,7 +122,7 @@ export class MediaSelectDialog extends React.PureComponent<MediaSelectDialogProp
                         cancel
                     </Button>
                     <Button
-                        onClick={() => onClose(true, [])}
+                        onClick={() => onClose(true, this.state.selectedFiles.slice())}
                     >
                         ok
                     </Button>
@@ -83,3 +131,7 @@ export class MediaSelectDialog extends React.PureComponent<MediaSelectDialogProp
         );
     }
 }
+
+export const MediaSelectDialog =
+                 withDatabaseConnect({ providers: 'media_provider' }, {})
+                 (MediaSelectDialogBase);
