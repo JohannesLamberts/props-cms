@@ -1,6 +1,6 @@
 <h1 align="center">props-cms</h1>
 
-<!-- [![CircleCI](https://img.shields.io/circleci/project/github/JohannesLamberts/props-cms/master.svg)]() -->
+[![CircleCI](https://img.shields.io/circleci/project/github/JohannesLamberts/props-cms/master.svg)]()
 
 This application is still in development. You might want to check 
 https://headlesscms.org/ for production-ready CMS.
