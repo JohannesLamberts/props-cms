@@ -48,4 +48,4 @@ An easy-to-use, open-source, self-hosted headless CMS.
 |Client|1 - Mostly stable, but still needs some work
 |Content Server|0 - Development server, no authentification and validation|
 |Media Server|0 - Development server, no authentification and validation|
-|Integration|**React** 2 - Ready to use
+|Integration|**React:** 2 - Ready to use
