@@ -29,8 +29,8 @@ export const browserHistory = createBrowserHistory();
 
 export const Store = createStore(reducers,
                                  applyMiddleware(
-                                     logger,
                                      thunk,
+                                     logger,
                                      routerMiddleware(browserHistory)));
 
 export type StoreDispatch = Dispatch<StoreState>;

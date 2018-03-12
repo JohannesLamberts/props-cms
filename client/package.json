@@ -19,11 +19,13 @@
     "eject": "react-scripts-ts eject"
   },
   "dependencies": {
+    "@j-lamberts/react-file-upload": "^0.1.0",
     "classnames": "^2.2.5",
     "material-ui": "^1.0.0-beta.33",
-    "material-ui-pickers": "^1.0.0-beta.15.1",
+    "material-ui-pickers": "^1.0.0-rc.2",
     "moment": "^2.19.3",
-    "props-cms.connector-common": "^0.1.4",
+    "prop-types": "^15.6.1",
+    "props-cms.connector-common": "^0.1.4-dev.1",
     "react": "^16.1.1",
     "react-dom": "^16.1.1",
     "react-redux": "^5.0.6",
@@ -34,7 +36,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "socket.io-client": "^2.0.4",
-    "typescript-immutable": "^0.1.0"
+    "typescript-immutable": "^1.0.0"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.3",

@@ -1,8 +1,14 @@
-import { DatabaseUpdate }    from 'props-cms.connector-common';
-import * as React            from 'react';
-import { connect }           from 'react-redux';
-import * as SOCKET           from 'socket.io-client';
-import { DatabaseRequireId } from './database.actions';
+import {
+    CollectionKey,
+    DatabaseUpdate
+}                  from 'props-cms.connector-common';
+import * as React  from 'react';
+import { connect } from 'react-redux';
+import * as SOCKET from 'socket.io-client';
+import {
+    DatabaseRecieveDeleteId,
+    DatabaseRequireId
+}                  from './database.actions';
 
 const decorateStore = connect(
     null,
@@ -14,6 +20,13 @@ const decorateStore = connect(
                     dispatch(DatabaseRequireId(data.collection,
                                                data._id,
                                                true));
+                    break;
+                case 'delete':
+                    dispatch(DatabaseRecieveDeleteId(
+                        {
+                            [data.collection]: [data._id]
+                        } as Record<CollectionKey, string[]>
+                    ));
                     break;
                 default:
                     console.debug(`Not implemented: ${data.operationType}`);

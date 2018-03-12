@@ -7,6 +7,9 @@ defaultHeaders.append('accept', 'application/json');
 export class HttpApi {
 
     constructor(private _url: string) {
+        if (this._url[this._url.length - 1] !== '/') {
+            this._url += '/';
+        }
     }
 
     public get<TResponseData>(url: string): Promise<TResponseData> {

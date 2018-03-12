@@ -88,3 +88,12 @@ const DatabaseRecieve = <TKey extends CollectionKey>
         payload: data
     };
 };
+
+export const DatabaseRecieveDeleteId = (operations: Record<CollectionKey, string[]>): Database.ActionRecieveDelete => {
+    return {
+        type: Database.DATABASE_RECIEVE_DELETE,
+        payload: {
+            operations
+        }
+    };
+};

@@ -7,17 +7,17 @@ install_and_build: &install_and_build
         - checkout-{{ .Branch }}-{{ .Revision }}
   - restore_cache:
       keys:
-        - npm-cache-{{ checksum "package.json" }}
+        - yarn-cache-{{ checksum "package.json" }}
   - run:
       name: Install
-      command: npm i
+      command: yarn install
   - save_cache:
-      key: npm-cache-{{ checksum "package.json" }}
+      key: yarn-cache-{{ checksum "package.json" }}
       paths:
         - node_modules
   - run:
       name: Build
-      command: npm run build
+      command: yarn build
 version: 2
 jobs:
   checkout:

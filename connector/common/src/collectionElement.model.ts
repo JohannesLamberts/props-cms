@@ -10,8 +10,16 @@ export interface CollElementModelDataRecord {
     time: Date | undefined;
     date: Date | undefined;
     dateTime: Date | undefined;
-    file: string; // update
-    image: string; // update
+    file: {
+        provider: string;
+        id: string;
+    };
+    image: {
+        provider: string;
+        id: string;
+        maxHeight: number;
+        maxWidth: number;
+    };
     select: string;
     selectMultiple: string[];
     tags: string[];
