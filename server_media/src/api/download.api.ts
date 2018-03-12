@@ -24,7 +24,24 @@ DownloadAPI.addRoute('')
                    });
            });
 
-DownloadAPI.addRoute<{ file_id: string }>('/raw/:file_id')
+DownloadAPI.addRoute<{ file_id: string }>('/:file_id')
+           .get((req, res) => {
+               const _id = new ObjectID(req.params.file_id);
+               getCollection('fs.files')
+                   .findOne({ _id })
+                   .then(file => {
+                       if (!file) {
+                           res.sendStatus(EHttpState.eNotFound);
+                           return;
+                       }
+                       res.json(file);
+                   })
+                   .catch(e => {
+                       res.sendStatus(EHttpState.eServerError);
+                   });
+           });
+
+DownloadAPI.addRoute<{ file_id: string }>('/:file_id/raw')
            .get((req, res) => {
                const _id = new ObjectID(req.params.file_id);
                getCollection('fs.files')
@@ -43,7 +60,7 @@ DownloadAPI.addRoute<{ file_id: string }>('/raw/:file_id')
                    });
            });
 
-DownloadAPI.addRoute<{ file_id: string }>('/image/:file_id')
+DownloadAPI.addRoute<{ file_id: string }>('/:file_id/image')
            .get((req, res) => {
 
                const _id = new ObjectID(req.params.file_id);
