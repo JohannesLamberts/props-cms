@@ -30,22 +30,11 @@ An easy-to-use, open-source, self-hosted headless CMS.
 - Small integration packages
 - Live reloads for consuming sites
 
-## Modules
-
-- Client (administration)
-- Content Server
-- Media Server 
-- Integration
-  - [React](/connector/react/README.md)
-
-
 ## Progress
-
-- Proof of concept
 
 |Module|Progress|
 |---|---|
 |Client|1 - Mostly stable, but still needs some work
 |Content Server|0 - Development server, no authentification and validation|
 |Media Server|0 - Development server, no authentification and validation|
-|Integration|**React:** 2 - Ready to use
+|Integration|**[React](/connector/react/README.md)** - 2 - Ready to use
