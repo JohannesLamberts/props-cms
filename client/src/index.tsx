@@ -27,8 +27,10 @@ ReactDOM.render(
                 <Route
                     render={() => (
                         <MuiPickersUtilsProvider utils={MomentUtils}>
-                            <DBWebsocketSubscription url={process.env.REACT_APP_URL_WEBSOCKET}/>
-                            <AppRoot/>
+                            <div>
+                                <DBWebsocketSubscription url={process.env.REACT_APP_URL_WEBSOCKET}/>
+                                <AppRoot/>
+                            </div>
                         </MuiPickersUtilsProvider>
                     )}
                 />
