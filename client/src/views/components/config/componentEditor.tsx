@@ -1,10 +1,11 @@
 import {
+    Button,
     Icon,
     IconButton,
     Paper,
     Typography,
-    WithStyles,
-    withStyles
+    withStyles,
+    WithStyles
 }                              from 'material-ui';
 import { ComponentModel }      from 'props-cms.connector-common';
 import * as React              from 'react';
@@ -44,24 +45,44 @@ const styles = {
     }
 };
 
-type DefinitionProps<TData = any> = {
+type ComponentEditorProps<TData = any> = {
     onMount: () => void;
-    onDataChange: (data: Partial<ComponentModel>) => void;
+    onSave: (data: ComponentModel) => void;
     component: ComponentModel;
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyle = withStyles(styles);
 
-class ComponentEditor extends React.PureComponent<DefinitionProps> {
+class ComponentEditor extends React.PureComponent<ComponentEditorProps, {
+    editComponent: ComponentModel;
+}> {
+
+    constructor(props: ComponentEditorProps) {
+        super(props);
+        this.state = {
+            editComponent: props.component
+        };
+        this._handleSave = this._handleSave.bind(this);
+        this._handlePartialChange = this._handlePartialChange.bind(this);
+    }
+
+    componentWillReceiveProps(props: ComponentEditorProps) {
+        this.setState(
+            {
+                editComponent: props.component
+            });
+    }
 
     componentWillMount() {
         this.props.onMount();
     }
 
     render() {
-        const { component, onDataChange, classes } = this.props;
 
-        if (!component) {
+        const { onSave, classes } = this.props;
+        const { editComponent } = this.state;
+
+        if (!editComponent) {
             return null;
         }
 
@@ -70,12 +91,12 @@ class ComponentEditor extends React.PureComponent<DefinitionProps> {
                 <Paper className={classes.definitionEditArea}>
                     <div className={classes.definitionEditAreaHead}>
                         <Typography variant={'title'}>
-                            {component.label || component._id}
+                            {editComponent.label || editComponent._id}
                         </Typography>
-                        {component.root && (
+                        {editComponent.root && (
                             <Link
                                 style={{ float: 'right' }}
-                                to={`/collection/${component._id}/elements`}
+                                to={`/collection/${editComponent._id}/elements`}
                             >
                                 <IconButton>
                                     <Icon>view_carousel</Icon>
@@ -85,13 +106,13 @@ class ComponentEditor extends React.PureComponent<DefinitionProps> {
                     </div>
                     <SimpleTextField
                         label={'Label'}
-                        value={component.label}
-                        onBlur={label => onDataChange({ label })}
+                        value={editComponent.label}
+                        onBlur={label => this._handlePartialChange({ label })}
                     />
                     <ColorTextInput
                         label={'Farbe'}
-                        value={component.color}
-                        onChange={color => onDataChange({ color })}
+                        value={editComponent.color}
+                        onChange={color => this._handlePartialChange({ color })}
                     />
                     <SimpleTextField
                         TextFieldProps={{
@@ -99,18 +120,36 @@ class ComponentEditor extends React.PureComponent<DefinitionProps> {
                         }}
                         multiline={true}
                         label={'Beschreibung'}
-                        value={component.description}
-                        onBlur={description => onDataChange({ description })}
+                        value={editComponent.description}
+                        onBlur={description => this._handlePartialChange({ description })}
                     />
+                    <Button
+                        onClick={this._handleSave}
+                        fullWidth={true}
+                        variant={'raised'}
+                    >
+                        Speichern
+                    </Button>
                 </Paper>
                 <div className={classes.fieldEditArea}>
                     <ComponentPropsEditor
-                        properties={component.props || []}
-                        onDataChange={props => onDataChange({ props })}
+                        properties={editComponent.props || []}
+                        onDataChange={props => this._handlePartialChange({ props })}
                     />
                 </div>
             </div>
         );
+    }
+
+    private _handlePartialChange(update: Partial<ComponentModel>) {
+        this.setState(
+            {
+                editComponent: Object.assign({}, this.state.editComponent, update)
+            });
+    }
+
+    private _handleSave() {
+        this.props.onSave(this.state.editComponent);
     }
 }
 
@@ -129,7 +168,7 @@ const decorateStore = connect(
     (dispatch, props: RouteComponentProps<{ collIdent: string }>) => {
         const { collIdent } = props.match.params;
         return {
-            onDataChange: data => {
+            onSave: data => {
                 dispatch(DatabasePatch('component', collIdent, data));
             }
         };
