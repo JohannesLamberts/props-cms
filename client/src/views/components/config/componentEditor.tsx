@@ -15,10 +15,7 @@ import {
 }                              from 'react-router';
 import { Link }                from 'react-router-dom';
 import { compose }             from 'redux';
-import {
-    DatabaseDelete,
-    DatabasePatch
-}                              from '../../../redux/database/database.actions';
+import { DatabasePatch }       from '../../../redux/database/database.actions';
 import { withDatabaseConnect } from '../../../redux/database/database.decorate';
 import {
     ColorTextInput,
@@ -49,7 +46,6 @@ const styles = {
 
 type DefinitionProps<TData = any> = {
     onMount: () => void;
-    onDelete: () => void;
     onDataChange: (data: Partial<ComponentModel>) => void;
     component: ComponentModel;
 } & WithStyles<keyof typeof styles>;
@@ -63,7 +59,7 @@ class ComponentEditor extends React.PureComponent<DefinitionProps> {
     }
 
     render() {
-        const { component, onDataChange, onDelete, classes } = this.props;
+        const { component, onDataChange, classes } = this.props;
 
         if (!component) {
             return null;
@@ -135,9 +131,6 @@ const decorateStore = connect(
         return {
             onDataChange: data => {
                 dispatch(DatabasePatch('component', collIdent, data));
-            },
-            onDelete: () => {
-                dispatch(DatabaseDelete('component', collIdent));
             }
         };
     });
