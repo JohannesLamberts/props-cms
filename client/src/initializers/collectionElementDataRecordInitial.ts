@@ -5,7 +5,7 @@ import {
     CollElementModelDataRecord
 } from 'props-cms.connector-common';
 
-export const InitialCollElementModelDataRecord: {[P in CollDefinitionFieldTypeIdent]: (
+export const InitialCollElementModelDataRecord: {readonly [P in CollDefinitionFieldTypeIdent]: (
     CollElementModelDataRecord[P] | ((field: CollDefinitionModelField<P>) => CollElementModelDataRecord[P])
     )} = {
     text: '',

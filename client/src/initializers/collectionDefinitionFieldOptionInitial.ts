@@ -1,6 +1,6 @@
 import { CollDefinitionFieldOptions } from 'props-cms.connector-common';
 
-export const InitialCollDefinitionFieldOptions: CollDefinitionFieldOptions = {
+export const InitialCollDefinitionFieldOptions: Readonly<CollDefinitionFieldOptions> = {
     text: undefined,
     textArea: undefined,
     boolean: undefined,
