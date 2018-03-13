@@ -7,32 +7,12 @@ h3 {
     font-weight: 800;
 }
 
-.flexColNWrap {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: stretch;
+p a {
+    border-bottom: 1px dashed black;
 }
 
-.flexCol {
-    display: flex;
-    flex-flow: column wrap;
-    align-items: stretch;
-}
-
-.flexRowNWrap {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: stretch;
-}
-
-.flexRow {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: stretch;
-}
-
-.flexRow > *, .flexRowNWrap > *, .flexCol > *, .flexColNWrap > * {
-    flex-grow: 1;
+p a:hover {
+    border-bottom: 1px dotted black;
 }
 
 /**
@@ -50,20 +30,6 @@ a {
     cursor: pointer;
 }
 
-p a {
-    border-bottom: 1px dashed black;
-}
-
-p a:hover {
-    border-bottom: 1px dotted black;
-}
-
-hr {
-    height: 1px;
-    background-color: grey;
-    border: none;
-}
-
 body {
     margin: 0;
     padding: 0;
@@ -79,18 +45,4 @@ table {
 td, th {
     padding: 0;
     margin: 0;
-}
-
-p .material-icons {
-    font-size: 1em;
-    height: 1em;
-    width: 1em;
-}
-
-a[target="_blank"]::after {
-    font-family: 'Material Icons';
-    position: relative;
-    top: 0.1em;
-    margin: 0 0.1em;
-    content: 'launch';
 }
