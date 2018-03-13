@@ -15,18 +15,17 @@ import {
     Switch
 }                                 from 'react-router-dom';
 import { DarkTheme }              from './styles/theme';
-import CollectionDefinitionEditor from './views/components/editor/definitionEditor';
-import CollectionGrid             from './views/components/grid';
-import CollectionElementEditor    from './views/elements/editor/elementEditor';
-import CollectionElementList      from './views/elements/elementList';
+import CollectionDefinitionEditor from './views/components/config/definitionEditor';
+import CollectionElementEditor    from './views/components/elements/editor/elementEditor';
+import CollectionElementList      from './views/components/elements/elementList';
+import CollectionGrid             from './views/components/list';
 import MediaDashboard             from './views/media/mediaDashboard';
 import MediaEditor                from './views/media/mediaEditor';
 
 const links = {
     dashboard: '/dashboard',
-    collections: '/media',
-    view_array: '/collection',
-    layers: '/collection'
+    layers: '/collection',
+    collections: '/media'
 };
 
 const rootPages = {
