@@ -7,9 +7,9 @@ import {
     MenuItem,
     TextField
 }                              from 'material-ui';
+import { MediaProviderModel }  from 'props-cms.connector-common';
 import * as React              from 'react';
 import { ImmutableArray }      from 'typescript-immutable';
-import { MediaProviderModel }  from '../../../../connector/common/src/mediaProvider.model';
 import { withDatabaseConnect } from '../../redux/database/database.decorate';
 import { MediaFile }           from './media';
 import {

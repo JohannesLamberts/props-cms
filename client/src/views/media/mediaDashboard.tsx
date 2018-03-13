@@ -5,11 +5,11 @@ import {
     withStyles,
     WithStyles
 }                              from 'material-ui';
+import { MediaProviderModel }  from 'props-cms.connector-common';
 import * as React              from 'react';
 import { connect }             from 'react-redux';
 import { Link }                from 'react-router-dom';
 import { compose }             from 'redux';
-import { MediaProviderModel }  from '../../../../connector/common/src/mediaProvider.model';
 import {
     DatabaseDelete,
     DatabasePush

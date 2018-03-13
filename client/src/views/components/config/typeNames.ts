@@ -1,4 +1,4 @@
-import { CollDefinitionFieldTypeIdent } from '../../../../../connector/common/src';
+import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
 
 const ui = (name, color = '#00a') => ({
     name,

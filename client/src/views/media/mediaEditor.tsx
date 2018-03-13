@@ -2,14 +2,16 @@ import {
     withStyles,
     WithStyles
 }                              from 'material-ui';
-import { CollDefinitionModel } from 'props-cms.connector-common';
+import {
+    CollDefinitionModel,
+    MediaProviderModel
+}                              from 'props-cms.connector-common';
 import * as React              from 'react';
 import {
     RouteComponentProps,
     withRouter
 }                              from 'react-router';
 import { compose }             from 'redux';
-import { MediaProviderModel }  from '../../../../connector/common/src/mediaProvider.model';
 import { withDatabaseConnect } from '../../redux/database/database.decorate';
 import {
     MediaGridFile,
