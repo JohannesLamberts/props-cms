@@ -1890,9 +1890,9 @@ process-nextick-args@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.0.tgz#a37d732f4271b4ab1ad070d35508e8290788ffaa"
 
-props-cms.connector-common@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/props-cms.connector-common/-/props-cms.connector-common-0.1.4.tgz#c7f316d9bfe9300855d0efd50b2166ca31d387f7"
+props-cms.connector-common@^0.1.4-dev.3:
+  version "0.1.4-dev.3"
+  resolved "https://registry.yarnpkg.com/props-cms.connector-common/-/props-cms.connector-common-0.1.4-dev.3.tgz#aed5720ab5ffb56982de387c403d4b714627eaf1"
 
 proxy-addr@~2.0.2:
   version "2.0.3"

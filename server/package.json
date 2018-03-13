@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@types/mongodb": "^3.0.7",
-    "props-cms.connector-common": "^0.1.4",
+    "props-cms.connector-common": "^0.1.4-dev.3",
     "server-modules": "^0.1.6"
   },
   "devDependencies": {
