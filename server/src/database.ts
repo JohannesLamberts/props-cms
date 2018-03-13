@@ -10,7 +10,7 @@ const Client = Server.connectMongoDb({ auth });
 
 let Database: Db;
 
-export const getCollection = (collectionName: string) => {
+export const getCollection = (collectionName: string): Collection => {
     return Database.collection(collectionName);
 };
 

@@ -20,6 +20,7 @@
     "build.w": "rimraf build && tsc -w -p ./tsconfig.json"
   },
   "dependencies": {
+    "@types/mongodb": "^3.0.7",
     "props-cms.connector-common": "^0.1.4",
     "server-modules": "^0.1.6"
   },

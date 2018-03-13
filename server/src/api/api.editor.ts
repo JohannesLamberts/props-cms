@@ -18,11 +18,25 @@ export const DatabaseApi: ApiSegment = new ApiSegment('db');
 DatabaseApi
     .addRoute<{ collection: CollectionKey }>('/:collection')
     .get(({ params }, res) => {
-        getCollection(params.collection)
-            .find({})
-            .toArray()
-            .then(documents => {
-                res.json(documents);
+
+        res.type('json');
+        res.write('[');
+
+        const cursor = getCollection(params.collection).find({});
+        cursor
+            .count()
+            .then(count => {
+                let i = 0;
+                cursor.on('data', data => {
+                    res.write(JSON.stringify(data));
+                    if (count > ++i) {
+                        res.write(',');
+                    }
+                });
+                cursor.on('end', () => {
+                    res.write(']');
+                    res.end();
+                });
             });
     })
     .post<{
