@@ -1,10 +1,18 @@
 import {
-    WithStyles,
-    withStyles
+    Avatar,
+    Icon,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    withStyles,
+    WithStyles
 }                                 from 'material-ui';
 import { CollDefinitionModel }    from 'props-cms.connector-common';
 import * as React                 from 'react';
 import { connect }                from 'react-redux';
+import { Link }                   from 'react-router-dom';
 import { compose }                from 'redux';
 import {
     DatabaseDelete,
@@ -12,18 +20,17 @@ import {
 }                                 from '../../redux/database/database.actions';
 import { withDatabaseConnect }    from '../../redux/database/database.decorate';
 import { SectionWithActionInput } from '../../util';
-import CollectionGridItemRoot     from './gridItemRoot';
-import CollectionGridItemSub      from './griditemSub';
 
 const styles = {
     root: {
-        width: '100%'
-    },
-    tilesWrapper: {
+        width: '100%',
         display: 'flex',
         flexFlow: 'row wrap',
-        width: '100%',
-        padding: '1rem 0'
+        '& > *': {
+            flexBasis: '50%',
+            flexGrow: 1,
+            padding: '0 2rem'
+        }
     }
 };
 
@@ -39,12 +46,10 @@ const decorateStyle = withStyles(styles);
 const sections = [
     {
         label: 'Main',
-        GridComponent: CollectionGridItemRoot,
         root: true
     },
     {
         label: 'Sub',
-        GridComponent: CollectionGridItemSub,
         root: false
     }
 ];
@@ -65,7 +70,6 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
         return (
             <div className={classes.root}>
                 {sections.map((section, index) => {
-                    const GridComponent = section.GridComponent;
                     return (
                         <SectionWithActionInput
                             key={index}
@@ -73,17 +77,41 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
                             inputLabel={'new component'}
                             onEnter={id => onPush(id, true)}
                         >
-                            <div className={classes.tilesWrapper}>
+                            <List>
                                 {collDefinitions
                                     .filter(collDefinition => collDefinition.root === section.root)
                                     .map(collDefinition => (
-                                        <GridComponent
-                                            key={collDefinition._id}
-                                            collDefinition={collDefinition}
-                                            onDelete={() => onDelete(collDefinition._id!)}
-                                        />
+                                        <ListItem>
+                                            <ListItemIcon>
+                                                <Link to={`/collection/${collDefinition._id}`}>
+                                                    <Icon>settings</Icon>
+                                                </Link>
+                                            </ListItemIcon>
+                                            <ListItemIcon>
+                                                <Link to={`/collection/${collDefinition._id}/elements`}>
+                                                    <Icon>view_carousel</Icon>
+                                                </Link>
+                                            </ListItemIcon>
+                                            <Avatar
+                                                style={{
+                                                    backgroundColor: collDefinition.color,
+                                                    height: '1rem',
+                                                    width: '1rem'
+                                                }}
+                                            />
+                                            <ListItemText
+                                                primary={collDefinition.label || collDefinition._id}
+                                            />
+                                            <ListItemIcon>
+                                                <IconButton
+                                                    onClick={() => onDelete(collDefinition._id!)}
+                                                >
+                                                    <Icon>delete</Icon>
+                                                </IconButton>
+                                            </ListItemIcon>
+                                        </ListItem>
                                     ))}
-                            </div>
+                            </List>
                         </SectionWithActionInput>
                     );
                 })}
