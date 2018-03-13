@@ -1,5 +1,5 @@
 import * as React              from 'react';
-import CollDefinitionFieldList from '../editorFieldList';
+import CollDefinitionFieldList from '../componentFieldList';
 import { TypeSettingProps }    from './typeOptionProps';
 
 export default ({ typeOptions, onChange }: TypeSettingProps<'subDefinition'>) => (

@@ -24,7 +24,7 @@ import {
     ColorTextInput,
     SimpleTextField
 }                                 from '../../../util/index';
-import CollDefinitionFieldsEditor from './editorFieldList';
+import CollDefinitionFieldsEditor from './componentFieldList';
 
 const styles = {
     root: {
@@ -98,6 +98,9 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                         onChange={color => onDataChange({ color })}
                     />
                     <SimpleTextField
+                        TextFieldProps={{
+                            rowsMax: 100
+                        }}
                         multiline={true}
                         label={'Beschreibung'}
                         value={collDefinition.description}

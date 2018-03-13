@@ -15,7 +15,7 @@ import {
     Switch
 }                                 from 'react-router-dom';
 import { DarkTheme }              from './styles/theme';
-import CollectionDefinitionEditor from './views/components/config/definitionEditor';
+import CollectionDefinitionEditor from './views/components/config/componentEditor';
 import CollectionElementEditor    from './views/components/elements/editor/elementEditor';
 import CollectionElementList      from './views/components/elements/elementList';
 import CollectionGrid             from './views/components/list';
