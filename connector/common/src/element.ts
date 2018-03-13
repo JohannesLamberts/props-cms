@@ -1,7 +1,7 @@
-import { DatabaseModel }                from './_base';
-import { CollDefinitionFieldTypeIdent } from './fieldTypes';
+import { DatabaseModel }      from './_base';
+import { ComponentPropTypes } from './fieldTypes';
 
-export interface CollElementModelDataRecord {
+export interface ElementDataRecordTypeByProp {
     text: string;
     textArea: string;
     boolean: boolean;
@@ -25,19 +25,19 @@ export interface CollElementModelDataRecord {
     tags: string[];
     import: {
         collection: string;
-        filter: Record<string, CollElementDataEntry>;
+        filter: Record<string, ElementDataRecord>;
     };
-    subContent: CollElementModel;
-    subDefinition: Record<string, CollElementDataEntry>;
+    subContent: ElementModel;
+    subDefinition: Record<string, ElementDataRecord>;
 }
 
-export type CollElementDataEntry<T extends CollDefinitionFieldTypeIdent = any> = CollElementModelDataRecord[T];
+export type ElementDataRecord<T extends ComponentPropTypes = any> = ElementDataRecordTypeByProp[T];
 
-export interface CollElementModel extends DatabaseModel {
+export interface ElementModel extends DatabaseModel {
     collection: string;
-    data: Record<string, CollElementDataEntry>;
+    data: Record<string, ElementDataRecord>;
     dataOverwrites: {
         query: Record<string, any>
-        overwrites: Record<string, CollElementDataEntry>
+        overwrites: Record<string, ElementDataRecord>
     }[];
 }

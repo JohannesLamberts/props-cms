@@ -1,7 +1,7 @@
-import { DatabaseModel }                from './_base';
-import { CollDefinitionFieldTypeIdent } from './fieldTypes';
+import { DatabaseModel }      from './_base';
+import { ComponentPropTypes } from './fieldTypes';
 
-export interface CollDefinitionFieldOptions {
+export interface ComponentPropTypeOptions {
     text: undefined;
     textArea: undefined;
     boolean: undefined;
@@ -24,29 +24,28 @@ export interface CollDefinitionFieldOptions {
         options: string[]
     };
     subDefinition: {
-        fields: CollDefinitionModelField[];
+        fields: ComponentProperty[];
     };
     // disable primitive options like import: string
     // allows general use of partial updates
     [key: string]: undefined | Record<string, any>;
 }
 
-export interface CollDefinitionModelField<TKey extends CollDefinitionFieldTypeIdent = any> {
-    id: string;
+export interface ComponentProperty<TKey extends ComponentPropTypes = any> {
     key: string;
     label: string;
     helpText: string;
     type: TKey;
-    typeOptions: CollDefinitionFieldOptions[TKey];
+    typeOptions: ComponentPropTypeOptions[TKey];
     isArray: boolean;
     allowOverwrite: boolean;
 }
 
-export interface CollDefinitionModel extends DatabaseModel {
+export interface ComponentModel extends DatabaseModel {
     root: boolean;
     label: string;
     icon: string;
     color: string;
     description: string;
-    fields: CollDefinitionModelField[];
+    props: ComponentProperty[];
 }
