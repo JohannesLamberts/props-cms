@@ -6,12 +6,12 @@ import {
     withStyles
 }                               from 'material-ui';
 import {
-    CollDefinitionModelField,
-    CollElementModel
+    ComponentProperty,
+    ElementModel
 }                               from 'props-cms.connector-common';
 import * as React               from 'react';
 import { InitialFieldTypeData } from '../../../../initializers/collectionElementDataRecordInitial';
-import CollElementEditorField   from './editorFieldTypeEditor';
+import ElementEditorField       from './editorFieldTypeEditor';
 import InsertButton             from './insertButton';
 
 const styles = {
@@ -31,19 +31,19 @@ const styles = {
 
 const decorateStyles = withStyles(styles);
 
-type CollElementModelEditorProps = {
-    onDataChange: (data: Partial<CollElementModel['data']>) => void;
-    data: CollElementModel['data'];
-    fields: CollDefinitionModelField[];
+type ElementModelEditorProps = {
+    onDataChange: (data: Partial<ElementModel['data']>) => void;
+    data: ElementModel['data'];
+    properties: ComponentProperty[];
 } & WithStyles<keyof typeof styles>;
 
-const CollElementModelEditor = (props: CollElementModelEditorProps) => {
+const ElementModelEditor = (props: ElementModelEditorProps) => {
 
-    const { data, fields, onDataChange, classes } = props;
+    const { data, properties, onDataChange, classes } = props;
 
     return (
         <div className={classes.root}>
-            {fields.map((field, index) => {
+            {properties.map((field, index) => {
 
                 const update = (newFieldData: any) => {
                     onDataChange({ [field.key]: newFieldData });
@@ -70,8 +70,8 @@ const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                                         }}
                                     />
                                     <div className={classes.fieldArrayItem}>
-                                        <CollElementEditorField
-                                            field={Object.assign({}, field, { label: '' })}
+                                        <ElementEditorField
+                                            prop={Object.assign({}, field, { label: '' })}
                                             record={fieldDataEl}
                                             onDataChange={(newFieldData) => {
                                                 const shallow = fieldData.slice();
@@ -105,9 +105,9 @@ const CollElementModelEditor = (props: CollElementModelEditorProps) => {
                 }
 
                 return (
-                    <CollElementEditorField
+                    <ElementEditorField
                         key={index}
-                        field={field}
+                        prop={field}
                         record={fieldData}
                         onDataChange={(newFieldData) => {
                             update(newFieldData);
@@ -119,4 +119,4 @@ const CollElementModelEditor = (props: CollElementModelEditorProps) => {
     );
 };
 
-export default decorateStyles(CollElementModelEditor);
+export default decorateStyles(ElementModelEditor);

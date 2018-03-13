@@ -57,7 +57,7 @@ class WSComponent extends React.Component<WSComponentProps> {
 
             ws.on('connect', () => {
                 console.debug(`WS connected`);
-                ws.emit('db.subscribe', ['coll_definition', 'coll_element']);
+                ws.emit('db.subscribe', ['component', 'element']);
             });
 
             ws.on('disconnect', () => {

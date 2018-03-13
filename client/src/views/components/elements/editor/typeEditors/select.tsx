@@ -1,22 +1,22 @@
 import {
     MenuItem,
     TextField
-}                                     from 'material-ui';
-import { CollDefinitionFieldOptions } from 'props-cms.connector-common';
-import * as React                     from 'react';
-import { TypeElementEditorProps }     from './typeEditorProps';
+}                                   from 'material-ui';
+import { ComponentPropTypeOptions } from 'props-cms.connector-common';
+import * as React                   from 'react';
+import { TypeElementEditorProps }   from './typeEditorProps';
 
-export default ({ field, record, onDataChange }: TypeElementEditorProps<'select'>) => (
+export default ({ prop, record, onDataChange }: TypeElementEditorProps<'select'>) => (
     <TextField
         fullWidth={true}
         select={true}
-        label={field.label}
+        label={prop.label}
         value={record || '%NONE%'}
         onChange={event => {
             onDataChange(event.target.value);
         }}
     >
-        {(field.typeOptions as CollDefinitionFieldOptions['select'])
+        {(prop.typeOptions as ComponentPropTypeOptions['select'])
             .values
             .map(value => (
                 <MenuItem

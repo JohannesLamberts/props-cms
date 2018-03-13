@@ -3,7 +3,7 @@ import {
     WithStyles
 }                              from 'material-ui';
 import {
-    CollDefinitionModel,
+    ComponentModel,
     MediaProviderModel
 }                              from 'props-cms.connector-common';
 import * as React              from 'react';
@@ -38,7 +38,7 @@ const styles = {
 type DefinitionProps<TData = any> = {
     onMount: () => void;
     onDelete: () => void;
-    onDataChange: (data: Partial<CollDefinitionModel>) => void;
+    onDataChange: (data: Partial<ComponentModel>) => void;
     mediaProvider: MediaProviderModel;
 } & WithStyles<keyof typeof styles>;
 

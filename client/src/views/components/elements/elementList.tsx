@@ -9,8 +9,8 @@ import {
     withStyles
 }                             from 'material-ui';
 import {
-    CollDefinitionModel,
-    CollElementModel
+    ComponentModel,
+    ElementModel
 }                             from 'props-cms.connector-common';
 import * as React             from 'react';
 import { connect }            from 'react-redux';
@@ -46,10 +46,10 @@ const styles = {
 };
 
 type DefinitionProps = {
-    collDefinition: CollDefinitionModel;
-    collElements: CollElementModel[];
+    collDefinition: ComponentModel;
+    collElements: ElementModel[];
     onMount: () => void;
-    onPush: (model: CollElementModel) => void;
+    onPush: (model: ElementModel) => void;
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyles = withStyles(styles);
@@ -96,7 +96,7 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
                 </div>
                 <Table>
                     <SimpleTableHeader>
-                        {['', ...collDefinition.fields.map(field => field.label)]}
+                        {['', ...collDefinition.props.map(field => field.label)]}
                     </SimpleTableHeader>
                     <SimpleTableBody
                         data={collElements}
@@ -110,7 +110,7 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
                                 </Link>
                             ),
                             ...collDefinition
-                                .fields
+                                .props
                                 .map(field => JSON.stringify(el.data[field.key]))
                         ]}
                     </SimpleTableBody>
@@ -126,15 +126,15 @@ export const decorateStore = connect(
         return {
             collElements: (store.database
                                 .get('collections')
-                                .get('coll_element')
+                                .get('element')
                                 .get('models')
-                                .toArray() as CollElementModel[])
-                .filter((el: CollElementModel) => {
+                                .toArray() as ElementModel[])
+                .filter((el: ElementModel) => {
                     return el.collection === collIdent;
                 }),
             collDefinition: store.database
                                  .get('collections')
-                                 .get('coll_definition')
+                                 .get('component')
                                  .get('models')
                                  .get(collIdent)
         };
@@ -143,11 +143,11 @@ export const decorateStore = connect(
         const { collIdent } = props.match.params;
         return {
             onMount: () => {
-                dispatch(DatabaseRequire('coll_element'));
-                dispatch(DatabaseRequireId('coll_definition', collIdent));
+                dispatch(DatabaseRequire('element'));
+                dispatch(DatabaseRequireId('component', collIdent));
             },
-            onPush: (model: CollElementModel) => {
-                dispatch(DatabasePush('coll_element', model));
+            onPush: (model: ElementModel) => {
+                dispatch(DatabasePush('element', model));
             }
         };
     });

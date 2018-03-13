@@ -5,21 +5,21 @@ import {
     Typography,
     WithStyles,
     withStyles
-}                                 from 'material-ui';
-import { CollDefinitionModel }    from 'props-cms.connector-common';
-import * as React                 from 'react';
-import { connect }                from 'react-redux';
+}                              from 'material-ui';
+import { ComponentModel }      from 'props-cms.connector-common';
+import * as React              from 'react';
+import { connect }             from 'react-redux';
 import {
     RouteComponentProps,
     withRouter
-}                                 from 'react-router';
-import { Link }                   from 'react-router-dom';
-import { compose }                from 'redux';
+}                              from 'react-router';
+import { Link }                from 'react-router-dom';
+import { compose }             from 'redux';
 import {
     DatabaseDelete,
     DatabasePatch
-}                                 from '../../../redux/database/database.actions';
-import { withDatabaseConnect }    from '../../../redux/database/database.decorate';
+}                              from '../../../redux/database/database.actions';
+import { withDatabaseConnect } from '../../../redux/database/database.decorate';
 import {
     ColorTextInput,
     SimpleTextField
@@ -50,8 +50,8 @@ const styles = {
 type DefinitionProps<TData = any> = {
     onMount: () => void;
     onDelete: () => void;
-    onDataChange: (data: Partial<CollDefinitionModel>) => void;
-    collDefinition: CollDefinitionModel;
+    onDataChange: (data: Partial<ComponentModel>) => void;
+    collDefinition: ComponentModel;
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyle = withStyles(styles);
@@ -109,8 +109,8 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                 </Paper>
                 <div className={classes.fieldEditArea}>
                     <CollDefinitionFieldsEditor
-                        fields={collDefinition.fields || []}
-                        onDataChange={fields => onDataChange({ fields })}
+                        properties={collDefinition.props || []}
+                        onDataChange={props => onDataChange({ props })}
                     />
                 </div>
             </div>
@@ -122,7 +122,7 @@ const decorateDatabase = withDatabaseConnect(
     {},
     (props: RouteComponentProps<{ collIdent: string }>) => ({
         collDefinition: {
-            collection: 'coll_definition' as 'coll_definition',
+            collection: 'component' as 'component',
             id: props.match.params.collIdent
         }
     })
@@ -134,10 +134,10 @@ const decorateStore = connect(
         const { collIdent } = props.match.params;
         return {
             onDataChange: data => {
-                dispatch(DatabasePatch('coll_definition', collIdent, data));
+                dispatch(DatabasePatch('component', collIdent, data));
             },
             onDelete: () => {
-                dispatch(DatabaseDelete('coll_definition', collIdent));
+                dispatch(DatabaseDelete('component', collIdent));
             }
         };
     });

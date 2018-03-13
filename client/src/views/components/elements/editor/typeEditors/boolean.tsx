@@ -5,7 +5,7 @@ import {
 import * as React                 from 'react';
 import { TypeElementEditorProps } from './typeEditorProps';
 
-export default ({ field, record, onDataChange }: TypeElementEditorProps<'boolean'>) => (
+export default ({ prop, record, onDataChange }: TypeElementEditorProps<'boolean'>) => (
     <FormControlLabel
         control={(
             <Switch
@@ -13,6 +13,6 @@ export default ({ field, record, onDataChange }: TypeElementEditorProps<'boolean
                 onChange={(event, checked) => onDataChange(checked)}
             />
         )}
-        label={field.label}
+        label={prop.label}
     />
 );

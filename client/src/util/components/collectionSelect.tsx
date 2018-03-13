@@ -3,21 +3,21 @@ import {
     MenuItem,
     TextField
 }                              from 'material-ui';
-import { CollDefinitionModel } from 'props-cms.connector-common';
+import { ComponentModel }      from 'props-cms.connector-common';
 import * as React              from 'react';
 import { withDatabaseConnect } from '../../redux/database/database.decorate';
 
 interface DefinitionProps {
     className?: string;
     label: string;
-    filter?: (model: CollDefinitionModel) => boolean;
+    filter?: (model: ComponentModel) => boolean;
     value?: string;
     onChange: (newModel: string) => void;
-    collDefinitions: CollDefinitionModel[];
+    collDefinitions: ComponentModel[];
     onMount: () => void;
 }
 
-class CollElementEditorFieldSubContent extends React.PureComponent<DefinitionProps> {
+class ElementEditorFieldSubContent extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
@@ -56,6 +56,6 @@ class CollElementEditorFieldSubContent extends React.PureComponent<DefinitionPro
     }
 }
 
-const decorateDatabase = withDatabaseConnect({ collDefinitions: 'coll_definition' }, {});
+const decorateDatabase = withDatabaseConnect({ collDefinitions: 'component' }, {});
 
-export default decorateDatabase(CollElementEditorFieldSubContent);
+export default decorateDatabase(ElementEditorFieldSubContent);

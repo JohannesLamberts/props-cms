@@ -6,14 +6,14 @@ import {
     WithStyles
 }                                 from 'material-ui';
 import {
-    CollDefinitionModel,
-    CollElementModelDataRecord
+    ComponentModel,
+    ElementModelDataRecord
 }                                 from 'props-cms.connector-common';
 import * as React                 from 'react';
 import { InitialFieldData }       from '../../../../../initializers/collectionElementDataRecordInitial';
 import { withDatabaseConnect }    from '../../../../../redux/database/database.decorate';
 import { CollectionSelect }       from '../../../../../util';
-import CollElementEditorField     from '../editorFieldTypeEditor';
+import ElementEditorField         from '../editorFieldTypeEditor';
 import { TypeElementEditorProps } from './typeEditorProps';
 
 const styles = {
@@ -30,7 +30,7 @@ const styles = {
 const decorateStyles = withStyles(styles);
 
 class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
-    collDefinition: CollDefinitionModel;
+    collDefinition: ComponentModel;
     onMount: () => void;
 } & WithStyles<keyof typeof styles>> {
 
@@ -39,14 +39,14 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
     }
 
     render() {
-        const { field, record, onDataChange, collDefinition, classes } = this.props;
+        const { prop, record, onDataChange, collDefinition, classes } = this.props;
 
-        const data: CollElementModelDataRecord['import'] = record || {
+        const data: ElementModelDataRecord['import'] = record || {
             collection: '%NONE%',
             filter: {}
         };
 
-        const update = (partial: Partial<CollElementModelDataRecord['import']>) => {
+        const update = (partial: Partial<ElementModelDataRecord['import']>) => {
             onDataChange(Object.assign(
                 {},
                 data,
@@ -56,7 +56,7 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
         return (
             <div>
                 <Typography variant={'caption'}>
-                    {field.label}
+                    {prop.label}
                 </Typography>
                 <CollectionSelect
                     label={'Collection'}
@@ -66,7 +66,7 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
                 {collDefinition && (
                     <div>
                         {collDefinition
-                            .fields
+                            .props
                             .filter(defField => !defField.isArray
                                 && ['import', 'file', 'image', 'tags', 'selectMultiple']
                                     .indexOf(defField.type) === -1)
@@ -102,8 +102,8 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
                                             label={defField.label}
                                         />
                                         {active && (
-                                            <CollElementEditorField
-                                                field={defField}
+                                            <ElementEditorField
+                                                prop={defField}
                                                 record={fieldCompareData.value}
                                                 onDataChange={value => {
                                                     update({
@@ -134,7 +134,7 @@ const decorateDatabase = withDatabaseConnect(
     {},
     ({ record }: TypeElementEditorProps<'import'>) => ({
         collDefinition: {
-            collection: 'coll_definition' as 'coll_definition',
+            collection: 'component' as 'component',
             id: record ? record.collection : ''
         }
     }));

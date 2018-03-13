@@ -2,13 +2,13 @@ import * as React                 from 'react';
 import { SimpleTextField }        from '../../../../../util/index';
 import { TypeElementEditorProps } from './typeEditorProps';
 
-export default ({ field, record, onDataChange }: TypeElementEditorProps<'textArea'>) => (
+export default ({ prop, record, onDataChange }: TypeElementEditorProps<'textArea'>) => (
     <SimpleTextField
         TextFieldProps={{
             fullWidth: true
         }}
         multiline={true}
-        label={field.label}
+        label={prop.label}
         value={record as string}
         onBlur={onDataChange}
     />

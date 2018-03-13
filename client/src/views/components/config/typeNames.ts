@@ -1,11 +1,11 @@
-import { CollDefinitionFieldTypeIdent } from 'props-cms.connector-common';
+import { ComponentPropTypes } from 'props-cms.connector-common';
 
 const ui = (name, color = '#00a') => ({
     name,
     color
 });
 
-export const CollDefinitionFieldTypeUI: Record<CollDefinitionFieldTypeIdent, {
+export const CollDefinitionFieldTypeUI: Record<ComponentPropTypes, {
     name: string;
     color: string;
 }> = {
@@ -24,5 +24,5 @@ export const CollDefinitionFieldTypeUI: Record<CollDefinitionFieldTypeIdent, {
     tags: ui('Tags', '#0aa'),
     import: ui('Import', '#ff0'),
     subContent: ui('Content', '#0ff'),
-    subDefinition: ui('MediaDashboardBase', '#f0f')
+    subDefinition: ui('Definition', '#f0f')
 };

@@ -1,14 +1,14 @@
 import {
-    CollDefinitionFieldTypeIdent,
-    CollDefinitionModelField,
-    CollElementDataEntry
+    ComponentProperty,
+    ComponentPropTypes,
+    ElementModelDataRecord
 } from 'props-cms.connector-common';
 
-export type TypeElementEditorProps<TKey extends CollDefinitionFieldTypeIdent> = {
-    field: CollDefinitionModelField<TKey>;
-    record?: CollElementDataEntry<TKey>;
-    onDataChange: (newData: CollElementDataEntry<TKey>) => void;
+export type TypeElementEditorProps<TKey extends ComponentPropTypes> = {
+    prop: ComponentProperty<TKey>;
+    record?: ElementModelDataRecord<TKey>;
+    onDataChange: (newData: ElementModelDataRecord<TKey>) => void;
 };
 
-export type TypeEditorComponent<TKey extends CollDefinitionFieldTypeIdent>
+export type TypeEditorComponent<TKey extends ComponentPropTypes>
     = React.ComponentType<TypeElementEditorProps<TKey>> | undefined;

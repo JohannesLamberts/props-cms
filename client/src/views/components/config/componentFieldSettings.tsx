@@ -4,12 +4,12 @@ import {
     Typography,
     WithStyles,
     withStyles
-}                                   from 'material-ui';
-import { CollDefinitionModelField } from 'props-cms.connector-common';
-import * as React                   from 'react';
-import { SimpleTextField }          from '../../../util/index';
-import formComponents               from './typeSettings/index';
-import { TypeSettingsComponent }    from './typeSettings/typeOptionProps';
+}                                from 'material-ui';
+import { ComponentProperty }     from 'props-cms.connector-common';
+import * as React                from 'react';
+import { SimpleTextField }       from '../../../util/index';
+import formComponents            from './typeSettings/index';
+import { TypeSettingsComponent } from './typeSettings/typeOptionProps';
 
 const styles = {
     typeOptions: {
@@ -21,8 +21,8 @@ const styles = {
 const decorateStyles = withStyles(styles);
 
 const CollDefinitionFieldSettings = (props: {
-    field: CollDefinitionModelField;
-    onDataChange: (data: Partial<CollDefinitionModelField>) => void;
+    field: ComponentProperty;
+    onDataChange: (data: Partial<ComponentProperty>) => void;
 
 } & WithStyles<keyof typeof styles>) => {
 

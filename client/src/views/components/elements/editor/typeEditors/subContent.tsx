@@ -3,11 +3,11 @@ import {
     withStyles,
     WithStyles
 }                                 from 'material-ui';
-import { CollDefinitionModel }    from 'props-cms.connector-common';
+import { ComponentModel }         from 'props-cms.connector-common';
 import * as React                 from 'react';
 import { withDatabaseConnect }    from '../../../../../redux/database/database.decorate';
 import { CollectionSelect }       from '../../../../../util/index';
-import CollElementModelEditor     from '../editorContent';
+import ElementModelEditor         from '../editorContent';
 import { TypeElementEditorProps } from './typeEditorProps';
 
 const styles = {
@@ -28,7 +28,7 @@ const styles = {
 };
 
 type SubContentProps = {
-    collDefinition: CollDefinitionModel;
+    collDefinition: ComponentModel;
     onMount: () => void;
 } & TypeElementEditorProps<'subContent'> & WithStyles<keyof typeof styles>;
 
@@ -43,8 +43,8 @@ class SubContentEdit
 
     render() {
 
-        const { onDataChange, field, classes, collDefinition } = this.props;
-        const { typeOptions } = field;
+        const { onDataChange, prop, classes, collDefinition } = this.props;
+        const { typeOptions } = prop;
 
         const record = this.props.record || {
             collection: '',
@@ -55,7 +55,7 @@ class SubContentEdit
         return (
             <div>
                 <Typography variant={'caption'}>
-                    {field.label}
+                    {prop.label}
                 </Typography>
                 <div className={classes.area}>
                     {/* Select subContentType */}
@@ -81,10 +81,10 @@ class SubContentEdit
                     {record.collection && (
                         collDefinition
                             ? (
-                                <CollElementModelEditor
-                                    data={record.data}
-                                    fields={collDefinition.fields}
-                                    onDataChange={newData => onDataChange(
+                            <ElementModelEditor
+                                data={record.data}
+                                properties={collDefinition.props}
+                                onDataChange={newData => onDataChange(
                                         Object.assign({},
                                                       record,
                                                       {
@@ -107,7 +107,7 @@ const decorateDatabase = withDatabaseConnect(
     {},
     ({ record }: TypeElementEditorProps<'subContent'>) => ({
         collDefinition: {
-            collection: 'coll_definition' as 'coll_definition',
+            collection: 'component' as 'component',
             id: record ? record.collection : ''
         }
     }));

@@ -1,17 +1,17 @@
-import { Typography }                 from 'material-ui';
-import { CollElementModelDataRecord } from 'props-cms.connector-common';
-import * as React                     from 'react';
-import CollElementModelEditor         from '../editorContent';
-import { TypeElementEditorProps }     from './typeEditorProps';
+import { Typography }             from 'material-ui';
+import { ElementModelDataRecord } from 'props-cms.connector-common';
+import * as React                 from 'react';
+import ElementModelEditor         from '../editorContent';
+import { TypeElementEditorProps } from './typeEditorProps';
 
-export default ({ field, record, onDataChange }: TypeElementEditorProps<'subDefinition'>) => (
+export default ({ prop, record, onDataChange }: TypeElementEditorProps<'subDefinition'>) => (
     <div>
         <Typography variant={'caption'}>
-            {field.label}
+            {prop.label}
         </Typography>
-        <CollElementModelEditor
-            fields={field.typeOptions.fields}
-            data={record as CollElementModelDataRecord['subDefinition']}
+        <ElementModelEditor
+            properties={prop.typeOptions.props}
+            data={record as ElementModelDataRecord['subDefinition']}
             onDataChange={partialData => onDataChange(Object.assign({}, record, partialData))}
         />
     </div>

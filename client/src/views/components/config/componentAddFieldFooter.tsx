@@ -10,8 +10,8 @@ import {
     TextField
 }                                            from 'material-ui';
 import {
-    CollDefinitionFieldTypeIdent,
-    CollDefinitionModelField
+    ComponentProperty,
+    ComponentPropTypes
 }                                            from 'props-cms.connector-common';
 import * as React                            from 'react';
 import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
@@ -19,18 +19,17 @@ import { SimpleTextField }                   from '../../../util';
 import { CollDefinitionFieldTypeUI }         from './typeNames';
 
 interface ComponentAddFieldFooterProps {
-    onSave: (field: CollDefinitionModelField) => void;
+    onSave: (field: ComponentProperty) => void;
 }
 
 export class ComponentAddFieldFooter extends React.PureComponent<ComponentAddFieldFooterProps, {
-    field: CollDefinitionModelField;
+    field: ComponentProperty;
 }> {
 
     constructor(props: ComponentAddFieldFooterProps) {
         super(props);
         this.state = {
             field: {
-                id: '',
                 key: '',
                 label: '',
                 helpText: '',
@@ -48,7 +47,7 @@ export class ComponentAddFieldFooter extends React.PureComponent<ComponentAddFie
         const {} = this.props;
         const { field } = this.state;
 
-        const update = (partial: Partial<CollDefinitionModelField>) => {
+        const update = (partial: Partial<ComponentProperty>) => {
             this.setState({ field: Object.assign({}, this.state.field, partial) });
         };
 
@@ -62,7 +61,7 @@ export class ComponentAddFieldFooter extends React.PureComponent<ComponentAddFie
                             label={'Typ'}
                             value={field.type}
                             onChange={event => {
-                                const newValue = event.target.value as CollDefinitionFieldTypeIdent;
+                                const newValue = event.target.value as ComponentPropTypes;
                                 update(
                                     {
                                         type: newValue,

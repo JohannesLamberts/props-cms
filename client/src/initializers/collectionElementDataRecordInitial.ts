@@ -1,12 +1,12 @@
 import {
-    CollDefinitionFieldTypeIdent,
-    CollDefinitionModel,
-    CollDefinitionModelField,
-    CollElementModelDataRecord
+    ComponentModel,
+    ComponentProperty,
+    ComponentPropTypes,
+    ElementModelDataRecord
 } from 'props-cms.connector-common';
 
-export const InitialCollElementModelDataRecord: {readonly [P in CollDefinitionFieldTypeIdent]: (
-    CollElementModelDataRecord[P] | ((field: CollDefinitionModelField<P>) => CollElementModelDataRecord[P])
+export const InitialElementModelDataRecord: {readonly [P in ComponentPropTypes]: (
+    ElementModelDataRecord[P] | ((field: ComponentProperty<P>) => ElementModelDataRecord[P])
     )} = {
     text: '',
     textArea: '',
@@ -46,15 +46,15 @@ export const InitialCollElementModelDataRecord: {readonly [P in CollDefinitionFi
     subDefinition: {}
 };
 
-export const InitialElementData = (collDefinition: CollDefinitionModel): Record<string, any> => {
+export const InitialElementData = (collDefinition: ComponentModel): Record<string, any> => {
     const data: Record<string, any> = {};
-    for (const field of collDefinition.fields) {
+    for (const field of collDefinition.props) {
         data[field.key] = InitialFieldData(field);
     }
     return data;
 };
 
-export const InitialFieldData = (field: CollDefinitionModelField): any => {
+export const InitialFieldData = (field: ComponentProperty): any => {
     if (field.isArray) {
         return [];
     } else {
@@ -64,8 +64,8 @@ export const InitialFieldData = (field: CollDefinitionModelField): any => {
     }
 };
 
-export const InitialFieldTypeData = (field: CollDefinitionModelField): any => {
-    const initializer = InitialCollElementModelDataRecord[field.type];
+export const InitialFieldTypeData = (field: ComponentProperty): any => {
+    const initializer = InitialElementModelDataRecord[field.type];
     if (typeof initializer === 'function') {
         return initializer(field);
     }

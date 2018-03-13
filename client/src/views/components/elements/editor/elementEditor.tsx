@@ -7,8 +7,8 @@ import {
     WithStyles
 }                              from 'material-ui';
 import {
-    CollDefinitionModel,
-    CollElementModel
+    ComponentModel,
+    ElementModel
 }                              from 'props-cms.connector-common';
 import * as React              from 'react';
 import { connect }             from 'react-redux';
@@ -20,9 +20,9 @@ import { Link }                from 'react-router-dom';
 import { compose }             from 'redux';
 import { DatabasePatch }       from '../../../../redux/database/database.actions';
 import { withDatabaseConnect } from '../../../../redux/database/database.decorate';
-import CollElementModelEditor  from './editorContent';
+import ElementModelEditor      from './editorContent';
 
-const collectionKey = 'coll_element';
+const collectionKey = 'element';
 
 const styles = {
     root: {
@@ -43,9 +43,9 @@ const decorateStyles = withStyles(styles);
 
 type DefinitionProps<TData = any> = {
     onMount: () => void;
-    onDataChange: (data: Partial<CollElementModel>) => void;
-    collElement: CollElementModel | undefined;
-    collDefinition: CollDefinitionModel | undefined;
+    onDataChange: (data: Partial<ElementModel>) => void;
+    collElement: ElementModel | undefined;
+    collDefinition: ComponentModel | undefined;
 } & WithStyles<keyof typeof styles>;
 
 class CollElementEditor extends React.PureComponent<DefinitionProps> {
@@ -76,8 +76,8 @@ class CollElementEditor extends React.PureComponent<DefinitionProps> {
                     </Link>
                 </div>
                 <div className={classes.content}>
-                    <CollElementModelEditor
-                        fields={collDefinition.fields}
+                    <ElementModelEditor
+                        properties={collDefinition.props}
                         data={collElement.data}
                         onDataChange={partialData =>
                             onDataChange({
@@ -96,11 +96,11 @@ const decorateDatabase = withDatabaseConnect(
     {},
     (props: RouteComponentProps<{ collIdent: string; elementId: string }>) => ({
         collDefinition: {
-            collection: 'coll_definition' as 'coll_definition',
+            collection: 'component' as 'component',
             id: props.match.params.collIdent
         },
         collElement: {
-            collection: 'coll_element' as 'coll_element',
+            collection: 'element' as 'element',
             id: props.match.params.elementId
         }
     })

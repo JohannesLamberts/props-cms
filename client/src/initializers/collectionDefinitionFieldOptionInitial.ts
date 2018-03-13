@@ -1,6 +1,6 @@
-import { CollDefinitionFieldOptions } from 'props-cms.connector-common';
+import { ComponentPropTypeOptions } from 'props-cms.connector-common';
 
-export const InitialCollDefinitionFieldOptions: Readonly<CollDefinitionFieldOptions> = {
+export const InitialCollDefinitionFieldOptions: Readonly<ComponentPropTypeOptions> = {
     text: undefined,
     textArea: undefined,
     boolean: undefined,
@@ -23,6 +23,6 @@ export const InitialCollDefinitionFieldOptions: Readonly<CollDefinitionFieldOpti
         options: []
     },
     subDefinition: {
-        fields: []
+        props: []
     }
 };

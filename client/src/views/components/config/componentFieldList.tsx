@@ -11,7 +11,7 @@ import {
     withStyles,
     WithStyles
 }                                    from 'material-ui';
-import { CollDefinitionModelField }  from 'props-cms.connector-common';
+import { ComponentProperty }         from 'props-cms.connector-common';
 import * as React                    from 'react';
 import {
     SimpleTableBody,
@@ -50,8 +50,8 @@ const styles = {
 const decorateStyle = withStyles(styles);
 
 type ComponentFieldListProps = {
-    fields: CollDefinitionModelField[];
-    onDataChange: (data: CollDefinitionModelField[]) => void;
+    properties: ComponentProperty[];
+    onDataChange: (data: ComponentProperty[]) => void;
 } & WithStyles<keyof typeof styles>;
 
 class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
@@ -68,14 +68,14 @@ class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
 
     render() {
 
-        const { fields, onDataChange, classes } = this.props;
+        const { properties, onDataChange, classes } = this.props;
         const { dialogFieldKey } = this.state;
 
-        let dialogField: CollDefinitionModelField | null = null;
+        let dialogProp: ComponentProperty | null = null;
         if (dialogFieldKey) {
-            for (let field of fields) {
-                if (field.key === dialogFieldKey) {
-                    dialogField = field;
+            for (let prop of properties) {
+                if (prop.key === dialogFieldKey) {
+                    dialogProp = prop;
                     break;
                 }
             }
@@ -83,8 +83,10 @@ class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
 
         return (
             <div>
-                {dialogField && (
+                {dialogProp && (
                     <Dialog
+                        fullWidth={true}
+                        maxWidth={false}
                         open={true}
                         onClose={this._closeDialog}
                     >
@@ -93,12 +95,12 @@ class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
                         </DialogTitle>
                         <DialogContent>
                             <ComponentFieldSettings
-                                field={dialogField}
+                                field={dialogProp}
                                 onDataChange={partial => {
-                                    const shallow = fields.slice();
-                                    shallow[shallow.indexOf(dialogField!)]
+                                    const shallow = properties.slice();
+                                    shallow[shallow.indexOf(dialogProp!)]
                                         = Object.assign({},
-                                                        dialogField,
+                                                        dialogProp,
                                                         partial);
                                     onDataChange(shallow);
                                 }}
@@ -117,25 +119,25 @@ class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
                             {['Typ', 'Label', 'Repeat', 'Overwrite', 'Info', 'ID', 'Actions']}
                         </SimpleTableHeader>
                         <SimpleTableBody
-                            data={fields}
+                            data={properties}
                         >
-                            {(field: CollDefinitionModelField) => [
+                            {(prop: ComponentProperty) => [
                                 (
                                     <span
                                         style={{
-                                            backgroundColor: CollDefinitionFieldTypeUI[field.type].color,
+                                            backgroundColor: CollDefinitionFieldTypeUI[prop.type].color,
                                             padding: '0.2rem 0.5rem',
                                             borderRadius: '2px'
                                         }}
                                     >
-                                        {CollDefinitionFieldTypeUI[field.type].name}
+                                        {CollDefinitionFieldTypeUI[prop.type].name}
                                     </span>
                                 ),
-                                field.label,
-                                field.isArray && <Icon>check</Icon>,
-                                field.allowOverwrite && <Icon>check</Icon>,
-                                field.helpText,
-                                field.key,
+                                prop.label,
+                                prop.isArray && <Icon>check</Icon>,
+                                prop.allowOverwrite && <Icon>check</Icon>,
+                                prop.helpText,
+                                prop.key,
                                 (
                                     <div
                                         style={{
@@ -145,14 +147,14 @@ class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
                                     >
                                         <IconButton
                                             onClick={() =>
-                                                this.setState({ dialogFieldKey: field.key })}
+                                                this.setState({ dialogFieldKey: prop.key })}
                                         >
                                             <Icon>settings</Icon>
                                         </IconButton>
                                         <IconButton
                                             onClick={() => {
-                                                const shallow = fields.slice();
-                                                shallow.splice(fields.indexOf(field), 1);
+                                                const shallow = properties.slice();
+                                                shallow.splice(properties.indexOf(prop), 1);
                                                 onDataChange(shallow);
                                             }}
                                         >
@@ -163,15 +165,11 @@ class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
                             ]}
                         </SimpleTableBody>
                         <ComponentAddFieldFooter
-                            onSave={field => {
+                            onSave={property => {
                                 onDataChange(
                                     [
-                                        ...fields,
-                                        Object.assign(
-                                            {},
-                                            field, {
-                                                id: randomId()
-                                            })
+                                        ...properties,
+                                        property
                                     ]
                                 );
                             }}

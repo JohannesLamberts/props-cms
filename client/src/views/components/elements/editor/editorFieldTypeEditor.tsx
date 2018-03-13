@@ -4,7 +4,7 @@ import { TypeElementEditorProps } from './typeEditors/typeEditorProps';
 
 export default (props: TypeElementEditorProps<any>) => {
 
-    const type = props.field.type;
+    const type = props.prop.type;
     const Component = typeEditorComponents[type];
 
     if (!Component) {

@@ -1,12 +1,12 @@
 import {
     MenuItem,
     Select
-}                                     from 'material-ui';
-import { CollDefinitionFieldOptions } from 'props-cms.connector-common';
-import * as React                     from 'react';
-import { TypeElementEditorProps }     from './typeEditorProps';
+}                                   from 'material-ui';
+import { ComponentPropTypeOptions } from 'props-cms.connector-common';
+import * as React                   from 'react';
+import { TypeElementEditorProps }   from './typeEditorProps';
 
-export default ({ field, record, onDataChange }: TypeElementEditorProps<'selectMultiple'>) => (
+export default ({ prop, record, onDataChange }: TypeElementEditorProps<'selectMultiple'>) => (
     <Select
         fullWidth={true}
         multiple={true}
@@ -16,7 +16,7 @@ export default ({ field, record, onDataChange }: TypeElementEditorProps<'selectM
         }}
         renderValue={(selected: string[]) => selected.join(', ')}
     >
-        {(field.typeOptions as CollDefinitionFieldOptions['select'])
+        {(prop.typeOptions as ComponentPropTypeOptions['select'])
             .values
             .map(value => (
                 <MenuItem

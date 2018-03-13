@@ -9,7 +9,7 @@ import {
     withStyles,
     WithStyles
 }                                 from 'material-ui';
-import { CollDefinitionModel }    from 'props-cms.connector-common';
+import { ComponentModel }         from 'props-cms.connector-common';
 import * as React                 from 'react';
 import { connect }                from 'react-redux';
 import { Link }                   from 'react-router-dom';
@@ -40,7 +40,7 @@ const styles = {
 };
 
 type DefinitionProps = {
-    collDefinitions: CollDefinitionModel[];
+    collDefinitions: ComponentModel[];
     onMount: () => void;
     onPush: (ident: string, root: boolean) => void;
     onDelete: (ident: string) => void;
@@ -129,23 +129,23 @@ const decorateStore = connect(
     null,
     dispatch => ({
         onDelete: (collIdent: string) => {
-            dispatch(DatabaseDelete('coll_definition', collIdent));
+            dispatch(DatabaseDelete('component', collIdent));
         },
         onPush: (_id: string, root: boolean) => {
-            dispatch(DatabasePush('coll_definition', {
+            dispatch(DatabasePush('component', {
                 _id,
                 root,
                 label: '',
                 icon: '',
                 color: '',
                 description: '',
-                fields: []
-            } as CollDefinitionModel));
+                props: []
+            } as ComponentModel));
         }
     }));
 
 export default compose(withDatabaseConnect({
-                                               collDefinitions: 'coll_definition'
+                                               collDefinitions: 'component'
                                            },
                                            {}),
                        decorateStore,
