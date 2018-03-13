@@ -13,7 +13,7 @@ interface DefinitionProps {
     filter?: (model: ComponentModel) => boolean;
     value?: string;
     onChange: (newModel: string) => void;
-    collDefinitions: ComponentModel[];
+    components: ComponentModel[];
     onMount: () => void;
 }
 
@@ -25,9 +25,9 @@ class ElementEditorFieldSubContent extends React.PureComponent<DefinitionProps> 
 
     render() {
 
-        const { onChange, value, collDefinitions, filter, className, label } = this.props;
+        const { onChange, value, components, filter, className, label } = this.props;
 
-        let options = collDefinitions;
+        let options = components;
 
         if (filter) {
             options = options.filter(filter);
@@ -56,6 +56,6 @@ class ElementEditorFieldSubContent extends React.PureComponent<DefinitionProps> 
     }
 }
 
-const decorateDatabase = withDatabaseConnect({ collDefinitions: 'component' }, {});
+const decorateDatabase = withDatabaseConnect({ components: 'component' }, {});
 
 export default decorateDatabase(ElementEditorFieldSubContent);

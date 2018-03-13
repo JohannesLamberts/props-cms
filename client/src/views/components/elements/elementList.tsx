@@ -46,15 +46,15 @@ const styles = {
 };
 
 type DefinitionProps = {
-    collDefinition: ComponentModel;
-    collElements: ElementModel[];
+    component: ComponentModel;
+    elements: ElementModel[];
     onMount: () => void;
     onPush: (model: ElementModel) => void;
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyles = withStyles(styles);
 
-class CollElementList extends React.PureComponent<DefinitionProps> {
+class ElementList extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
@@ -62,7 +62,7 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
 
     render() {
 
-        if (!this.props.collDefinition) {
+        if (!this.props.component) {
             return (
                 <CircularProgress
                     size={100}
@@ -70,15 +70,15 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
             );
         }
 
-        const { collDefinition, collElements, classes } = this.props;
+        const { component, elements, classes } = this.props;
 
         return (
             <Paper className={classes.root}>
                 <FloatingActionButton
                     onClick={() => this.props.onPush(
                         {
-                            collection: collDefinition._id!,
-                            data: InitialElementData(collDefinition),
+                            collection: component._id!,
+                            data: InitialElementData(component),
                             dataOverwrites: []
                         })}
                 >
@@ -86,9 +86,9 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
                 </FloatingActionButton>
                 <div className={classes.wrapper}>
                     <Typography variant={'headline'}>
-                        {collDefinition.label}
+                        {component.label}
                     </Typography>
-                    <Link to={`/collection/${collDefinition._id}`}>
+                    <Link to={`/collection/${component._id}`}>
                         <Icon>
                             settings
                         </Icon>
@@ -96,10 +96,10 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
                 </div>
                 <Table>
                     <SimpleTableHeader>
-                        {['', ...collDefinition.props.map(field => field.label)]}
+                        {['', ...component.props.map(field => field.label)]}
                     </SimpleTableHeader>
                     <SimpleTableBody
-                        data={collElements}
+                        data={elements}
                     >
                         {(el) => [
                             (
@@ -109,7 +109,7 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
                                     </IconButton>
                                 </Link>
                             ),
-                            ...collDefinition
+                            ...component
                                 .props
                                 .map(field => JSON.stringify(el.data[field.key]))
                         ]}
@@ -124,19 +124,19 @@ export const decorateStore = connect(
     (store: StoreState, props: RouteComponentProps<{ collIdent: string }>) => {
         const { collIdent } = props.match.params;
         return {
-            collElements: (store.database
-                                .get('collections')
-                                .get('element')
-                                .get('models')
-                                .toArray() as ElementModel[])
+            elements: (store.database
+                            .get('collections')
+                            .get('element')
+                            .get('models')
+                            .toArray() as ElementModel[])
                 .filter((el: ElementModel) => {
                     return el.collection === collIdent;
                 }),
-            collDefinition: store.database
-                                 .get('collections')
-                                 .get('component')
-                                 .get('models')
-                                 .get(collIdent)
+            component: store.database
+                            .get('collections')
+                            .get('component')
+                            .get('models')
+                            .get(collIdent)
         };
     },
     (dispatch, props: RouteComponentProps<{ collIdent: string }>) => {
@@ -154,4 +154,4 @@ export const decorateStore = connect(
 
 export default compose(withRouter,
                        decorateStore,
-                       decorateStyles)(CollElementList);
+                       decorateStyles)(ElementList);

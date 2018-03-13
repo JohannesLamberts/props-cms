@@ -44,19 +44,19 @@ const decorateStyles = withStyles(styles);
 type DefinitionProps<TData = any> = {
     onMount: () => void;
     onDataChange: (data: Partial<ElementModel>) => void;
-    collElement: ElementModel | undefined;
-    collDefinition: ComponentModel | undefined;
+    element: ElementModel | undefined;
+    component: ComponentModel | undefined;
 } & WithStyles<keyof typeof styles>;
 
-class CollElementEditor extends React.PureComponent<DefinitionProps> {
+class ElementEditor extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
     }
 
     render() {
-        const { collElement, collDefinition, onDataChange, classes } = this.props;
-        if (!collDefinition || !collElement) {
+        const { element, component, onDataChange, classes } = this.props;
+        if (!component || !element) {
             return (
                 <CircularProgress
                     size={100}
@@ -67,9 +67,9 @@ class CollElementEditor extends React.PureComponent<DefinitionProps> {
             <Paper className={classes.root}>
                 <div className={classes.header}>
                     <Typography variant={'headline'}>
-                        {collDefinition.label}
+                        {component.label}
                     </Typography>
-                    <Link to={`/collection/${collDefinition._id}`}>
+                    <Link to={`/collection/${component._id}`}>
                         <Icon>
                             settings
                         </Icon>
@@ -77,12 +77,12 @@ class CollElementEditor extends React.PureComponent<DefinitionProps> {
                 </div>
                 <div className={classes.content}>
                     <ElementModelEditor
-                        properties={collDefinition.props}
-                        data={collElement.data}
+                        properties={component.props}
+                        data={element.data}
                         onDataChange={partialData =>
                             onDataChange({
                                              data: Object.assign({},
-                                                                 collElement.data,
+                                                                 element.data,
                                                                  partialData)
                                          })}
                     />
@@ -95,11 +95,11 @@ class CollElementEditor extends React.PureComponent<DefinitionProps> {
 const decorateDatabase = withDatabaseConnect(
     {},
     (props: RouteComponentProps<{ collIdent: string; elementId: string }>) => ({
-        collDefinition: {
+        component: {
             collection: 'component' as 'component',
             id: props.match.params.collIdent
         },
-        collElement: {
+        element: {
             collection: 'element' as 'element',
             id: props.match.params.elementId
         }
@@ -117,4 +117,4 @@ const decorateStore = connect(
 export default compose(withRouter,
                        decorateStore,
                        decorateDatabase,
-                       decorateStyles)(CollElementEditor);
+                       decorateStyles)(ElementEditor);

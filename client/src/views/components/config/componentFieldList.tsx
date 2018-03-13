@@ -10,16 +10,16 @@ import {
     Table,
     withStyles,
     WithStyles
-}                                    from 'material-ui';
-import { ComponentProperty }         from 'props-cms.connector-common';
-import * as React                    from 'react';
+}                                  from 'material-ui';
+import { ComponentProperty }       from 'props-cms.connector-common';
+import * as React                  from 'react';
 import {
     SimpleTableBody,
     SimpleTableHeader
-}                                    from '../../../util';
-import { ComponentAddFieldFooter }   from './componentAddFieldFooter';
-import ComponentFieldSettings        from './componentFieldSettings';
-import { CollDefinitionFieldTypeUI } from './typeNames';
+}                                  from '../../../util';
+import { ComponentAddFieldFooter } from './componentAddFieldFooter';
+import ComponentFieldSettings      from './componentFieldSettings';
+import { ComponentPropTypeUI }     from './typeNames';
 
 const randomId = (length: number = 16): string => {
     let str = '';
@@ -125,12 +125,12 @@ class ComponentFieldList extends React.PureComponent<ComponentFieldListProps, {
                                 (
                                     <span
                                         style={{
-                                            backgroundColor: CollDefinitionFieldTypeUI[prop.type].color,
+                                            backgroundColor: ComponentPropTypeUI[prop.type].color,
                                             padding: '0.2rem 0.5rem',
                                             borderRadius: '2px'
                                         }}
                                     >
-                                        {CollDefinitionFieldTypeUI[prop.type].name}
+                                        {ComponentPropTypeUI[prop.type].name}
                                     </span>
                                 ),
                                 prop.label,

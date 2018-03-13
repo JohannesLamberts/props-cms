@@ -30,7 +30,7 @@ const styles = {
 const decorateStyles = withStyles(styles);
 
 class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
-    collDefinition: ComponentModel;
+    component: ComponentModel;
     onMount: () => void;
 } & WithStyles<keyof typeof styles>> {
 
@@ -39,7 +39,7 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
     }
 
     render() {
-        const { prop, record, onDataChange, collDefinition, classes } = this.props;
+        const { prop, record, onDataChange, component, classes } = this.props;
 
         const data: ElementModelDataRecord['import'] = record || {
             collection: '%NONE%',
@@ -63,9 +63,9 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
                     value={data.collection}
                     onChange={collection => update({ collection })}
                 />
-                {collDefinition && (
+                {component && (
                     <div>
-                        {collDefinition
+                        {component
                             .props
                             .filter(defField => !defField.isArray
                                 && ['import', 'file', 'image', 'tags', 'selectMultiple']
@@ -133,7 +133,7 @@ class Editor extends React.PureComponent<TypeElementEditorProps<'import'> & {
 const decorateDatabase = withDatabaseConnect(
     {},
     ({ record }: TypeElementEditorProps<'import'>) => ({
-        collDefinition: {
+        component: {
             collection: 'component' as 'component',
             id: record ? record.collection : ''
         }

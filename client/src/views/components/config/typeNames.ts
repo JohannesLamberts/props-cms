@@ -5,7 +5,7 @@ const ui = (name, color = '#00a') => ({
     color
 });
 
-export const CollDefinitionFieldTypeUI: Record<ComponentPropTypes, {
+export const ComponentPropTypeUI: Record<ComponentPropTypes, {
     name: string;
     color: string;
 }> = {

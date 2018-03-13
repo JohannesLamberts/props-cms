@@ -46,9 +46,9 @@ export const InitialElementModelDataRecord: {readonly [P in ComponentPropTypes]:
     subDefinition: {}
 };
 
-export const InitialElementData = (collDefinition: ComponentModel): Record<string, any> => {
+export const InitialElementData = (component: ComponentModel): Record<string, any> => {
     const data: Record<string, any> = {};
-    for (const field of collDefinition.props) {
+    for (const field of component.props) {
         data[field.key] = InitialFieldData(field);
     }
     return data;

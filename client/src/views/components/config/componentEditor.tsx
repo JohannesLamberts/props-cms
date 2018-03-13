@@ -23,8 +23,8 @@ import { withDatabaseConnect } from '../../../redux/database/database.decorate';
 import {
     ColorTextInput,
     SimpleTextField
-}                                 from '../../../util/index';
-import CollDefinitionFieldsEditor from './componentFieldList';
+}                              from '../../../util/index';
+import ComponentPropsEditor    from './componentFieldList';
 
 const styles = {
     root: {
@@ -51,21 +51,21 @@ type DefinitionProps<TData = any> = {
     onMount: () => void;
     onDelete: () => void;
     onDataChange: (data: Partial<ComponentModel>) => void;
-    collDefinition: ComponentModel;
+    component: ComponentModel;
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyle = withStyles(styles);
 
-class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
+class ComponentEditor extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
     }
 
     render() {
-        const { collDefinition, onDataChange, onDelete, classes } = this.props;
+        const { component, onDataChange, onDelete, classes } = this.props;
 
-        if (!collDefinition) {
+        if (!component) {
             return null;
         }
 
@@ -74,12 +74,12 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                 <Paper className={classes.definitionEditArea}>
                     <div className={classes.definitionEditAreaHead}>
                         <Typography variant={'title'}>
-                            {collDefinition.label || collDefinition._id}
+                            {component.label || component._id}
                         </Typography>
-                        {collDefinition.root && (
+                        {component.root && (
                             <Link
                                 style={{ float: 'right' }}
-                                to={`/collection/${collDefinition._id}/elements`}
+                                to={`/collection/${component._id}/elements`}
                             >
                                 <IconButton>
                                     <Icon>view_carousel</Icon>
@@ -89,12 +89,12 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                     </div>
                     <SimpleTextField
                         label={'Label'}
-                        value={collDefinition.label}
+                        value={component.label}
                         onBlur={label => onDataChange({ label })}
                     />
                     <ColorTextInput
                         label={'Farbe'}
-                        value={collDefinition.color}
+                        value={component.color}
                         onChange={color => onDataChange({ color })}
                     />
                     <SimpleTextField
@@ -103,13 +103,13 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                         }}
                         multiline={true}
                         label={'Beschreibung'}
-                        value={collDefinition.description}
+                        value={component.description}
                         onBlur={description => onDataChange({ description })}
                     />
                 </Paper>
                 <div className={classes.fieldEditArea}>
-                    <CollDefinitionFieldsEditor
-                        properties={collDefinition.props || []}
+                    <ComponentPropsEditor
+                        properties={component.props || []}
                         onDataChange={props => onDataChange({ props })}
                     />
                 </div>
@@ -121,7 +121,7 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
 const decorateDatabase = withDatabaseConnect(
     {},
     (props: RouteComponentProps<{ collIdent: string }>) => ({
-        collDefinition: {
+        component: {
             collection: 'component' as 'component',
             id: props.match.params.collIdent
         }
@@ -145,4 +145,4 @@ const decorateStore = connect(
 export default compose(withRouter,
                        decorateStore,
                        decorateDatabase,
-                       decorateStyle)(CollDefinitionEditor);
+                       decorateStyle)(ComponentEditor);

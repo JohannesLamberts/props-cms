@@ -1,6 +1,6 @@
 import { ComponentPropTypeOptions } from 'props-cms.connector-common';
 
-export const InitialCollDefinitionFieldOptions: Readonly<ComponentPropTypeOptions> = {
+export const InitialComponentPropertyOptions: Readonly<ComponentPropTypeOptions> = {
     text: undefined,
     textArea: undefined,
     boolean: undefined,

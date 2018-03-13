@@ -8,15 +8,15 @@ import {
     TableFooter,
     TableRow,
     TextField
-}                                            from 'material-ui';
+}                                          from 'material-ui';
 import {
     ComponentProperty,
     ComponentPropTypes
-}                                            from 'props-cms.connector-common';
-import * as React                            from 'react';
-import { InitialCollDefinitionFieldOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
-import { SimpleTextField }                   from '../../../util';
-import { CollDefinitionFieldTypeUI }         from './typeNames';
+}                                          from 'props-cms.connector-common';
+import * as React                          from 'react';
+import { InitialComponentPropertyOptions } from '../../../initializers/collectionDefinitionFieldOptionInitial';
+import { SimpleTextField }                 from '../../../util';
+import { ComponentPropTypeUI }             from './typeNames';
 
 interface ComponentAddFieldFooterProps {
     onSave: (field: ComponentProperty) => void;
@@ -65,16 +65,16 @@ export class ComponentAddFieldFooter extends React.PureComponent<ComponentAddFie
                                 update(
                                     {
                                         type: newValue,
-                                        typeOptions: InitialCollDefinitionFieldOptions[newValue]
+                                        typeOptions: InitialComponentPropertyOptions[newValue]
                                     });
                             }}
                         >
-                            {Object.keys(CollDefinitionFieldTypeUI).map(fieldTypeIdent => (
+                            {Object.keys(ComponentPropTypeUI).map(fieldTypeIdent => (
                                 <MenuItem
                                     key={fieldTypeIdent}
                                     value={fieldTypeIdent}
                                 >
-                                    {CollDefinitionFieldTypeUI[fieldTypeIdent].name}
+                                    {ComponentPropTypeUI[fieldTypeIdent].name}
                                 </MenuItem>
                             ))}
                         </TextField>

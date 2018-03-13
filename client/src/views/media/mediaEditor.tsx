@@ -35,7 +35,7 @@ const styles = {
     }
 };
 
-type DefinitionProps<TData = any> = {
+type ComponentEditorProps<TData = any> = {
     onMount: () => void;
     onDelete: () => void;
     onDataChange: (data: Partial<ComponentModel>) => void;
@@ -44,7 +44,7 @@ type DefinitionProps<TData = any> = {
 
 const decorateStyle = withStyles(styles);
 
-class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
+class ComponentEditor extends React.PureComponent<ComponentEditorProps> {
 
     componentWillMount() {
         this.props.onMount();
@@ -91,4 +91,4 @@ const decorateDatabase = withDatabaseConnect(
 
 export default compose(withRouter,
                        decorateDatabase,
-                       decorateStyle)(CollDefinitionEditor);
+                       decorateStyle)(ComponentEditor);

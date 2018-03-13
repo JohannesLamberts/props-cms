@@ -20,7 +20,7 @@ const styles = {
 
 const decorateStyles = withStyles(styles);
 
-const CollDefinitionFieldSettings = (props: {
+const ComponentPropertySettings = (props: {
     field: ComponentProperty;
     onDataChange: (data: Partial<ComponentProperty>) => void;
 
@@ -71,4 +71,4 @@ const CollDefinitionFieldSettings = (props: {
     );
 };
 
-export default decorateStyles(CollDefinitionFieldSettings);
+export default decorateStyles(ComponentPropertySettings);

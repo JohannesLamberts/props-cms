@@ -40,7 +40,7 @@ const styles = {
 };
 
 type DefinitionProps = {
-    collDefinitions: ComponentModel[];
+    components: ComponentModel[];
     onMount: () => void;
     onPush: (ident: string, root: boolean) => void;
     onDelete: (ident: string) => void;
@@ -71,7 +71,7 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
     }
 
     render() {
-        const { collDefinitions, onPush, onDelete, classes } = this.props;
+        const { components, onPush, onDelete, classes } = this.props;
         return (
             <div className={classes.root}>
                 {sections.map((section, index) => {
@@ -83,33 +83,33 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
                             onEnter={id => onPush(id, section.root)}
                         >
                             <List>
-                                {collDefinitions
-                                    .filter(collDefinition => collDefinition.root === section.root)
-                                    .map(collDefinition => (
+                                {components
+                                    .filter(component => component.root === section.root)
+                                    .map(component => (
                                         <ListItem>
                                             <ListItemIcon>
-                                                <Link to={`/collection/${collDefinition._id}`}>
+                                                <Link to={`/collection/${component._id}`}>
                                                     <Icon>settings</Icon>
                                                 </Link>
                                             </ListItemIcon>
                                             <ListItemIcon>
-                                                <Link to={`/collection/${collDefinition._id}/elements`}>
+                                                <Link to={`/collection/${component._id}/elements`}>
                                                     <Icon>view_carousel</Icon>
                                                 </Link>
                                             </ListItemIcon>
                                             <Avatar
                                                 style={{
-                                                    backgroundColor: collDefinition.color,
+                                                    backgroundColor: component.color,
                                                     height: '1rem',
                                                     width: '1rem'
                                                 }}
                                             />
                                             <ListItemText
-                                                primary={collDefinition.label || collDefinition._id}
+                                                primary={component.label || component._id}
                                             />
                                             <ListItemIcon>
                                                 <IconButton
-                                                    onClick={() => onDelete(collDefinition._id!)}
+                                                    onClick={() => onDelete(component._id!)}
                                                 >
                                                     <Icon>delete</Icon>
                                                 </IconButton>
@@ -144,9 +144,10 @@ const decorateStore = connect(
         }
     }));
 
-export default compose(withDatabaseConnect({
-                                               collDefinitions: 'component'
-                                           },
-                                           {}),
-                       decorateStore,
-                       decorateStyle)(Definition);
+export default compose(
+    withDatabaseConnect({
+                            components: 'component'
+                        },
+                        {}),
+    decorateStore,
+    decorateStyle)(Definition);

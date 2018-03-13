@@ -1,9 +1,9 @@
-import * as React              from 'react';
-import CollDefinitionFieldList from '../componentFieldList';
-import { TypeSettingProps }    from './typeOptionProps';
+import * as React           from 'react';
+import ComponentFieldList   from '../componentFieldList';
+import { TypeSettingProps } from './typeOptionProps';
 
 export default ({ typeOptions, onChange }: TypeSettingProps<'subDefinition'>) => (
-    <CollDefinitionFieldList
+    <ComponentFieldList
         properties={typeOptions.props || []}
         onDataChange={props => onChange({ props })}
     />

@@ -28,7 +28,7 @@ const styles = {
 };
 
 type SubContentProps = {
-    collDefinition: ComponentModel;
+    component: ComponentModel;
     onMount: () => void;
 } & TypeElementEditorProps<'subContent'> & WithStyles<keyof typeof styles>;
 
@@ -43,7 +43,7 @@ class SubContentEdit
 
     render() {
 
-        const { onDataChange, prop, classes, collDefinition } = this.props;
+        const { onDataChange, prop, classes, component } = this.props;
         const { typeOptions } = prop;
 
         const record = this.props.record || {
@@ -79,23 +79,23 @@ class SubContentEdit
                         />
                     )}
                     {record.collection && (
-                        collDefinition
+                        component
                             ? (
                             <ElementModelEditor
                                 data={record.data}
-                                properties={collDefinition.props}
+                                properties={component.props}
                                 onDataChange={newData => onDataChange(
-                                        Object.assign({},
-                                                      record,
-                                                      {
-                                                          data: Object.assign({},
-                                                                              record.data,
-                                                                              newData)
-                                                      })
-                                    )}
-                                />
-                            )
-                            : <span>Loading CollDefinition for '{record.collection}'</span>
+                                    Object.assign({},
+                                                  record,
+                                                  {
+                                                      data: Object.assign({},
+                                                                          record.data,
+                                                                          newData)
+                                                  })
+                                )}
+                            />
+                        )
+                            : <span>Loading data for '{record.collection}'</span>
                     )}
                 </div>
             </div>
@@ -106,9 +106,11 @@ class SubContentEdit
 const decorateDatabase = withDatabaseConnect(
     {},
     ({ record }: TypeElementEditorProps<'subContent'>) => ({
-        collDefinition: {
+        component: {
             collection: 'component' as 'component',
-            id: record ? record.collection : ''
+            id: record
+                ? record.collection
+                : ''
         }
     }));
 
