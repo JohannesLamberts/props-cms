@@ -1,12 +1,10 @@
 import {
-    Button,
-    FormControlLabel,
     Icon,
+    IconButton,
     Paper,
-    Switch,
     Typography,
-    withStyles,
-    WithStyles
+    WithStyles,
+    withStyles
 }                                 from 'material-ui';
 import { CollDefinitionModel }    from 'props-cms.connector-common';
 import * as React                 from 'react';
@@ -30,14 +28,20 @@ import CollDefinitionFieldsEditor from './editorFieldList';
 
 const styles = {
     root: {
-        display: 'flex'
+        display: 'flex',
+        flexGrow: 1
     },
     definitionEditArea: {
-        margin: '0.5rem',
+        marginRight: '1rem',
         padding: '1rem',
         display: 'flex',
         flexFlow: 'column nowrap'
     },
+    definitionEditAreaHead: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    } as React.CSSProperties,
     fieldEditArea: {
         flexGrow: 1
     }
@@ -68,13 +72,30 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
         return (
             <div className={classes.root}>
                 <Paper className={classes.definitionEditArea}>
-                    <Typography variant={'title'}>
-                        {collDefinition._id}
-                    </Typography>
+                    <div className={classes.definitionEditAreaHead}>
+                        <Typography variant={'title'}>
+                            {collDefinition.label || collDefinition._id}
+                        </Typography>
+                        {collDefinition.root && (
+                            <Link
+                                style={{ float: 'right' }}
+                                to={`/collection/${collDefinition._id}/elements`}
+                            >
+                                <IconButton>
+                                    <Icon>view_carousel</Icon>
+                                </IconButton>
+                            </Link>
+                        )}
+                    </div>
                     <SimpleTextField
                         label={'Label'}
                         value={collDefinition.label}
                         onBlur={label => onDataChange({ label })}
+                    />
+                    <ColorTextInput
+                        label={'Farbe'}
+                        value={collDefinition.color}
+                        onChange={color => onDataChange({ color })}
                     />
                     <SimpleTextField
                         multiline={true}
@@ -82,32 +103,6 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                         value={collDefinition.description}
                         onBlur={description => onDataChange({ description })}
                     />
-                    <ColorTextInput
-                        label={'Farbe'}
-                        value={collDefinition.color}
-                        onChange={color => onDataChange({ color })}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={collDefinition.root}
-                                onChange={(event, root) => onDataChange({ root })}
-                            />
-                        }
-                        label={'Main'}
-                    />
-                    {collDefinition.root && (
-                        <Link to={`/collection/${collDefinition._id}/elements`}>
-                            <Button fullWidth={true}>
-                                <Icon>launch</Icon>
-                                Einträge
-                            </Button>
-                        </Link>
-                    )}
-                    <Button onClick={onDelete}>
-                        <Icon>delete</Icon>
-                        Löschen
-                    </Button>
                 </Paper>
                 <div className={classes.fieldEditArea}>
                     <CollDefinitionFieldsEditor

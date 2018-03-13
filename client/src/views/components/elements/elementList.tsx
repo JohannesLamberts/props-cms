@@ -3,9 +3,10 @@ import {
     Icon,
     IconButton,
     Paper,
+    Table,
     Typography,
-    withStyles,
-    WithStyles
+    WithStyles,
+    withStyles
 }                             from 'material-ui';
 import {
     CollDefinitionModel,
@@ -28,8 +29,9 @@ import {
 import { StoreState }         from '../../../redux/store';
 import {
     FloatingActionButton,
-    SimpleTable
-}                             from '../../../util/index';
+    SimpleTableBody,
+    SimpleTableHeader
+}                             from '../../../util';
 
 const styles = {
     root: {
@@ -92,26 +94,27 @@ class CollElementList extends React.PureComponent<DefinitionProps> {
                         </Icon>
                     </Link>
                 </div>
-                <SimpleTable
-                    data={collElements}
-                >
-                    {[
-                        {
-                            head: '',
-                            content: (el) => (
+                <Table>
+                    <SimpleTableHeader>
+                        {['', ...collDefinition.fields.map(field => field.label)]}
+                    </SimpleTableHeader>
+                    <SimpleTableBody
+                        data={collElements}
+                    >
+                        {(el) => [
+                            (
                                 <Link to={`elements/${el._id}`}>
                                     <IconButton>
                                         <Icon>edit</Icon>
                                     </IconButton>
                                 </Link>
-                            )
-                        },
-                        ...collDefinition.fields.map(field => ({
-                            head: field.label,
-                            content: (collElement) => JSON.stringify(collElement.data[field.key])
-                        }))
-                    ]}
-                </SimpleTable>
+                            ),
+                            ...collDefinition
+                                .fields
+                                .map(field => JSON.stringify(el.data[field.key]))
+                        ]}
+                    </SimpleTableBody>
+                </Table>
             </Paper>
         );
     }

@@ -6,19 +6,18 @@ import {
     DialogTitle,
     Icon,
     IconButton,
-    Paper,
     WithStyles,
     withStyles
-}                                   from 'material-ui';
-import { CollDefinitionModelField } from 'props-cms.connector-common';
-import * as React                   from 'react';
-import { SimpleTextField }          from '../../../util/index';
-import CollDefinitionFieldList      from './editorFieldSettings';
+}                                    from 'material-ui';
+import { CollDefinitionModelField }  from 'props-cms.connector-common';
+import * as React                    from 'react';
+import { SimpleTextField }           from '../../../util/index';
+import CollDefinitionFieldList       from './editorFieldSettings';
+import { CollDefinitionFieldTypeUI } from './typeNames';
 
 const styles = {
     row: {
-        margin: '0.5rem',
-        padding: '0.5rem',
+        padding: '0.5rem 1rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -74,7 +73,8 @@ class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitionFieldE
                         </DialogActions>
                     </Dialog>
                 )}
-                <Paper className={classes.row}>
+                <div className={classes.row}>
+                    {CollDefinitionFieldTypeUI[field.type].name}
                     <SimpleTextField
                         TextFieldProps={{
                             fullWidth: true,
@@ -105,7 +105,7 @@ class CollDefinitionFieldEditor extends React.PureComponent<CollDefinitionFieldE
                             <Icon>delete</Icon>
                         </IconButton>
                     </div>
-                </Paper>
+                </div>
             </div>
         );
     }

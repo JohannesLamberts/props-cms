@@ -1,8 +1,9 @@
 import {
     Icon,
     IconButton,
-    WithStyles,
-    withStyles
+    Table,
+    withStyles,
+    WithStyles
 }                              from 'material-ui';
 import * as React              from 'react';
 import { connect }             from 'react-redux';
@@ -16,7 +17,8 @@ import {
 import { withDatabaseConnect } from '../../redux/database/database.decorate';
 import {
     SectionWithActionInput,
-    SimpleTable
+    SimpleTableBody,
+    SimpleTableHeader
 }                              from '../../util';
 
 const styles = {
@@ -54,35 +56,29 @@ class MediaDashboardBase extends React.PureComponent<MediaDashboardBaseProps, {}
                     onEnter={onPush}
                     inputLabel={'new provider'}
                 >
-                    <SimpleTable
-                        data={providers}
-                    >
-                        {[
-                            {
-                                head: '',
-                                content: (el) => (
+                    <Table>
+                        <SimpleTableHeader>
+                            {['', 'Label', 'URL']}
+                        </SimpleTableHeader>
+                        <SimpleTableBody data={providers}>
+                            {(provider: MediaProviderModel) => [
+                                (
                                     <div>
-                                        <Link to={`media/${el._id}`}>
+                                        <Link to={`media/${provider._id}`}>
                                             <IconButton>
                                                 <Icon>edit</Icon>
                                             </IconButton>
                                         </Link>
-                                        <IconButton onClick={() => onDelete(el._id)}>
+                                        <IconButton onClick={() => onDelete(provider._id)}>
                                             <Icon>delete</Icon>
                                         </IconButton>
                                     </div>
-                                )
-                            },
-                            {
-                                head: 'Label',
-                                content: el => el.label
-                            },
-                            {
-                                head: 'URL',
-                                content: el => el.url
-                            }
-                        ]}
-                    </SimpleTable>
+                                ),
+                                provider.label,
+                                provider.url
+                            ]}
+                        </SimpleTableBody>
+                    </Table>
                 </SectionWithActionInput>
             </div>
         );
