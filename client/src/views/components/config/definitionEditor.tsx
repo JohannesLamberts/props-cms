@@ -22,8 +22,10 @@ import {
     DatabasePatch
 }                                 from '../../../redux/database/database.actions';
 import { withDatabaseConnect }    from '../../../redux/database/database.decorate';
-import IconSelect                 from '../../../util/components/iconSelect';
-import { SimpleTextField }        from '../../../util/index';
+import {
+    ColorTextInput,
+    SimpleTextField
+}                                 from '../../../util/index';
 import CollDefinitionFieldsEditor from './editorFieldList';
 
 const styles = {
@@ -80,9 +82,10 @@ class CollDefinitionEditor extends React.PureComponent<DefinitionProps> {
                         value={collDefinition.description}
                         onBlur={description => onDataChange({ description })}
                     />
-                    <IconSelect
-                        icon={collDefinition.icon}
-                        onIconChange={icon => onDataChange({ icon })}
+                    <ColorTextInput
+                        label={'Farbe'}
+                        value={collDefinition.color}
+                        onChange={color => onDataChange({ color })}
                     />
                     <FormControlLabel
                         control={
