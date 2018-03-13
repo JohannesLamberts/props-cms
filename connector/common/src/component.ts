@@ -24,7 +24,7 @@ export interface ComponentPropTypeOptions {
         options: string[]
     };
     subDefinition: {
-        fields: ComponentProperty[];
+        props: ComponentProperty[];
     };
     // disable primitive options like import: string
     // allows general use of partial updates

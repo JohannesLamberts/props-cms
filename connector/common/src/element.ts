@@ -25,19 +25,19 @@ export interface ElementDataRecordTypeByProp {
     tags: string[];
     import: {
         collection: string;
-        filter: Record<string, ElementDataRecord>;
+        filter: Record<string, ElementModelDataRecord>;
     };
     subContent: ElementModel;
-    subDefinition: Record<string, ElementDataRecord>;
+    subDefinition: Record<string, ElementModelDataRecord>;
 }
 
-export type ElementDataRecord<T extends ComponentPropTypes = any> = ElementDataRecordTypeByProp[T];
+export type ElementModelDataRecord<T extends ComponentPropTypes = any> = ElementDataRecordTypeByProp[T];
 
 export interface ElementModel extends DatabaseModel {
     collection: string;
-    data: Record<string, ElementDataRecord>;
+    data: Record<string, ElementModelDataRecord>;
     dataOverwrites: {
         query: Record<string, any>
-        overwrites: Record<string, ElementDataRecord>
+        overwrites: Record<string, ElementModelDataRecord>
     }[];
 }
