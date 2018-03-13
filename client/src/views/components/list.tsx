@@ -80,7 +80,7 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
                             key={index}
                             label={section.label}
                             inputLabel={'new component'}
-                            onEnter={id => onPush(id, true)}
+                            onEnter={id => onPush(id, section.root)}
                         >
                             <List>
                                 {collDefinitions
