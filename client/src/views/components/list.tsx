@@ -28,8 +28,13 @@ const styles = {
         flexFlow: 'row wrap',
         '& > *': {
             flexBasis: '50%',
-            flexGrow: 1,
-            padding: '0 2rem'
+            flexGrow: 1
+        },
+        '& > *:not(:last-child)': {
+            paddingRight: '1rem'
+        },
+        '& > *:not(:first-child)': {
+            paddingLeft: '1rem'
         }
     }
 };

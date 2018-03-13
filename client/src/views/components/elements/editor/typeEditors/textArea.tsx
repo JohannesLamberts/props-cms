@@ -1,5 +1,5 @@
 import * as React                 from 'react';
-import { SimpleTextField }        from '../../../../util/index';
+import { SimpleTextField }        from '../../../../../util/index';
 import { TypeElementEditorProps } from './typeEditorProps';
 
 export default ({ field, record, onDataChange }: TypeElementEditorProps<'textArea'>) => (

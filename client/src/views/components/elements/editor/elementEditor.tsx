@@ -18,8 +18,8 @@ import {
 }                              from 'react-router';
 import { Link }                from 'react-router-dom';
 import { compose }             from 'redux';
-import { DatabasePatch }       from '../../../redux/database/database.actions';
-import { withDatabaseConnect } from '../../../redux/database/database.decorate';
+import { DatabasePatch }       from '../../../../redux/database/database.actions';
+import { withDatabaseConnect } from '../../../../redux/database/database.decorate';
 import CollElementModelEditor  from './editorContent';
 
 const collectionKey = 'coll_element';

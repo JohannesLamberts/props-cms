@@ -19,17 +19,17 @@ import {
 }                             from 'react-router';
 import { Link }               from 'react-router-dom';
 import { compose }            from 'redux';
-import { InitialElementData } from '../../initializers/collectionElementDataRecordInitial';
+import { InitialElementData } from '../../../initializers/collectionElementDataRecordInitial';
 import {
     DatabasePush,
     DatabaseRequire,
     DatabaseRequireId
-}                             from '../../redux/database/database.actions';
-import { StoreState }         from '../../redux/store';
+}                             from '../../../redux/database/database.actions';
+import { StoreState }         from '../../../redux/store';
 import {
     FloatingActionButton,
     SimpleTable
-}                             from '../../util/index';
+}                             from '../../../util/index';
 
 const styles = {
     root: {
