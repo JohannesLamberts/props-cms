@@ -45,6 +45,10 @@ export class HttpApi {
             init.body = JSON.stringify(body);
         }
 
+        if (path[0] === '/') {
+            path = path.substring(1);
+        }
+
         return fetch(this._url + path, init)
             .then(response => {
                 if (!response.ok) {

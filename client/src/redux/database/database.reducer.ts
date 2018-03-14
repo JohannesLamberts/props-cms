@@ -62,8 +62,8 @@ export const Reducer = (state = InitialState,
         case DATABASE_RECIEVE_DELETE: {
             const { operations } = action.payload;
             return state.update('collections', collections =>
-                collections.map((collEl, collKey) =>
-                                    collEl.update('models', models =>
+                collections.map((collectionEl, collKey) =>
+                                    collectionEl.update('models', models =>
                                         models.remove(...(operations[collKey] || []))
                                     )));
         }

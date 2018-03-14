@@ -11,7 +11,7 @@ ServiceApi
     .get<{
         query: string
     }>(({ query }, res) => {
-        getCollection('coll_element')
+        getCollection('element')
             .find(JSON.parse(query.query || '{}'))
             .toArray()
             .then(elements => {
@@ -28,7 +28,7 @@ ServiceApi
     .get<{
         query: string
     }>(({ params, query }, res) => {
-        getCollection('coll_element')
+        getCollection('element')
             .find({
                       $and: [
                           { collection: params.ident },

@@ -1,7 +1,7 @@
 import * as PropTypes from 'prop-types';
 import {
     CollectionKey,
-    CollElementModel
+    ElementModel
 }                     from 'props-cms.connector-common';
 import * as React     from 'react';
 import * as SOCKET    from 'socket.io-client';
@@ -20,7 +20,7 @@ export type CollectionImports = Record<string, () => any | React.ComponentType>;
 export type CmsContextRequest =
     (collIdent: string,
      query: Object,
-     callback: (nodes: CollElementModel[],
+     callback: (nodes: ElementModel[],
                 err?: Error) => void) => void;
 
 export interface CmsSubscription {
@@ -39,7 +39,7 @@ export interface CmsConnectorProps {
     collections: CollectionImports;
 }
 
-export type CmsConnectorSubscriptionCallback = (models: CollElementModel[], err?: Error) => void;
+export type CmsConnectorSubscriptionCallback = (models: ElementModel[], err?: Error) => void;
 
 interface CmsConnectorSubscription {
     collIdent: string;
@@ -66,7 +66,7 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
     private _ws: SOCKET | null = null;
     private _subscriptions: CmsConnectorSubscription[] = [];
     private _cache: {
-        [P in string]?: CollElementModel[]
+        [P in string]?: ElementModel[]
         } = {};
 
     private _fetching: boolean = false;
@@ -119,7 +119,7 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
 
     handleWebsocketUpdate(data: DatabaseEvent) {
 
-        if (data.collection !== 'coll_element') {
+        if (data.collection !== 'element') {
             return;
         }
 
@@ -139,7 +139,7 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
                     case EDatabaseEventType.eUpdate:
                     case EDatabaseEventType.eInsert:
                         CmsConnector
-                            .fetch<CollElementModel[]>(
+                            .fetch<ElementModel[]>(
                                 api + `/collection?query=${JSON.stringify({ _id: data.id })}`)
                             .then(fetchedModels => {
                                 if (fetchedModels.length !== 1) {
@@ -251,7 +251,7 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
                   : JSON.stringify({ $or: unfulfilledQuerys });
 
         return CmsConnector
-            .fetch<CollElementModel[]>(
+            .fetch<ElementModel[]>(
                 api + `/collection/${collIdent}?query=${apiQuery}`)
             .then(models => {
                 this._collectionInsert(collIdent, models);
@@ -262,7 +262,7 @@ class CmsConnector extends React.Component<CmsConnectorProps> {
             });
     }
 
-    private _collectionInsert(collIdent: string, models: CollElementModel[]) {
+    private _collectionInsert(collIdent: string, models: ElementModel[]) {
         const modelIds = models.map(model => model._id);
         this._cache[collIdent] = [
             ...(this._cache[collIdent] || []).filter(currModel =>

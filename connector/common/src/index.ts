@@ -1,14 +1,15 @@
-import { CollDefinitionModel } from './collectionDefinition.model';
-import { CollElementModel }    from './collectionElement.model';
-import { MediaProviderModel }  from './mediaProvider.model';
+import { ComponentModel }     from './component';
+import { ElementModel }       from './element';
+import { MediaProviderModel } from './mediaProvider.model';
 
-export * from './collectionDefinition.model';
-export * from './collectionElement.model';
+export * from './component';
+export * from './element';
+export * from './mediaProvider.model';
 export * from './fieldTypes';
 
 export interface Collections {
-    coll_definition: CollDefinitionModel;
-    coll_element: CollElementModel;
+    component: ComponentModel;
+    element: ElementModel;
     media_provider: MediaProviderModel;
 }
 

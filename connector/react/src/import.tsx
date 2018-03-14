@@ -1,12 +1,12 @@
-import { CollElementModel } from 'props-cms.connector-common';
-import * as React           from 'react';
+import { ElementModel } from 'props-cms.connector-common';
+import * as React       from 'react';
 import {
     CmsConnectorChannel,
     CmsConnectorContextType,
     CmsContext,
     CmsSubscription
-}                           from './connector';
-import CmsRender            from './renderer';
+}                       from './connector';
+import CmsRender        from './renderer';
 
 export interface CmsImportProps {
     ident: string;
@@ -15,7 +15,7 @@ export interface CmsImportProps {
 }
 
 export default class extends React.Component<CmsImportProps, {
-    models: CollElementModel[],
+    models: ElementModel[],
     err?: Error
 }> {
 

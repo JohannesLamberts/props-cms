@@ -1,4 +1,4 @@
-export type CollDefinitionFieldTypeIdent =
+export type ComponentPropTypes =
     'text'
     | 'textArea'
     | 'boolean'

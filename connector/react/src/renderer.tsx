@@ -1,4 +1,4 @@
-import { CollElementModel }                     from 'props-cms.connector-common';
+import { ElementModel }                         from 'props-cms.connector-common';
 import * as React                               from 'react';
 import AsyncComponent, { AsyncComponentImport } from './asyncComponent';
 import {
@@ -8,7 +8,7 @@ import {
 }                                               from './connector';
 
 export interface CmsImportProps {
-    data: CollElementModel | CollElementModel[];
+    data: ElementModel | ElementModel[];
     enclose?: React.ComponentType<{ children: React.ReactNode }>;
 }
 

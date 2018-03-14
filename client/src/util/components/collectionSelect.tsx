@@ -3,21 +3,21 @@ import {
     MenuItem,
     TextField
 }                              from 'material-ui';
-import { CollDefinitionModel } from 'props-cms.connector-common';
+import { ComponentModel }      from 'props-cms.connector-common';
 import * as React              from 'react';
 import { withDatabaseConnect } from '../../redux/database/database.decorate';
 
 interface DefinitionProps {
     className?: string;
     label: string;
-    filter?: (model: CollDefinitionModel) => boolean;
+    filter?: (model: ComponentModel) => boolean;
     value?: string;
     onChange: (newModel: string) => void;
-    collDefinitions: CollDefinitionModel[];
+    components: ComponentModel[];
     onMount: () => void;
 }
 
-class CollElementEditorFieldSubContent extends React.PureComponent<DefinitionProps> {
+class ElementEditorFieldSubContent extends React.PureComponent<DefinitionProps> {
 
     componentWillMount() {
         this.props.onMount();
@@ -25,9 +25,9 @@ class CollElementEditorFieldSubContent extends React.PureComponent<DefinitionPro
 
     render() {
 
-        const { onChange, value, collDefinitions, filter, className, label } = this.props;
+        const { onChange, value, components, filter, className, label } = this.props;
 
-        let options = collDefinitions;
+        let options = components;
 
         if (filter) {
             options = options.filter(filter);
@@ -56,6 +56,6 @@ class CollElementEditorFieldSubContent extends React.PureComponent<DefinitionPro
     }
 }
 
-const decorateDatabase = withDatabaseConnect({ collDefinitions: 'coll_definition' }, {});
+const decorateDatabase = withDatabaseConnect({ components: 'component' }, {});
 
-export default decorateDatabase(CollElementEditorFieldSubContent);
+export default decorateDatabase(ElementEditorFieldSubContent);

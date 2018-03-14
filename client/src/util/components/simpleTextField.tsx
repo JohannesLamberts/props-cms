@@ -5,6 +5,7 @@ import * as React         from 'react';
 interface SimpleTextFieldProps {
     value: string;
     label: string;
+    required?: boolean;
     multiline?: boolean;
     onBlur?: (val: string) => void;
     TextFieldProps?: Partial<TextFieldProps>;
@@ -25,10 +26,11 @@ export default class extends React.PureComponent<SimpleTextFieldProps, {
     }
 
     render() {
-        const { label, onBlur, multiline } = this.props;
+        const { label, onBlur, multiline, required } = this.props;
         const { textVal } = this.state;
         return (
             <TextField
+                required={required}
                 InputLabelProps={{ shrink: !!textVal }}
                 multiline={multiline}
                 label={label}
