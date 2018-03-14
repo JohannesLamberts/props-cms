@@ -19,8 +19,8 @@ import CollectionDefinitionEditor from './views/components/config/componentEdito
 import CollectionElementEditor    from './views/components/elements/editor/elementEditor';
 import CollectionElementList      from './views/components/elements/elementList';
 import CollectionGrid             from './views/components/list';
-import MediaDashboard             from './views/media/mediaDashboard';
-import MediaEditor                from './views/media/mediaEditor';
+import MediaEditor                from './views/media/mediaProviderFileBrowser';
+import MediaDashboard             from './views/media/mediaProviderList';
 
 const links = {
     dashboard: '/dashboard',

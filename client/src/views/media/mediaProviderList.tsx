@@ -24,10 +24,19 @@ import {
 const styles = {
     root: {
         width: '100%'
+    },
+    table: {
+        '& td:last-child': {
+            textAlign: 'center',
+            width: '150px'
+        },
+        '& th:last-child': {
+            textAlign: 'center'
+        }
     }
 };
 
-type MediaDashboardBaseProps = {
+type MediaProviderListBaseProps = {
     providers: MediaProviderModel[];
     onMount: () => void;
     onPush: (url: string) => void;
@@ -36,9 +45,9 @@ type MediaDashboardBaseProps = {
 
 const decorateStyle = withStyles(styles);
 
-class MediaDashboardBase extends React.PureComponent<MediaDashboardBaseProps, {}> {
+class MediaProviderListBase extends React.PureComponent<MediaProviderListBaseProps, {}> {
 
-    constructor(props: MediaDashboardBaseProps) {
+    constructor(props: MediaProviderListBaseProps) {
         super(props);
         this.state = {};
     }
@@ -56,26 +65,26 @@ class MediaDashboardBase extends React.PureComponent<MediaDashboardBaseProps, {}
                     onEnter={onPush}
                     inputLabel={'new provider'}
                 >
-                    <Table>
+                    <Table className={classes.table}>
                         <SimpleTableHeader>
-                            {['', 'Label', 'URL']}
+                            {['Label', 'URL', 'Actions']}
                         </SimpleTableHeader>
                         <SimpleTableBody data={providers}>
                             {(provider: MediaProviderModel) => [
+                                provider.label,
+                                provider.url,
                                 (
                                     <div>
                                         <Link to={`media/${provider._id}`}>
                                             <IconButton>
-                                                <Icon>edit</Icon>
+                                                <Icon>image</Icon>
                                             </IconButton>
                                         </Link>
                                         <IconButton onClick={() => onDelete(provider._id)}>
                                             <Icon>delete</Icon>
                                         </IconButton>
                                     </div>
-                                ),
-                                provider.label,
-                                provider.url
+                                )
                             ]}
                         </SimpleTableBody>
                     </Table>
@@ -105,4 +114,4 @@ export default compose(withDatabaseConnect({
                                            },
                                            {}),
                        decorateStore,
-                       decorateStyle)(MediaDashboardBase);
+                       decorateStyle)(MediaProviderListBase);

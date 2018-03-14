@@ -2,9 +2,7 @@ import {
     CircularProgress,
     Icon,
     IconButton,
-    Paper,
     Table,
-    Typography,
     WithStyles,
     withStyles
 }                             from 'material-ui';
@@ -30,6 +28,7 @@ import {
 import { StoreState }         from '../../../redux/store';
 import {
     FloatingActionButton,
+    PaperWithHead,
     SimpleTableBody,
     SimpleTableHeader
 }                             from '../../../util';
@@ -38,13 +37,6 @@ const styles = {
     root: {
         width: '100%'
     },
-    header: {
-        backgroundColor: 'rgba(0,0,0,0.07)',
-        padding: '0 1rem',
-        alignItems: 'center',
-        display: 'flex',
-        justifyContent: 'space-between'
-    } as React.CSSProperties,
     table: {
         '& td:last-child': {
             textAlign: 'center',
@@ -85,7 +77,19 @@ class ElementList extends React.PureComponent<DefinitionProps> {
         const { component, elements, classes, onDrop, onPush } = this.props;
 
         return (
-            <Paper className={classes.root}>
+            <PaperWithHead
+                className={classes.root}
+                label={component.label}
+                action={(
+                    <Link to={`/collection/${component._id}`}>
+                        <IconButton>
+                            <Icon>
+                                settings
+                            </Icon>
+                        </IconButton>
+                    </Link>
+                )}
+            >
                 <FloatingActionButton
                     onClick={() => onPush(
                         {
@@ -96,18 +100,6 @@ class ElementList extends React.PureComponent<DefinitionProps> {
                 >
                     <Icon>add</Icon>
                 </FloatingActionButton>
-                <div className={classes.header}>
-                    <Typography variant={'headline'}>
-                        {component.label}
-                    </Typography>
-                    <Link to={`/collection/${component._id}`}>
-                        <IconButton>
-                            <Icon>
-                                settings
-                            </Icon>
-                        </IconButton>
-                    </Link>
-                </div>
                 <Table className={classes.table}>
                     <SimpleTableHeader>
                         {[
@@ -137,7 +129,7 @@ class ElementList extends React.PureComponent<DefinitionProps> {
                         ]}
                     </SimpleTableBody>
                 </Table>
-            </Paper>
+            </PaperWithHead>
         );
     }
 }

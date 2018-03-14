@@ -26,14 +26,14 @@ const styles = (theme: Theme) => ({
 
 const decorateStyle = withStyles(styles);
 
-type MediaUploaderProps = {
+type MediaFileUploaderProps = {
     url: string;
     className?: string;
 } & WithStyles<'dropzone' | 'dropzone_active'>;
 
-class MediaUploaderBase extends React.PureComponent<MediaUploaderProps> {
+class MediaFileUploaderBase extends React.PureComponent<MediaFileUploaderProps> {
 
-    constructor(props: MediaUploaderProps) {
+    constructor(props: MediaFileUploaderProps) {
         super(props);
     }
 
@@ -83,4 +83,4 @@ class MediaUploaderBase extends React.PureComponent<MediaUploaderProps> {
     }
 }
 
-export const MediaUploader = decorateStyle(MediaUploaderBase);
+export const MediaFileUploader = decorateStyle(MediaFileUploaderBase);

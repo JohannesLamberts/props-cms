@@ -1,6 +1,6 @@
 import { Button }                 from 'material-ui';
 import * as React                 from 'react';
-import { MediaSelectDialog }      from '../../../../media/mediaSelectDialog';
+import { MediaFileSelectDialog }  from '../../../../media/mediaFileSelectDialog';
 import { TypeElementEditorProps } from './typeEditorProps';
 
 export default class extends React.PureComponent<TypeElementEditorProps<'file'>, {
@@ -27,7 +27,7 @@ export default class extends React.PureComponent<TypeElementEditorProps<'file'>,
                     Select
                 </Button>
                 {this.state.dialogOpen && (
-                    <MediaSelectDialog
+                    <MediaFileSelectDialog
                         multiple={false}
                         onClose={(ok, selected) => {
                             this.setState({ dialogOpen: false });

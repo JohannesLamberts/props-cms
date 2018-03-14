@@ -3,8 +3,6 @@ import {
     CircularProgress,
     Icon,
     IconButton,
-    Paper,
-    Typography,
     withStyles,
     WithStyles
 }                              from 'material-ui';
@@ -22,6 +20,7 @@ import { Link }                from 'react-router-dom';
 import { compose }             from 'redux';
 import { DatabasePatch }       from '../../../../redux/database/database.actions';
 import { withDatabaseConnect } from '../../../../redux/database/database.decorate';
+import { PaperWithHead }       from '../../../../util';
 import ElementModelEditor      from './editorContent';
 
 const collectionKey = 'element';
@@ -30,16 +29,6 @@ const styles = {
     root: {
         width: '100%'
     },
-    header: {
-        backgroundColor: 'rgba(0,0,0,0.07)',
-        padding: '0 1rem',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        '& > :first-child': {
-            flexBasis: '100%'
-        }
-    } as React.CSSProperties,
     content: {
         padding: '1rem'
     }
@@ -87,7 +76,28 @@ class ElementEditor extends React.PureComponent<ElementEditorProps, {
             return <CircularProgress size={100}/>;
         }
         return (
-            <Paper className={classes.root}>
+            <PaperWithHead
+                className={classes.root}
+                label={`${component.label} / Eintrag`}
+                action={(
+                    <div>
+                        <Link to={`/collection/${component._id}/elements`}>
+                            <IconButton>
+                                <Icon>
+                                    view_carousel
+                                </Icon>
+                            </IconButton>
+                        </Link>
+                        <Link to={`/collection/${component._id}`}>
+                            <IconButton>
+                                <Icon>
+                                    settings
+                                </Icon>
+                            </IconButton>
+                        </Link>
+                    </div>
+                )}
+            >
                 <Button
                     variant={'fab'}
                     color={'secondary'}
@@ -95,25 +105,6 @@ class ElementEditor extends React.PureComponent<ElementEditorProps, {
                 >
                     <Icon>check</Icon>
                 </Button>
-                <div className={classes.header}>
-                    <Typography variant={'headline'}>
-                        {component.label}
-                    </Typography>
-                    <Link to={`/collection/${component._id}/elements`}>
-                        <IconButton>
-                            <Icon>
-                                view_carousel
-                            </Icon>
-                        </IconButton>
-                    </Link>
-                    <Link to={`/collection/${component._id}`}>
-                        <IconButton>
-                            <Icon>
-                                settings
-                            </Icon>
-                        </IconButton>
-                    </Link>
-                </div>
                 {editElement
                     ? (
                      <div className={classes.content}>
@@ -131,7 +122,7 @@ class ElementEditor extends React.PureComponent<ElementEditorProps, {
                  )
                     : <CircularProgress size={100}/>
                 }
-            </Paper>
+            </PaperWithHead>
         );
     }
 

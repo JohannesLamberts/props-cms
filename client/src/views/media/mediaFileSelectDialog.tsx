@@ -13,23 +13,23 @@ import { ImmutableArray }      from 'typescript-immutable';
 import { withDatabaseConnect } from '../../redux/database/database.decorate';
 import { MediaFile }           from './media';
 import {
-    MediaGridFile,
-    MediaGridList
-}                              from './mediaGridList';
+    MediaFileList,
+    MediaListFile
+}                              from './mediaFileList';
 
-interface MediaSelectDialogProps {
+interface MediaFileSelectDialogProps {
     providers: MediaProviderModel[];
     onMount: () => void;
     multiple?: boolean;
     onClose: (ok: boolean, selected: MediaFile[]) => void;
 }
 
-class MediaSelectDialogBase extends React.PureComponent<MediaSelectDialogProps, {
+class MediaFileSelectDialogBase extends React.PureComponent<MediaFileSelectDialogProps, {
     selectedFiles: ImmutableArray<MediaFile>;
     mediaProvider?: string;
 }> {
 
-    constructor(props: MediaSelectDialogProps) {
+    constructor(props: MediaFileSelectDialogProps) {
         super(props);
         this.state = {
             selectedFiles: new ImmutableArray<MediaFile>()
@@ -69,11 +69,11 @@ class MediaSelectDialogBase extends React.PureComponent<MediaSelectDialogProps, 
                         ))}
                     </TextField>
                     {mediaProvider && (
-                        <MediaGridList
+                        <MediaFileList
                             url={mediaProvider}
                         >
                             {({ children, file }: {
-                                children: React.ReactNode; file: MediaGridFile
+                                children: React.ReactNode; file: MediaListFile
                             }): React.ReactElement<any> => (
                                 <div
                                     onClick={() => {
@@ -112,7 +112,7 @@ class MediaSelectDialogBase extends React.PureComponent<MediaSelectDialogProps, 
                                     {children}
                                 </div>
                             )}
-                        </MediaGridList>
+                        </MediaFileList>
                     )}
                 </DialogContent>
                 <DialogActions>
@@ -132,6 +132,6 @@ class MediaSelectDialogBase extends React.PureComponent<MediaSelectDialogProps, 
     }
 }
 
-export const MediaSelectDialog =
+export const MediaFileSelectDialog =
                  withDatabaseConnect({ providers: 'media_provider' }, {})
-                 (MediaSelectDialogBase);
+                 (MediaFileSelectDialogBase);

@@ -14,10 +14,10 @@ import {
 import { compose }             from 'redux';
 import { withDatabaseConnect } from '../../redux/database/database.decorate';
 import {
-    MediaGridFile,
-    MediaGridList
-}                              from './mediaGridList';
-import { MediaUploader }       from './mediaUploader';
+    MediaFileList,
+    MediaListFile
+}                              from './mediaFileList';
+import { MediaFileUploader }   from './mediaFileUploader';
 
 const styles = {
     root: {
@@ -35,7 +35,7 @@ const styles = {
     }
 };
 
-type ComponentEditorProps<TData = any> = {
+type MediaProviderFileBrowserProps<TData = any> = {
     onMount: () => void;
     onDelete: () => void;
     onDataChange: (data: Partial<ComponentModel>) => void;
@@ -44,7 +44,7 @@ type ComponentEditorProps<TData = any> = {
 
 const decorateStyle = withStyles(styles);
 
-class ComponentEditor extends React.PureComponent<ComponentEditorProps> {
+class MediaProviderFileBrowser extends React.PureComponent<MediaProviderFileBrowserProps> {
 
     componentWillMount() {
         this.props.onMount();
@@ -60,17 +60,17 @@ class ComponentEditor extends React.PureComponent<ComponentEditorProps> {
         return (
             <div className={classes.root}>
                 <div className={classes.list}>
-                    <MediaGridList
+                    <MediaFileList
                         url={mediaProvider.url}
                     >
-                        {({ file }: { file: MediaGridFile }) => (
+                        {({ file }: { file: MediaListFile }) => (
                             <div>
                                 {file.filename}
                             </div>
                         )}
-                    </MediaGridList>
+                    </MediaFileList>
                 </div>
-                <MediaUploader
+                <MediaFileUploader
                     className={classes.uploader}
                     url={mediaProvider.url}
                 />
@@ -91,4 +91,4 @@ const decorateDatabase = withDatabaseConnect(
 
 export default compose(withRouter,
                        decorateDatabase,
-                       decorateStyle)(ComponentEditor);
+                       decorateStyle)(MediaProviderFileBrowser);

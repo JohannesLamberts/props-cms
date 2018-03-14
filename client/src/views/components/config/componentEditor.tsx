@@ -2,8 +2,6 @@ import {
     Button,
     Icon,
     IconButton,
-    Paper,
-    Typography,
     withStyles,
     WithStyles
 }                              from 'material-ui';
@@ -20,6 +18,7 @@ import { DatabasePatch }       from '../../../redux/database/database.actions';
 import { withDatabaseConnect } from '../../../redux/database/database.decorate';
 import {
     ColorTextInput,
+    PaperWithHead,
     SimpleTextField
 }                              from '../../../util/index';
 import ComponentPropsEditor    from './componentFieldList';
@@ -28,10 +27,12 @@ const styles = {
     root: {
         display: 'flex',
         flexGrow: 1,
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        '& > *:not(:last-child)': {
+            marginRight: '1rem'
+        }
     } as React.CSSProperties,
     definitionEditArea: {
-        marginRight: '1rem',
         padding: '1rem',
         display: 'flex',
         flexFlow: 'column nowrap'
@@ -89,12 +90,11 @@ class ComponentEditor extends React.PureComponent<ComponentEditorProps, {
 
         return (
             <div className={classes.root}>
-                <Paper className={classes.definitionEditArea}>
-                    <div className={classes.definitionEditAreaHead}>
-                        <Typography variant={'title'}>
-                            {editComponent.label || editComponent._id}
-                        </Typography>
-                        {editComponent.root && (
+                <PaperWithHead
+                    classNameContent={classes.definitionEditArea}
+                    label={editComponent.label || editComponent._id}
+                    action={(
+                        editComponent.root && (
                             <Link
                                 style={{ float: 'right' }}
                                 to={`/collection/${editComponent._id}/elements`}
@@ -103,8 +103,9 @@ class ComponentEditor extends React.PureComponent<ComponentEditorProps, {
                                     <Icon>view_carousel</Icon>
                                 </IconButton>
                             </Link>
-                        )}
-                    </div>
+                        )
+                    )}
+                >
                     <SimpleTextField
                         label={'Label'}
                         value={editComponent.label}
@@ -131,7 +132,7 @@ class ComponentEditor extends React.PureComponent<ComponentEditorProps, {
                     >
                         Speichern
                     </Button>
-                </Paper>
+                </PaperWithHead>
                 <div className={classes.fieldEditArea}>
                     <ComponentPropsEditor
                         properties={editComponent.props || []}

@@ -2,7 +2,7 @@ import { Grid }    from 'material-ui';
 import * as React  from 'react';
 import { HttpApi } from '../../services/api';
 
-export interface MediaGridFile {
+export interface MediaListFile {
     _id: string;
     filename: string;
     contentType: string;
@@ -11,18 +11,18 @@ export interface MediaGridFile {
     };
 }
 
-type MediaGridListWrapperComponent = React.ComponentType<{ children: React.ReactNode; file: MediaGridFile }>;
+type MediaGridListWrapperComponent = React.ComponentType<{ children: React.ReactNode; file: MediaListFile }>;
 
-interface MediaGridListProps {
+interface MediaFileListProps {
     url: string;
     children?: MediaGridListWrapperComponent;
 }
 
-export class MediaGridList extends React.PureComponent<MediaGridListProps, {
-    files: MediaGridFile[];
+export class MediaFileList extends React.PureComponent<MediaFileListProps, {
+    files: MediaListFile[];
 }> {
 
-    constructor(props: MediaGridListProps) {
+    constructor(props: MediaFileListProps) {
         super(props);
         this.state = {
             files: []
@@ -32,7 +32,7 @@ export class MediaGridList extends React.PureComponent<MediaGridListProps, {
     componentWillMount() {
         const api = new HttpApi(this.props.url);
         api.get('download')
-           .then((files: MediaGridFile[]) => {
+           .then((files: MediaListFile[]) => {
                this.setState({ files });
            });
     }

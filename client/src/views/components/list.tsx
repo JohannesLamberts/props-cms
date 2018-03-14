@@ -76,48 +76,51 @@ class Definition extends React.PureComponent<DefinitionProps, {}> {
             <div className={classes.root}>
                 {sections.map((section, index) => {
                     return (
-                        <SectionWithActionInput
+                        <div
                             key={index}
-                            label={section.label}
-                            inputLabel={'new component'}
-                            onEnter={id => onPush(id, section.root)}
                         >
-                            <List>
-                                {components
-                                    .filter(component => component.root === section.root)
-                                    .map(component => (
-                                        <ListItem>
-                                            <ListItemIcon>
-                                                <Link to={`/collection/${component._id}`}>
-                                                    <Icon>settings</Icon>
-                                                </Link>
-                                            </ListItemIcon>
-                                            <ListItemIcon>
-                                                <Link to={`/collection/${component._id}/elements`}>
-                                                    <Icon>view_carousel</Icon>
-                                                </Link>
-                                            </ListItemIcon>
-                                            <Avatar
-                                                style={{
-                                                    backgroundColor: component.color,
-                                                    height: '1rem',
-                                                    width: '1rem'
-                                                }}
-                                            />
-                                            <ListItemText
-                                                primary={component.label || component._id}
-                                            />
-                                            <ListItemIcon>
-                                                <IconButton
-                                                    onClick={() => onDelete(component._id!)}
-                                                >
-                                                    <Icon>delete</Icon>
-                                                </IconButton>
-                                            </ListItemIcon>
-                                        </ListItem>
-                                    ))}
-                            </List>
-                        </SectionWithActionInput>
+                            <SectionWithActionInput
+                                label={section.label}
+                                inputLabel={'new component'}
+                                onEnter={id => onPush(id, section.root)}
+                            >
+                                <List>
+                                    {components
+                                        .filter(component => component.root === section.root)
+                                        .map(component => (
+                                            <ListItem>
+                                                <ListItemIcon>
+                                                    <Link to={`/collection/${component._id}`}>
+                                                        <Icon>settings</Icon>
+                                                    </Link>
+                                                </ListItemIcon>
+                                                <ListItemIcon>
+                                                    <Link to={`/collection/${component._id}/elements`}>
+                                                        <Icon>view_carousel</Icon>
+                                                    </Link>
+                                                </ListItemIcon>
+                                                <Avatar
+                                                    style={{
+                                                        backgroundColor: component.color,
+                                                        height: '1rem',
+                                                        width: '1rem'
+                                                    }}
+                                                />
+                                                <ListItemText
+                                                    primary={component.label || component._id}
+                                                />
+                                                <ListItemIcon>
+                                                    <IconButton
+                                                        onClick={() => onDelete(component._id!)}
+                                                    >
+                                                        <Icon>delete</Icon>
+                                                    </IconButton>
+                                                </ListItemIcon>
+                                            </ListItem>
+                                        ))}
+                                </List>
+                            </SectionWithActionInput>
+                        </div>
                     );
                 })}
             </div>
