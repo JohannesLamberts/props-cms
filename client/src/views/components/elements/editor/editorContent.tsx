@@ -91,15 +91,17 @@ const ElementModelEditor = (props: ElementModelEditorProps) => {
                                     </div>
                                 </div>
                             ))}
-                            <InsertButton
-                                onClick={() => {
-                                    const shallow = fieldData.slice();
-                                    shallow.splice(fieldData.length,
-                                                   0,
-                                                   InitialFieldTypeData(field));
-                                    update(shallow);
-                                }}
-                            />
+                            <div>
+                                <InsertButton
+                                    onClick={() => {
+                                        const shallow = fieldData.slice();
+                                        shallow.splice(fieldData.length,
+                                                       0,
+                                                       InitialFieldTypeData(field));
+                                        update(shallow);
+                                    }}
+                                />
+                            </div>
                         </div>
                     );
                 }
