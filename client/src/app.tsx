@@ -48,11 +48,7 @@ const styles = (theme: Theme) => ({
     root: {
         display: 'flex',
         flexFlow: 'column nowrap',
-        height: '100vh',
-        '& > *:last-child': {
-            flexGrow: 1,
-            display: 'flex'
-        }
+        height: '100vh'
     },
     toolbar: {
         display: 'flex',
@@ -69,12 +65,15 @@ const styles = (theme: Theme) => ({
             }
         }
     },
-    content: {
+    contentScroll: {
         flexGrow: 1,
         overflowX: 'hidden',
         overflowY: 'auto',
+        position: 'relative'
+    } as React.CSSProperties,
+    contentWrapper: {
         padding: '1rem'
-    } as React.CSSProperties
+    }
 });
 
 export const AppRoot = withStyles(styles)(({ classes }) => {
@@ -102,22 +101,24 @@ export const AppRoot = withStyles(styles)(({ classes }) => {
                     </AppBar>
                 </MuiThemeProvider>
             </header>
-            <div className={classes.content}>
-                <Switch>
-                    <Redirect
-                        path={'/'}
-                        exact={true}
-                        to={`/dashboard`}
-                    />
-                    {Object.keys(rootPages).map(path => (
-                        <Route
+            <div className={classes.contentScroll}>
+                <div className={classes.contentWrapper}>
+                    <Switch>
+                        <Redirect
+                            path={'/'}
                             exact={true}
-                            key={path}
-                            path={path}
-                            component={rootPages[path]}
+                            to={`/dashboard`}
                         />
-                    ))}
-                </Switch>
+                        {Object.keys(rootPages).map(path => (
+                            <Route
+                                exact={true}
+                                key={path}
+                                path={path}
+                                component={rootPages[path]}
+                            />
+                        ))}
+                    </Switch>
+                </div>
             </div>
         </div>
     );

@@ -27,8 +27,9 @@ import ComponentPropsEditor    from './componentFieldList';
 const styles = {
     root: {
         display: 'flex',
-        flexGrow: 1
-    },
+        flexGrow: 1,
+        alignItems: 'flex-start'
+    } as React.CSSProperties,
     definitionEditArea: {
         marginRight: '1rem',
         padding: '1rem',
@@ -48,13 +49,13 @@ const styles = {
 type ComponentEditorProps<TData = any> = {
     onMount: () => void;
     onSave: (data: ComponentModel) => void;
-    component: ComponentModel;
+    component: ComponentModel | undefined;
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyle = withStyles(styles);
 
 class ComponentEditor extends React.PureComponent<ComponentEditorProps, {
-    editComponent: ComponentModel;
+    editComponent: ComponentModel | undefined;
 }> {
 
     constructor(props: ComponentEditorProps) {
@@ -149,6 +150,9 @@ class ComponentEditor extends React.PureComponent<ComponentEditorProps, {
     }
 
     private _handleSave() {
+        if (!this.state.editComponent) {
+            throw new Error(`Can't save before recieved data from server`);
+        }
         this.props.onSave(this.state.editComponent);
     }
 }

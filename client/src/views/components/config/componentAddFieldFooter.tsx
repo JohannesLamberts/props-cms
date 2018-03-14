@@ -127,9 +127,11 @@ export class ComponentAddFieldFooter extends React.PureComponent<ComponentAddFie
                         />
                     </TableCell>
                     <TableCell>
-                        <IconButton onClick={this._onSave}>
-                            <Icon>add</Icon>
-                        </IconButton>
+                        <div>
+                            <IconButton onClick={this._onSave}>
+                                <Icon>add</Icon>
+                            </IconButton>
+                        </div>
                     </TableCell>
                 </TableRow>
             </TableFooter>

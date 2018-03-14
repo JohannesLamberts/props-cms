@@ -1,6 +1,8 @@
 import {
+    Button,
     CircularProgress,
     Icon,
+    IconButton,
     Paper,
     Typography,
     withStyles,
@@ -30,9 +32,13 @@ const styles = {
     },
     header: {
         backgroundColor: 'rgba(0,0,0,0.07)',
-        padding: '1rem',
+        padding: '0 1rem',
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '& > :first-child': {
+            flexBasis: '100%'
+        }
     } as React.CSSProperties,
     content: {
         padding: '1rem'
@@ -41,54 +47,106 @@ const styles = {
 
 const decorateStyles = withStyles(styles);
 
-type DefinitionProps<TData = any> = {
+type ElementEditorProps<TData = any> = {
     onMount: () => void;
-    onDataChange: (data: Partial<ElementModel>) => void;
+    onSave: (data: Partial<ElementModel>) => void;
     element: ElementModel | undefined;
     component: ComponentModel | undefined;
 } & WithStyles<keyof typeof styles>;
 
-class ElementEditor extends React.PureComponent<DefinitionProps> {
+class ElementEditor extends React.PureComponent<ElementEditorProps, {
+    editElement: ElementModel | undefined
+}> {
+
+    constructor(props: ElementEditorProps) {
+        super(props);
+        this.state = {
+            editElement: props.element
+        };
+        this._handleSave = this._handleSave.bind(this);
+        this._handlePartialChange = this._handlePartialChange.bind(this);
+    }
+
+    componentWillReceiveProps(props: ElementEditorProps) {
+        this.setState(
+            {
+                editElement: props.element
+            });
+    }
 
     componentWillMount() {
         this.props.onMount();
     }
 
     render() {
-        const { element, component, onDataChange, classes } = this.props;
-        if (!component || !element) {
-            return (
-                <CircularProgress
-                    size={100}
-                />
-            );
+
+        const { component, onSave, classes } = this.props;
+        const { editElement } = this.state;
+
+        if (!component) {
+            return <CircularProgress size={100}/>;
         }
         return (
             <Paper className={classes.root}>
+                <Button
+                    variant={'fab'}
+                    color={'secondary'}
+                    onClick={this._handleSave}
+                >
+                    <Icon>check</Icon>
+                </Button>
                 <div className={classes.header}>
                     <Typography variant={'headline'}>
                         {component.label}
                     </Typography>
+                    <Link to={`/collection/${component._id}/elements`}>
+                        <IconButton>
+                            <Icon>
+                                view_carousel
+                            </Icon>
+                        </IconButton>
+                    </Link>
                     <Link to={`/collection/${component._id}`}>
-                        <Icon>
-                            settings
-                        </Icon>
+                        <IconButton>
+                            <Icon>
+                                settings
+                            </Icon>
+                        </IconButton>
                     </Link>
                 </div>
-                <div className={classes.content}>
-                    <ElementModelEditor
-                        properties={component.props}
-                        data={element.data}
-                        onDataChange={partialData =>
-                            onDataChange({
-                                             data: Object.assign({},
-                                                                 element.data,
-                                                                 partialData)
-                                         })}
-                    />
-                </div>
+                {editElement
+                    ? (
+                     <div className={classes.content}>
+                         <ElementModelEditor
+                             properties={component.props}
+                             data={editElement.data}
+                             onDataChange={partialData =>
+                                 this._handlePartialChange({
+                                                               data: Object.assign({},
+                                                                                   editElement.data,
+                                                                                   partialData)
+                                                           })}
+                         />
+                     </div>
+                 )
+                    : <CircularProgress size={100}/>
+                }
             </Paper>
         );
+    }
+
+    private _handlePartialChange(update: Partial<ElementModel>) {
+        this.setState(
+            {
+                editElement: Object.assign({}, this.state.editElement, update)
+            });
+    }
+
+    private _handleSave() {
+        if (!this.state.editElement) {
+            throw new Error(`Can't save before recieved data from server`);
+        }
+        this.props.onSave(this.state.editElement);
     }
 }
 
@@ -109,7 +167,7 @@ const decorateDatabase = withDatabaseConnect(
 const decorateStore = connect(
     null,
     (dispatch, props: RouteComponentProps<{ collIdent: string; elementId: string }>) => ({
-        onDataChange: data => {
+        onSave: data => {
             dispatch(DatabasePatch(collectionKey, props.match.params.elementId, data));
         }
     }));

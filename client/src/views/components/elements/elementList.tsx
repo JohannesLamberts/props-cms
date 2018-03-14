@@ -22,6 +22,7 @@ import { Link }               from 'react-router-dom';
 import { compose }            from 'redux';
 import { InitialElementData } from '../../../initializers/collectionElementDataRecordInitial';
 import {
+    DatabaseDelete,
     DatabasePush,
     DatabaseRequire,
     DatabaseRequireId
@@ -37,12 +38,22 @@ const styles = {
     root: {
         width: '100%'
     },
-    wrapper: {
+    header: {
         backgroundColor: 'rgba(0,0,0,0.07)',
-        padding: '1rem',
+        padding: '0 1rem',
+        alignItems: 'center',
         display: 'flex',
         justifyContent: 'space-between'
-    } as React.CSSProperties
+    } as React.CSSProperties,
+    table: {
+        '& td:last-child': {
+            textAlign: 'center',
+            width: '150px'
+        },
+        '& th:last-child': {
+            textAlign: 'center'
+        }
+    }
 };
 
 type DefinitionProps = {
@@ -50,6 +61,7 @@ type DefinitionProps = {
     elements: ElementModel[];
     onMount: () => void;
     onPush: (model: ElementModel) => void;
+    onDrop: (id: string) => void;
 } & WithStyles<keyof typeof styles>;
 
 const decorateStyles = withStyles(styles);
@@ -70,12 +82,12 @@ class ElementList extends React.PureComponent<DefinitionProps> {
             );
         }
 
-        const { component, elements, classes } = this.props;
+        const { component, elements, classes, onDrop, onPush } = this.props;
 
         return (
             <Paper className={classes.root}>
                 <FloatingActionButton
-                    onClick={() => this.props.onPush(
+                    onClick={() => onPush(
                         {
                             collection: component._id!,
                             data: InitialElementData(component),
@@ -84,34 +96,44 @@ class ElementList extends React.PureComponent<DefinitionProps> {
                 >
                     <Icon>add</Icon>
                 </FloatingActionButton>
-                <div className={classes.wrapper}>
+                <div className={classes.header}>
                     <Typography variant={'headline'}>
                         {component.label}
                     </Typography>
                     <Link to={`/collection/${component._id}`}>
-                        <Icon>
-                            settings
-                        </Icon>
+                        <IconButton>
+                            <Icon>
+                                settings
+                            </Icon>
+                        </IconButton>
                     </Link>
                 </div>
-                <Table>
+                <Table className={classes.table}>
                     <SimpleTableHeader>
-                        {['', ...component.props.map(field => field.label)]}
+                        {[
+                            ...component.props.map(field => field.label),
+                            'Actions'
+                        ]}
                     </SimpleTableHeader>
                     <SimpleTableBody
                         data={elements}
                     >
                         {(el) => [
-                            (
-                                <Link to={`elements/${el._id}`}>
-                                    <IconButton>
-                                        <Icon>edit</Icon>
-                                    </IconButton>
-                                </Link>
-                            ),
                             ...component
                                 .props
-                                .map(field => JSON.stringify(el.data[field.key]))
+                                .map(field => JSON.stringify(el.data[field.key])),
+                            (
+                                <div>
+                                    <Link to={`elements/${el._id}`}>
+                                        <IconButton>
+                                            <Icon>edit</Icon>
+                                        </IconButton>
+                                    </Link>
+                                    <IconButton onClick={() => onDrop(el._id)}>
+                                        <Icon>delete</Icon>
+                                    </IconButton>
+                                </div>
+                            )
                         ]}
                     </SimpleTableBody>
                 </Table>
@@ -148,6 +170,9 @@ export const decorateStore = connect(
             },
             onPush: (model: ElementModel) => {
                 dispatch(DatabasePush('element', model));
+            },
+            onDrop: (id: string) => {
+                dispatch(DatabaseDelete('element', id));
             }
         };
     });

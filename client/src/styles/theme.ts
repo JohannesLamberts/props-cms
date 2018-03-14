@@ -23,6 +23,14 @@ export const LightTheme = createMuiTheme(
                 fullWidth: {
                     width: 'calc(100% - 1rem)'
                 }
+            },
+            MuiButton: {
+                fab: {
+                    position: 'absolute',
+                    right: '1rem',
+                    bottom: '1rem',
+                    zIndex: 1
+                }
             }
         }
     });
